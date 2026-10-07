@@ -1,0 +1,248 @@
+<title>CC Energy Coefficients</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,table,.three li{break-inside:avoid}
+  .panel.eqs{break-inside:auto}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · A close reading of one formula</p>
+  <h1>CC Energy Coefficients</h1>
+  <p class="dek">Where the 1, the ¼ and the ½ in the coupled cluster energy expression come from, what happens to them under other conventions, and how to check them by hand.</p>
+  <div class="meta"><span>Written for a graduate student who has read the refresher</span><span>Spin orbitals, antisymmetrized integrals, unrestricted sums unless stated otherwise</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">The three terms</a></li>
+      <li><span class="num">2</span><a href="#s2">Unrestricted sums and antisymmetry</a></li>
+      <li><span class="num">3</span><a href="#s3">Each term in turn</a></li>
+      <li><span class="num">4</span><a href="#s4">The energy as a projection of the wavefunction</a></li>
+      <li><span class="num">5</span><a href="#s5">The same numbers from diagrams</a></li>
+      <li><span class="num">6</span><a href="#s6">Other conventions</a></li>
+      <li><span class="num">7</span><a href="#s7">A check by hand</a></li>
+      <li><span class="num">8</span><a href="#s8">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(i,j,k\;/\;a,b,c\;/\;p,q,r,s\)</dt><dd>occupied / virtual / general spin orbitals; \(\ket{0}\) the reference, \(E_0=\bra{0}H\ket{0}\).</dd>
+    <dt>\(\langle pq\|rs\rangle\)</dt><dd>antisymmetrized integral \(\langle pq|rs\rangle-\langle pq|sr\rangle\); antisymmetric under \(p\leftrightarrow q\) and under \(r\leftrightarrow s\).</dd>
+    <dt>\(\tau_i^a,\;\tau_{ij}^{ab}\)</dt><dd>\(a_a^\dagger a_i\) and \(a_a^\dagger a_b^\dagger a_ja_i\); \(\tau_{ij}^{ab}\ket{0}=\ket{\Phi_{ij}^{ab}}\).</dd>
+    <dt>\(t_i^a,\;t_{ij}^{ab}\)</dt><dd>amplitudes; \(t_{ij}^{ab}=-t_{ji}^{ab}=-t_{ij}^{ba}\).</dd>
+    <dt>\(\sum_{ijab}\) versus \(\sum_{i\lt j,\,a\lt b}\)</dt><dd>unrestricted sum over all index values versus restricted sum over distinct excitations.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The formula under discussion</p>
+  $$E=E_0+\sum_{ia}f_{ia}\,t_i^a+\tfrac14\sum_{ijab}\langle ij\|ab\rangle\,t_{ij}^{ab}+\tfrac12\sum_{ijab}\langle ij\|ab\rangle\,t_i^a t_j^b\tag{1}$$
+  <ol class="three">
+    <li><span class="n">1</span><div>The structure \(E=\bra{0}H(1+T_1+T_2+\tfrac12T_1^2)\ket{0}\) comes from the exponential; the ½ is the \(1/2!\) of its series.</div></li>
+    <li><span class="n">¼</span><div>The ¼ is the normalization of \(T_2\) written as an unrestricted sum over four equivalent index orderings. It is the same ¼ that stands in front of the two-electron part of \(H\).</div></li>
+    <li><span class="n">1</span><div>Every term is a Slater-rule matrix element, \(f_{ia}\) or \(\langle ij\|ab\rangle\), times the coefficient of the corresponding determinant in the wavefunction. The energy is \(\bra{0}H\ket{\Psi}\) and nothing more.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>The three terms</h2>
+<p>The energy is the projection of the Schrödinger equation onto the reference,</p>
+$$E=\bra{0}He^{T}\ket{0}=\bra{0}H\Bigl(1+T+\tfrac12T^2+\tfrac16T^3+\cdots\Bigr)\ket{0}.\tag{2}$$
+<p>A two-body Hamiltonian connects the reference only to the reference, singles and doubles:</p>
+$$\bra{0}H\ket{0}=E_0,\qquad\bra{0}H\ket{\Phi_i^a}=f_{ia},\qquad\bra{0}H\ket{\Phi_{ij}^{ab}}=\langle ij\|ab\rangle,\qquad\bra{0}H\ket{\Phi_{ijk}^{abc}}=0.\tag{3}$$
+<p>With \(T=T_1+T_2+\cdots\), the only pieces of (2) that produce excitations of rank two or less are \(T_1\), \(T_2\), and \(\tfrac12T_1^2\). Everything else, \(T_3\), \(T_1T_2\), \(\tfrac12T_2^2\), \(\tfrac16T_1^3\) and so on, lands on triples or higher and is annihilated by \(\bra{0}H\). Hence</p>
+<div class="panel">
+  <p class="label">Key result · the structure before any integrals</p>
+  $$E=E_0+\bra{0}HT_1\ket{0}+\bra{0}HT_2\ket{0}+\tfrac12\bra{0}HT_1^2\ket{0}.\tag{4}$$
+</div>
+<p>Three terms, with coefficients 1, 1 and ½. The ½ is the \(1/2!\) of the exponential series and has no other origin. This structure is the same for CCSD, CCSDT and every higher level, since higher clusters cannot reach the reference through \(H\) directly; they influence the energy only by changing \(t_i^a\) and \(t_{ij}^{ab}\).</p>
+
+<h2 id="s2"><span class="num">2</span>Unrestricted sums and antisymmetry</h2>
+<p>The second source of numbers is the convention for writing operators with antisymmetric indices. The two-electron part of the Hamiltonian is</p>
+$$H_2=\tfrac14\sum_{pqrs}\langle pq\|rs\rangle\,a_p^\dagger a_q^\dagger a_sa_r .\tag{5}$$
+<p>Swapping \(p\leftrightarrow q\) changes the sign of the integral and the sign of the operator string, so the term is unchanged; the same holds for \(r\leftrightarrow s\). The unrestricted sum therefore visits each physically distinct term four times, and the ¼ corrects the count. Written with non-antisymmetrized integrals the same operator reads \(\tfrac12\sum\langle pq|rs\rangle a_p^\dagger a_q^\dagger a_sa_r\), where only the simultaneous swap of both pairs is a symmetry.</p>
+<p>The doubles cluster operator follows the identical convention,</p>
+$$T_2=\tfrac14\sum_{ijab}t_{ij}^{ab}\,\tau_{ij}^{ab}=\sum_{i\lt j,\;a\lt b}t_{ij}^{ab}\,\tau_{ij}^{ab},\tag{6}$$
+<p>because \(t_{ij}^{ab}\) and \(\tau_{ij}^{ab}\) are both antisymmetric in each index pair, so the orderings \((ij,ab)\), \((ji,ab)\), \((ij,ba)\), \((ji,ba)\) are the same operator. The general rule: a rank-\(n\) object with \(n\) antisymmetric hole indices and \(n\) antisymmetric particle indices carries \(1/(n!)^2\) in front of an unrestricted sum. That is 1 for singles, ¼ for doubles, and \(1/36\) for triples, which is the prefactor of the (T) energy formula.</p>
+
+<div class="panel remark">
+  <p class="label">Where the ¼ of the Hamiltonian goes</p>
+  <p>The matrix element \(\bra{0}H\ket{\Phi_{ij}^{ab}}=\langle ij\|ab\rangle\) in (3) has coefficient 1, not ¼, even though \(H_2\) carries ¼. Evaluating it from (5), the only surviving terms are those with \(\{p,q\}=\{i,j\}\) and \(\{r,s\}=\{a,b\}\): four index orderings, each contributing \(\langle ij\|ab\rangle\) once the signs of the integral and of the operator string are taken into account. The ¼ of \(H\) is consumed by those four orderings inside the Slater rule. This is why the energy (1) contains exactly one ¼ in its doubles term, inherited from \(T_2\), and not \(1/16\).</p>
+</div>
+
+<h2 id="s3"><span class="num">3</span>Each term in turn</h2>
+
+<h3>The singles term: coefficient 1</h3>
+$$\bra{0}HT_1\ket{0}=\sum_{ia}t_i^a\,\bra{0}H\ket{\Phi_i^a}=\sum_{ia}f_{ia}\,t_i^a .\tag{7}$$
+<p>A single excitation has one hole and one particle index and no symmetry to compensate, so each appears once and the coefficient is 1. The Slater rule gives \(\bra{0}H\ket{\Phi_i^a}=h_{ia}+\sum_j\langle ij\|aj\rangle=f_{ia}\). For a Hartree–Fock reference this vanishes by Brillouin’s theorem; for any other reference, such as DFT or ROHF orbitals, it is the first-order coupling of the singles to the energy.</p>
+
+<h3>The doubles term: coefficient ¼</h3>
+$$\bra{0}HT_2\ket{0}=\tfrac14\sum_{ijab}t_{ij}^{ab}\,\bra{0}H\ket{\Phi_{ij}^{ab}}=\tfrac14\sum_{ijab}\langle ij\|ab\rangle\,t_{ij}^{ab}=\sum_{i\lt j,\;a\lt b}\langle ij\|ab\rangle\,t_{ij}^{ab}.\tag{8}$$
+<p>The ¼ is the one from (6), carried through unchanged. In the restricted form it is simply the integral times the amplitude, once per distinct double excitation.</p>
+
+<h3>The quadratic singles term: coefficient ½</h3>
+<p>Here the ½ is the \(1/2!\) of the exponential. The work is in evaluating the operator. Write out the square as an unrestricted double sum over single excitations:</p>
+$$\tfrac12\bra{0}HT_1^2\ket{0}=\tfrac12\sum_{ia}\sum_{jb}t_i^at_j^b\,\bra{0}H\,\tau_i^a\tau_j^b\ket{0}.\tag{9}$$
+<p>Two single excitations compose into a double. Anticommuting \(a_i\) past \(a_b^\dagger\) and then \(a_i\) past \(a_j\),</p>
+$$\tau_i^a\tau_j^b=a_a^\dagger a_i\,a_b^\dagger a_j=-a_a^\dagger a_b^\dagger a_ia_j=a_a^\dagger a_b^\dagger a_ja_i=\tau_{ij}^{ab},\tag{10}$$
+<p>for \(i\neq j\) and \(a\neq b\), and zero otherwise. So \(\bra{0}H\tau_i^a\tau_j^b\ket{0}=\langle ij\|ab\rangle\) by (3), which gives the last term of (1):</p>
+$$\tfrac12\bra{0}HT_1^2\ket{0}=\tfrac12\sum_{ijab}\langle ij\|ab\rangle\,t_i^at_j^b .\tag{11}$$
+<p>It is worth seeing how this unrestricted sum counts a given distinct determinant \(\ket{\Phi_{ij}^{ab}}\) with \(i\lt j\) and \(a\lt b\). Four terms of (11) reach it:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Ordering of the two singles</th><th>Term</th><th>Equals</th></tr></thead>
+  <tbody>
+    <tr><td>\((i,a)\,(j,b)\)</td><td>\(t_i^at_j^b\langle ij\|ab\rangle\)</td><td>\(+\,t_i^at_j^b\,\langle ij\|ab\rangle\)</td></tr>
+    <tr><td>\((j,b)\,(i,a)\)</td><td>\(t_j^bt_i^a\langle ji\|ba\rangle\)</td><td>\(+\,t_i^at_j^b\,\langle ij\|ab\rangle\)</td></tr>
+    <tr><td>\((i,b)\,(j,a)\)</td><td>\(t_i^bt_j^a\langle ij\|ba\rangle\)</td><td>\(-\,t_i^bt_j^a\,\langle ij\|ab\rangle\)</td></tr>
+    <tr><td>\((j,a)\,(i,b)\)</td><td>\(t_j^at_i^b\langle ji\|ab\rangle\)</td><td>\(-\,t_i^bt_j^a\,\langle ij\|ab\rangle\)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Their sum is \(2\langle ij\|ab\rangle\bigl(t_i^at_j^b-t_i^bt_j^a\bigr)\), and the ½ in front reduces it to one copy per distinct determinant:</p>
+$$\tfrac12\sum_{ijab}\langle ij\|ab\rangle\,t_i^at_j^b=\sum_{i\lt j,\;a\lt b}\langle ij\|ab\rangle\bigl(t_i^at_j^b-t_i^bt_j^a\bigr)=\tfrac14\sum_{ijab}\langle ij\|ab\rangle\bigl(t_i^at_j^b-t_i^bt_j^a\bigr).\tag{12}$$
+<p>The three forms are identical. The first is how (1) is usually printed; the third puts the quadratic term on the same footing as the \(T_2\) term, with the antisymmetrized product of singles in the role of a doubles amplitude.</p>
+
+<h2 id="s4"><span class="num">4</span>The energy as a projection of the wavefunction</h2>
+<p>Combining (8) and (12), the energy collapses to one statement:</p>
+<div class="panel">
+  <p class="label">Key result · the energy is the doubles coefficient contracted with the integrals</p>
+  $$E=E_0+\sum_{ia}f_{ia}\,c_i^a+\sum_{i\lt j,\;a\lt b}\langle ij\|ab\rangle\,c_{ij}^{ab},\qquad
+  c_i^a=t_i^a,\qquad c_{ij}^{ab}=t_{ij}^{ab}+t_i^at_j^b-t_i^bt_j^a .\tag{13}$$
+</div>
+<p>Here \(c_i^a\) and \(c_{ij}^{ab}\) are the coefficients of the singly and doubly excited determinants in \(e^{T}\ket{0}\). Equation (13) is just \(E=\bra{0}H\ket{\Psi}\) with the Slater rules applied, which is what the projected Schrödinger equation says it should be. The doubles coefficient is the CI-to-CC relation \(C_2=T_2+\tfrac12T_1^2\) written out in indices, and the combination \(t_{ij}^{ab}+t_i^at_j^b-t_i^bt_j^a\) is exactly the \(\tau_{ij}^{ab}\) intermediate of the Stanton–Gauss working equations. A code that forms \(\tau\) once and contracts it with \(\langle ij\|ab\rangle\) has computed the whole correlation energy.</p>
+<p>The product form of the exponential from the notes on exponentials, \(e^{T}=\prod_\mu(1+t_\mu\tau_\mu)\), gives the same coefficient by inspection: the determinant \(\Phi_{ij}^{ab}\) is reached once by the double excitation \(\mu=(ij\to ab)\), with amplitude \(t_{ij}^{ab}\), and once by each of the two pairs of singles that compose into it, \((i\to a)(j\to b)\) with product \(t_i^at_j^b\) and \((i\to b)(j\to a)\) with product \(t_i^bt_j^a\) and a minus sign from (10).</p>
+
+<h2 id="s5"><span class="num">5</span>The same numbers from diagrams</h2>
+<p>Diagrammatic derivations never write unrestricted sums or exponential series; they draw each distinct contraction once and attach weight factors by rule. The two relevant rules are: a factor ½ for every pair of <em class="term">equivalent lines</em>, two lines of the same type that begin at the same vertex and end at the same vertex; and a factor \(1/k!\) for \(k\) <em class="term">equivalent vertices</em>, identical cluster vertices connected in the same way. Applied to the energy:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Energy diagram</th><th>Equivalent lines</th><th>Equivalent vertices</th><th>Weight</th></tr></thead>
+  <tbody>
+    <tr><td>\(H\) joined to one \(T_1\) vertex</td><td>none</td><td>none</td><td class="c">1</td></tr>
+    <tr><td>\(H\) joined to one \(T_2\) vertex</td><td>two hole lines, two particle lines: two pairs</td><td>none</td><td class="c">½ · ½ = ¼</td></tr>
+    <tr><td>\(H\) joined to two \(T_1\) vertices</td><td>none, the lines go to different vertices</td><td>the two \(T_1\) vertices</td><td class="c">1/2! = ½</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The algebra of Sections 2 and 3 and the diagram rules are the same counting seen from two sides. The equivalent-line factor is the \(1/(n!)^2\) of the unrestricted sum, and the equivalent-vertex factor is the \(1/k!\) of the exponential series. When the two bookkeepings disagree in a derivation, one of them has counted an ordering twice.</p>
+
+<h2 id="s6"><span class="num">6</span>Other conventions</h2>
+<p>The coefficients in (1) belong to one convention: spin orbitals, antisymmetrized integrals, and unrestricted sums. Change the convention and the numbers change with it.</p>
+<ul class="points">
+  <li><strong>Closed-shell spatial orbitals.</strong> Summing over spin and using spatial amplitudes \(t_{ij}^{ab}\) that are no longer antisymmetric gives
+  $$E_{\rm corr}=\sum_{ijab}\bigl[2(ia|jb)-(ib|ja)\bigr]\bigl(t_{ij}^{ab}+t_i^at_j^b\bigr),\tag{14}$$
+  with chemists’ integrals, no ¼ and no ½, and the exchange product \(t_i^bt_j^a\) gone from the parenthesis. The 2 and the −1 are what remains of spin integration. This is the form most closed-shell codes implement.</li>
+  <li><strong>Restricted sums.</strong> Writing every sum over \(i\lt j\), \(a\lt b\) removes the ¼ and turns the ½ into the antisymmetrized product, as in (13). Some authors print the energy this way, and the ¼ and ½ then never appear.</li>
+  <li><strong>Mixed electron–proton terms.</strong> In multicomponent CCSD the electron–proton contribution to the energy is \(-\sum_{iIaA}(ia|IA)\bigl(t_{iI}^{aA}+t_i^at_I^A\bigr)\), with coefficient 1. An electronic index and a protonic index cannot be interchanged, so there is only one ordering per term and no symmetry factor to compensate.</li>
+  <li><strong>Perturbative triples.</strong> The \(1/36\) in the (T) energy formula is \(1/(3!)^2\), the rank-three case of the rule in Section 2.</li>
+</ul>
+<p>If a coefficient in a paper or a code looks wrong, the first thing to check is which of these conventions is in force. Most apparent discrepancies are a ¼ that has been absorbed into a restricted sum or a 2 that has come from spin integration.</p>
+
+<h2 id="s7"><span class="num">7</span>A check by hand</h2>
+<p>Take the two-electron, two-orbital system of the refresher: occupied spin orbitals \(g\alpha,g\beta\), virtual spin orbitals \(u\alpha,u\beta\), and a single doubles amplitude \(t=t_{g\alpha g\beta}^{u\alpha u\beta}\). The exact correlation energy is \(Kt\), with \(K=\langle g\alpha\,g\beta\|u\alpha\,u\beta\rangle\). The unrestricted sum in (8) runs over sixteen index combinations, of which four are nonzero:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>\((i,j,a,b)\)</th><th>\(\langle ij\|ab\rangle\)</th><th>\(t_{ij}^{ab}\)</th><th>Product</th></tr></thead>
+  <tbody>
+    <tr><td>\((g\alpha,g\beta,u\alpha,u\beta)\)</td><td class="c">\(+K\)</td><td class="c">\(+t\)</td><td class="c">\(+Kt\)</td></tr>
+    <tr><td>\((g\beta,g\alpha,u\alpha,u\beta)\)</td><td class="c">\(-K\)</td><td class="c">\(-t\)</td><td class="c">\(+Kt\)</td></tr>
+    <tr><td>\((g\alpha,g\beta,u\beta,u\alpha)\)</td><td class="c">\(-K\)</td><td class="c">\(-t\)</td><td class="c">\(+Kt\)</td></tr>
+    <tr><td>\((g\beta,g\alpha,u\beta,u\alpha)\)</td><td class="c">\(+K\)</td><td class="c">\(+t\)</td><td class="c">\(+Kt\)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The sum is \(4Kt\), and the ¼ brings it back to \(Kt\). The same exercise with the \(T_1^2\) term, for a system where singles are allowed, reproduces the table in Section 3. Doing this once, with real indices, is the fastest way to make the coefficients stop looking arbitrary.</p>
+
+<h2 id="s8"><span class="num">8</span>Further reading</h2>
+<ol class="refs">
+  <li>A. Szabo and N. S. Ostlund, <em>Modern Quantum Chemistry</em> (Dover, 1996), Chapter 2. The Slater rules in first and second quantization, and the ¼ and ½ conventions for the Hamiltonian.</li>
+  <li>T. D. Crawford and H. F. Schaefer III, “An introduction to coupled cluster theory for computational chemists”, <em>Rev. Comput. Chem.</em> <strong>14</strong>, 33 (2000). The energy derived algebraically and diagrammatically, with the weight rules.</li>
+  <li>I. Shavitt and R. J. Bartlett, <em>Many-Body Methods in Chemistry and Physics</em> (Cambridge, 2009), Chapters 4 and 9. The diagram rules for equivalent lines and vertices, and the unrestricted-sum conventions.</li>
+  <li>J. F. Stanton, J. Gauss, J. D. Watts and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>94</strong>, 4334 (1991). The \(\tau\) intermediate and the working equations in which it appears.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. The closed-shell form (14) uses spatial orbitals and chemists’ notation for the integrals.</footer>
+</div>
