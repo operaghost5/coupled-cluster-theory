@@ -4,8 +4,8 @@
   "description": "Build scripts for the lecture notes in ../docs",
   "scripts": {
     "fetch": "sh fetch-assets.sh",
-    "build": "node build.js exponentials-for-coupled-cluster && node build.js coupled-cluster-refresher && node build.js cc-energy-coefficients && node build.js neo-ccsd-energy-coefficients && node build.js coupled-cluster-gradients && node build.js thouless-multicomponent-ccsd",
-    "pdf": "node pdf.js exponentials-for-coupled-cluster && node pdf.js coupled-cluster-refresher && node pdf.js cc-energy-coefficients && node pdf.js neo-ccsd-energy-coefficients && node pdf.js coupled-cluster-gradients && node pdf.js thouless-multicomponent-ccsd",
+    "build": "node build.js exponentials-for-coupled-cluster && node build.js coupled-cluster-refresher && node build.js cc-energy-coefficients && node build.js neo-ccsd-energy-coefficients && node build.js neo-ccsd-amplitude-equations && node build.js coupled-cluster-gradients && node build.js thouless-multicomponent-ccsd",
+    "pdf": "node pdf.js exponentials-for-coupled-cluster && node pdf.js coupled-cluster-refresher && node pdf.js cc-energy-coefficients && node pdf.js neo-ccsd-energy-coefficients && node pdf.js neo-ccsd-amplitude-equations && node pdf.js coupled-cluster-gradients && node pdf.js thouless-multicomponent-ccsd",
     "all": "npm run fetch && npm run build && npm run pdf"
   },
   "devDependencies": {

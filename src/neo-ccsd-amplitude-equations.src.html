@@ -1,0 +1,278 @@
+<title>NEO-CCSD Amplitude Equations</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap}
+td.k{font-family:var(--font-display);font-weight:600;color:var(--accent-ink);white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,.three li{break-inside:avoid}
+  .panel.eqs,table{break-inside:auto}
+  tr{break-inside:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to the refresher and the NEO coefficients notes</p>
+  <h1>NEO-CCSD Amplitude Equations</h1>
+  <p class="dek">How the coupled cluster amplitude equations change when the reference is a product of an electronic and a protonic determinant: which equations exist, which terms each can contain, the leading new terms written out, and what stays the same.</p>
+  <div class="meta"><span>Written for a graduate student who has read the refresher</span><span>Spin orbitals, high-spin fermionic protons, NEO Hartree–Fock reference</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">Five equations instead of two</a></li>
+      <li><span class="num">2</span><a href="#s2">The counting rule that decides every term</a></li>
+      <li><span class="num">3</span><a href="#s3">Which products appear where</a></li>
+      <li><span class="num">4</span><a href="#s4">The electronic equations: kept and added</a></li>
+      <li><span class="num">5</span><a href="#s5">The mixed doubles equation</a></li>
+      <li><span class="num">6</span><a href="#s6">Dressed Fock matrices and dressed integrals</a></li>
+      <li><span class="num">7</span><a href="#s7">Solving the equations</a></li>
+      <li><span class="num">8</span><a href="#s8">Consequences for the Jacobian and the gradient</a></li>
+      <li><span class="num">9</span><a href="#s9">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(i,j,m\;/\;a,b,e\;/\;p,q\)</dt><dd>occupied / virtual / general electronic spin orbitals, operators \(a_p^\dagger,a_p\), orbital energies \(\varepsilon_p\).</dd>
+    <dt>\(I,J,M\;/\;A,B,E\;/\;P,Q\)</dt><dd>occupied / virtual / general protonic orbitals, operators \(b_P^\dagger,b_P\), orbital energies \(\varepsilon_P\).</dd>
+    <dt>\(H=H^{\rm e}+H^{\rm p}+V^{\rm ep}\)</dt><dd>with \(V^{\rm ep}=-\sum(pq|PQ)\,a_p^\dagger a_q\,b_P^\dagger b_Q\); the subscript N marks normal ordering with respect to the reference, so that mean-field pieces sit in \(f^{\rm e}\) and \(f^{\rm p}\).</dd>
+    <dt>\(T_1^{\rm e},T_2^{\rm e},T_1^{\rm p},T_2^{\rm p},T_{11}^{\rm ep}\)</dt><dd>the five cluster operators; \(T_{11}^{\rm ep}=\sum_{iIaA}t_{iI}^{aA}\,a_a^\dagger a_i\,b_A^\dagger b_I\).</dd>
+    <dt>\(\ket{\Phi_i^a},\ket{\Phi_{ij}^{ab}},\ket{\Phi_I^A},\ket{\Phi_{IJ}^{AB}},\ket{\Phi_{iI}^{aA}}\)</dt><dd>the five classes of determinant the equations are projected onto.</dd>
+    <dt>\(\ell_{\rm e}(X),\;\ell_{\rm p}(X)\)</dt><dd>the number of electronic and protonic operator lines in an operator \(X\).</dd>
+    <dt>\(P(ij)\)</dt><dd>antisymmetrizer, \(P(ij)\,g(i,j)=g(i,j)-g(j,i)\).</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>There are five amplitude equations, four for a single quantum proton: the electronic singles and doubles, the protonic singles and doubles, and a new equation for the mixed electron–proton double.</div></li>
+    <li><span class="n">2</span><div>The electronic equations keep every single-component term, with the NEO Fock matrix, and gain terms in which the electron–proton attraction is contracted with amplitudes that carry protonic indices. The protonic equations mirror them.</div></li>
+    <li><span class="n">3</span><div>The mixed equation is driven by a single mixed integral, is fed linearly by the electronic and protonic doubles, contains no particle–particle ladder, and is at most quartic in the amplitudes, like the ordinary doubles equation.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>Five equations instead of two</h2>
+<p>NEO-CCSD, in the formulation of Pavošević, Culpitt and Hammes-Schiffer (2019), uses the cluster operator</p>
+$$T=T_1^{\rm e}+T_2^{\rm e}+T_1^{\rm p}+T_2^{\rm p}+T_{11}^{\rm ep},\tag{1}$$
+<p>and the linked equations of the refresher, projected onto every class of determinant that the cluster operator can reach in one step:</p>
+$$\bra{\Phi_i^a}\Hb\ket{0}=0,\quad\bra{\Phi_{ij}^{ab}}\Hb\ket{0}=0,\quad\bra{\Phi_I^A}\Hb\ket{0}=0,\quad\bra{\Phi_{IJ}^{AB}}\Hb\ket{0}=0,\quad\bra{\Phi_{iI}^{aA}}\Hb\ket{0}=0,\qquad\Hb=e^{-T}He^{T}.\tag{2}$$
+<p>With one quantum proton there is a single occupied protonic orbital, so \(T_2^{\rm p}\) and the protonic doubles equation do not exist and four equations remain. The unknowns are the five amplitude blocks, and the count of equations equals the count of unknowns, as in the single-component case.</p>
+<p>Everything else follows from the Baker–Campbell–Hausdorff expansion of \(\Hb\) and the connectedness rule of the refresher: a term of \(\bra{\mu}(He^{T})_{\rm C}\ket{0}\) survives only if every cluster operator in it is contracted with \(H\). What is new is that \(H\) has three parts with different lines. \(H^{\rm e}\) has only electronic lines, \(H^{\rm p}\) only protonic ones, and \(V^{\rm ep}\) has two of each. That is enough to decide, equation by equation, which products of cluster operators can appear.</p>
+
+<h2 id="s2"><span class="num">2</span>The counting rule that decides every term</h2>
+<p>Each operator has a definite number of electronic and protonic lines:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Operator</th><th>\(\ell_{\rm e}\)</th><th>\(\ell_{\rm p}\)</th><th>Operator</th><th>\(\ell_{\rm e}\)</th><th>\(\ell_{\rm p}\)</th></tr></thead>
+  <tbody>
+    <tr><td>\(F_N^{\rm e}\), \(V_N^{\rm e}\)</td><td class="c">2, 4</td><td class="c">0</td><td>\(T_1^{\rm e}\), \(T_2^{\rm e}\)</td><td class="c">2, 4</td><td class="c">0</td></tr>
+    <tr><td>\(F_N^{\rm p}\), \(V_N^{\rm p}\)</td><td class="c">0</td><td class="c">2, 4</td><td>\(T_1^{\rm p}\), \(T_2^{\rm p}\)</td><td class="c">0</td><td class="c">2, 4</td></tr>
+    <tr><td>\(V_N^{\rm ep}\)</td><td class="c">2</td><td class="c">2</td><td>\(T_{11}^{\rm ep}\)</td><td class="c">2</td><td class="c">2</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A contraction joins one line of \(H\) to one line of a cluster operator and removes both. Contractions between two cluster operators vanish in the connected form, because the cluster operators commute. So for each species the number of lines left open is the total minus twice the contractions, and a projection onto a determinant with \(n_{\rm e}\) excited electrons and \(n_{\rm p}\) excited protons needs exactly \(2n_{\rm e}\) open electronic lines and \(2n_{\rm p}\) open protonic ones:</p>
+<div class="panel">
+  <p class="label">Key result · the counting rule</p>
+  $$\ell_{\rm s}(H_{\rm part})+\sum_{T}\ell_{\rm s}(T)-2c_{\rm s}=2n_{\rm s},\qquad c_{\rm s}\leq\ell_{\rm s}(H_{\rm part}),\qquad{\rm s}\in\{{\rm e},{\rm p}\},\tag{3}$$
+  <p>where \(c_{\rm s}\) is the number of contractions of species s between the chosen part of \(H\) and the cluster operators, and every cluster operator in the product must take part in at least one contraction.</p>
+</div>
+<p>Two examples show how it works. For the electronic singles equation, \(n_{\rm e}=1\) and \(n_{\rm p}=0\). A term built on \(V_N^{\rm ep}\) must close its two protonic lines, so \(2+\sum\ell_{\rm p}(T)-2c_{\rm p}=0\) with \(c_{\rm p}\leq2\), which forces exactly one protonic-carrying operator, \(T_1^{\rm p}\) or \(T_{11}^{\rm ep}\), fully contracted on the protonic side. On the electronic side \(2+\sum\ell_{\rm e}(T)-2c_{\rm e}=2\) with \(c_{\rm e}\leq2\) allows up to four electronic lines from the cluster operators. For the mixed equation, \(n_{\rm e}=n_{\rm p}=1\), a term built on \(H^{\rm e}\) has no protonic lines of its own, so the two open protonic lines must come from a cluster operator that \(H^{\rm e}\) can nevertheless reach through its electronic lines. Only \(T_{11}^{\rm ep}\) qualifies; \(T_1^{\rm p}\) cannot connect to \(H^{\rm e}\) at all.</p>
+
+<h2 id="s3"><span class="num">3</span>Which products appear where</h2>
+<p>Applying (3) to every combination gives the complete list of term classes. Each entry is a product of cluster operators that can be contracted with the indicated part of the Hamiltonian; the exact contractions, signs and permutation operators within a class are in the reference equations.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Equation</th><th>Attached to the electronic Hamiltonian</th><th>Attached to the protonic Hamiltonian</th><th>Attached to the electron–proton attraction</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Electronic singles</td>
+        <td>\(T_1^{\rm e}\), \(T_2^{\rm e}\), \((T_1^{\rm e})^2\), \(T_1^{\rm e}T_2^{\rm e}\), \((T_1^{\rm e})^3\)</td>
+        <td>none</td>
+        <td>\(T_1^{\rm p}\), \(T_{11}^{\rm ep}\), \(T_1^{\rm e}T_1^{\rm p}\), \(T_2^{\rm e}T_1^{\rm p}\), \((T_1^{\rm e})^2T_1^{\rm p}\), \(T_1^{\rm e}T_{11}^{\rm ep}\)</td></tr>
+    <tr><td class="k">Electronic doubles</td>
+        <td>\(T_1^{\rm e}\), \(T_2^{\rm e}\), \((T_1^{\rm e})^2\), \(T_1^{\rm e}T_2^{\rm e}\), \((T_2^{\rm e})^2\), \((T_1^{\rm e})^3\), \((T_1^{\rm e})^2T_2^{\rm e}\), \((T_1^{\rm e})^4\)</td>
+        <td>none</td>
+        <td>\(T_{11}^{\rm ep}\), \(T_2^{\rm e}T_1^{\rm p}\), \(T_1^{\rm e}T_{11}^{\rm ep}\), \(T_1^{\rm e}T_2^{\rm e}T_1^{\rm p}\), \(T_2^{\rm e}T_{11}^{\rm ep}\), \((T_1^{\rm e})^2T_{11}^{\rm ep}\)</td></tr>
+    <tr><td class="k">Protonic singles</td>
+        <td>none</td>
+        <td>\(T_1^{\rm p}\), \(T_2^{\rm p}\), \((T_1^{\rm p})^2\), \(T_1^{\rm p}T_2^{\rm p}\), \((T_1^{\rm p})^3\)</td>
+        <td>\(T_1^{\rm e}\), \(T_{11}^{\rm ep}\), \(T_1^{\rm e}T_1^{\rm p}\), \(T_1^{\rm e}T_2^{\rm p}\), \(T_1^{\rm e}(T_1^{\rm p})^2\), \(T_1^{\rm p}T_{11}^{\rm ep}\)</td></tr>
+    <tr><td class="k">Protonic doubles</td>
+        <td>none</td>
+        <td>\(T_1^{\rm p}\), \(T_2^{\rm p}\), \((T_1^{\rm p})^2\), \(T_1^{\rm p}T_2^{\rm p}\), \((T_2^{\rm p})^2\), \((T_1^{\rm p})^3\), \((T_1^{\rm p})^2T_2^{\rm p}\), \((T_1^{\rm p})^4\)</td>
+        <td>\(T_{11}^{\rm ep}\), \(T_1^{\rm e}T_2^{\rm p}\), \(T_1^{\rm p}T_{11}^{\rm ep}\), \(T_1^{\rm e}T_1^{\rm p}T_2^{\rm p}\), \(T_2^{\rm p}T_{11}^{\rm ep}\), \((T_1^{\rm p})^2T_{11}^{\rm ep}\)</td></tr>
+    <tr><td class="k">Mixed doubles</td>
+        <td>\(T_{11}^{\rm ep}\), \(T_1^{\rm e}T_{11}^{\rm ep}\), \((T_1^{\rm e})^2T_{11}^{\rm ep}\), \(T_2^{\rm e}T_{11}^{\rm ep}\)</td>
+        <td>\(T_{11}^{\rm ep}\), \(T_1^{\rm p}T_{11}^{\rm ep}\), \((T_1^{\rm p})^2T_{11}^{\rm ep}\), \(T_2^{\rm p}T_{11}^{\rm ep}\)</td>
+        <td>\(1\), \(T_1^{\rm e}\), \(T_1^{\rm p}\), \(T_1^{\rm e}T_1^{\rm p}\), \(T_{11}^{\rm ep}\), \(T_2^{\rm e}\), \((T_1^{\rm e})^2\), \(T_2^{\rm p}\), \((T_1^{\rm p})^2\), \(T_2^{\rm e}T_1^{\rm p}\), \((T_1^{\rm e})^2T_1^{\rm p}\), \(T_1^{\rm e}T_{11}^{\rm ep}\), \(T_1^{\rm e}T_2^{\rm p}\), \(T_1^{\rm e}(T_1^{\rm p})^2\), \(T_1^{\rm p}T_{11}^{\rm ep}\), \(T_2^{\rm e}T_2^{\rm p}\), \(T_2^{\rm e}(T_1^{\rm p})^2\), \((T_1^{\rm e})^2T_2^{\rm p}\), \((T_1^{\rm e})^2(T_1^{\rm p})^2\), \((T_{11}^{\rm ep})^2\), \(T_1^{\rm e}T_1^{\rm p}T_{11}^{\rm ep}\)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Several structural facts are visible in the table.</p>
+<ul class="points">
+  <li><strong>The single-component columns are untouched.</strong> The \(H^{\rm e}\) column of the electronic equations is the CCSD term list of the refresher, and the \(H^{\rm p}\) column of the protonic equations is its copy. Removing \(V^{\rm ep}\) decouples the species completely.</li>
+  <li><strong>Every cross term carries exactly one protonic-carrying operator in an electronic equation</strong>, either \(T_1^{\rm p}\) or \(T_{11}^{\rm ep}\), because \(V^{\rm ep}\) has only two protonic lines to close. The same holds with the species swapped.</li>
+  <li><strong>The degrees do not grow.</strong> Singles equations stay cubic, doubles equations and the mixed equation stay quartic, because every part of \(H\) still has at most four lines.</li>
+  <li><strong>The mixed equation is reached by \(H^{\rm e}\) and \(H^{\rm p}\) only through \(T_{11}^{\rm ep}\)</strong>, and by \(V^{\rm ep}\) through almost everything, including the pure electronic products \(T_2^{\rm e}\) and \((T_1^{\rm e})^2\) with no protonic amplitude at all.</li>
+</ul>
+
+<h2 id="s4"><span class="num">4</span>The electronic equations: kept and added</h2>
+<p>With a NEO-HF reference, the one-body part of \(V^{\rm ep}\) is already inside the Fock matrices,</p>
+$$f^{\rm e}_{pq}=h^{\rm e}_{pq}+\sum_j\langle pj\|qj\rangle-\sum_J(pq|JJ),\qquad f^{\rm p}_{PQ}=h^{\rm p}_{PQ}+\sum_J\langle PJ\|QJ\rangle-\sum_j(jj|PQ),\tag{4}$$
+<p>so the single-component terms of the electronic equations are literally the CCSD working equations of the refresher with \(f^{\rm e}\) in place of \(f\). The additions come from the last column of the table. The leading ones in the electronic singles equation are</p>
+<div class="panel eqs">
+  <p class="label">Electronic singles: leading cross terms</p>
+  $$\begin{aligned}
+  &-\sum_{IA}(ia|IA)\,t_I^A &&\text{protonic singles act on the electrons}\\
+  &-\sum_{bJB}(ab|JB)\,t_{iJ}^{bB}+\sum_{jJB}(ji|JB)\,t_{jJ}^{aB}\qquad &&\text{mixed doubles feed the singles}
+  \end{aligned}\tag{5}$$
+</div>
+<p>The first line is Thouless’ theorem at work: a rotated proton orbital changes the mean field the electrons move in, and the term is the first-order change of \(f^{\rm e}_{ia}\) under that rotation. The second line is the multicomponent analogue of the doubles-to-singles couplings \(-\tfrac12\sum t_{im}^{ef}\langle ma\|ef\rangle-\tfrac12\sum t_{mn}^{ae}\langle nm\|ei\rangle\) of ordinary CCSD, with the mixed integral replacing the electronic one and no factor ½ because the proton index is not summed over an antisymmetric pair.</p>
+<p>In the electronic doubles equation the leading cross term is linear in the mixed amplitude,</p>
+<div class="panel eqs">
+  <p class="label">Electronic doubles: leading cross term</p>
+  $$-P(ij)P(ab)\sum_{IA}(bj|IA)\,t_{iI}^{aA},\tag{6}$$
+</div>
+<p>which is \(V^{\rm ep}\) de-exciting the proton of a mixed excitation while promoting a second electron. It is followed by the cubic terms of the table, among which \(T_2^{\rm e}T_1^{\rm p}\) is again a Fock-dressing effect: the protonic singles correct the \(f^{\rm e}_{be}\) and \(f^{\rm e}_{mj}\) that multiply the electronic doubles. Section 6 collects all of these dressing terms at once.</p>
+
+<h2 id="s5"><span class="num">5</span>The mixed doubles equation</h2>
+<p>This equation has no single-component counterpart. With canonical orbitals and the diagonal Fock terms moved to the left, its linear part reads</p>
+<div class="panel eqs">
+  <p class="label">Mixed doubles: driving term and linear terms</p>
+  $$\begin{aligned}
+  t_{iI}^{aA}\,D_{iI}^{aA}={}&-(ia|IA)\\
+  &+\sum_e(1-\delta_{ae})f^{\rm e}_{ae}\,t_{iI}^{eA}-\sum_m(1-\delta_{mi})f^{\rm e}_{mi}\,t_{mI}^{aA}
+   +\sum_E(1-\delta_{AE})f^{\rm p}_{AE}\,t_{iI}^{aE}-\sum_M(1-\delta_{MI})f^{\rm p}_{MI}\,t_{iM}^{aA}\\
+  &-\sum_e(ae|IA)\,t_i^e+\sum_m(mi|IA)\,t_m^a
+   -\sum_E(ia|AE)\,t_I^E+\sum_M(ia|MI)\,t_M^A\\
+  &-\sum_{me}(me|IA)\,t_{im}^{ae}-\sum_{ME}(ia|ME)\,t_{IM}^{AE}\\
+  &-\sum_{me}\langle ma\|ie\rangle\,t_{mI}^{eA}-\sum_{ME}\langle MA\|IE\rangle\,t_{iM}^{aE}
+   +\text{(nonlinear terms)},
+  \end{aligned}\tag{7}$$
+  $$D_{iI}^{aA}=\varepsilon_i+\varepsilon_I-\varepsilon_a-\varepsilon_A .$$
+</div>
+<p>Read it line by line.</p>
+<ul class="points">
+  <li><strong>The driving term</strong> is one mixed integral with coefficient 1, for the reason in the NEO coefficients notes.</li>
+  <li><strong>The Fock terms</strong> are the off-diagonal pieces of \(f^{\rm e}\) and \(f^{\rm p}\) acting on the electronic and the protonic index of the mixed amplitude. They vanish for canonical orbitals and are kept so that the equation is invariant to rotations within the occupied and within the virtual spaces of each species.</li>
+  <li><strong>The singles terms</strong> are \(V^{\rm ep}\) promoting an electron that a single has already moved, or a proton likewise. They are the analogues of \(P(ij)\sum t_i^e\langle ab\|ej\rangle-P(ab)\sum t_m^a\langle mb\|ij\rangle\) in the CCSD doubles equation.</li>
+  <li><strong>The doubles terms</strong> show that electron–electron correlation feeds electron–proton correlation directly, through the mixed integral contracted with one index pair of \(t_{ij}^{ab}\). They are the analogues of \(\sum t_{im}^{ae}\mathcal F_{me}\) in the CCSD singles equation, with the mixed integral in the role of \(\mathcal F_{me}\).</li>
+  <li><strong>The ring terms</strong> are \(H^{\rm e}\) scattering the excited electron while the proton is carried along as a spectator, and the same with the species swapped. There is no particle–particle ladder \(\tfrac12\sum\langle ab\|ef\rangle t_{ij}^{ef}\) and no hole–hole ladder here, because a mixed double has only one electronic particle line and one electronic hole line.</li>
+  <li><strong>No permutation operators.</strong> The two excited particles are distinguishable, so nothing is antisymmetrized between them.</li>
+</ul>
+<p>The nonlinear terms are the products in the last row of the table. In order of importance: \((T_{11}^{\rm ep})^2\), the analogue of the four quadratic terms of the CCD equation; \(T_1^{\rm e}T_1^{\rm p}\) and \((T_1^{\rm e})^2\), in which \(V^{\rm ep}\) is contracted with two singles; \(T_2^{\rm e}T_2^{\rm p}\) and \(T_2^{\rm e}T_1^{\rm p}\); and the quartic \((T_1^{\rm e})^2(T_1^{\rm p})^2\) and \(T_2^{\rm e}(T_1^{\rm p})^2\). Most of the terms involving singles disappear into dressed integrals, which is the subject of the next section.</p>
+
+<h2 id="s6"><span class="num">6</span>Dressed Fock matrices and dressed integrals</h2>
+<p>Many of the new terms share one structure: a mixed integral with one index pair contracted against a singles amplitude of the other species. Collecting them defines effective Fock matrices,</p>
+$$\tilde f^{\rm e}_{pq}=f^{\rm e}_{pq}-\sum_{IA}(pq|IA)\,t_I^A,\qquad\tilde f^{\rm p}_{PQ}=f^{\rm p}_{PQ}-\sum_{ia}(ia|PQ)\,t_i^a,\tag{8}$$
+<p>in terms of which the first line of (5), the \(T_2^{\rm e}T_1^{\rm p}\) term of the electronic doubles equation, and their protonic mirrors are absorbed into the ordinary Fock terms. The interpretation is the one from the Thouless notes: to first order, a protonic single is a rotation of the proton orbital, and a rotated proton orbital changes the mean field the electrons feel.</p>
+<p>Carried to completion, this is the \(T_1\)-transformed formulation. Because the two singles exponentials factorize, every singles amplitude can be removed from the equations by dressing the integrals: electronic integrals with the electronic singles, protonic with the protonic, and the mixed integral on each side with its own species,</p>
+$$(\tilde p\tilde q|\tilde P\tilde Q)=\sum_{\mu\nu\,\Lambda\Sigma}X^{\rm e}_{\mu p}Y^{\rm e}_{\nu q}\,(\mu\nu|\Lambda\Sigma)\,X^{\rm p}_{\Lambda P}Y^{\rm p}_{\Sigma Q},\qquad
+\bm X=\bm C(\bm 1-\bm t_1^{\tr}),\quad\bm Y=\bm C(\bm 1+\bm t_1),\tag{9}$$
+<p>with Greek indices for the atomic and protonic basis functions. In that form the five equations contain only \(T_2^{\rm e}\), \(T_2^{\rm p}\) and \(T_{11}^{\rm ep}\), and the long tail of singles products in the table collapses into the integral transformation.</p>
+
+<h2 id="s7"><span class="num">7</span>Solving the equations</h2>
+<p>Nothing about the solution strategy changes. Each block is updated from its own orbital-energy denominator,</p>
+$$t_{iI}^{aA}\leftarrow\frac{-(ia|IA)+R_{iI}^{aA}(t)}{D_{iI}^{aA}},\tag{10}$$
+<p>alongside the four single-component updates, and DIIS extrapolation is applied to the concatenated residual of all five blocks rather than species by species. The first iterate from \(t=0\) is</p>
+$$t_{iI}^{aA}=-\frac{(ia|IA)}{D_{iI}^{aA}},\qquad E^{(2)}_{\rm ep}=\sum_{iIaA}\frac{(ia|IA)^2}{D_{iI}^{aA}},\tag{11}$$
+<p>which is the electron–proton part of NEO-MP2, exactly as the first CCSD iterate is MP2. Two practical observations:</p>
+<ul class="points">
+  <li><strong>The mixed amplitudes converge fast, the protonic singles slowly.</strong> Protonic virtual orbital energies are large, so \(D_{iI}^{aA}\) is large and the mixed amplitudes are small and well conditioned. The protonic singles have no driving term of their own and are built up only through the couplings in their equation, which is why they take more iterations and why joint DIIS matters.</li>
+  <li><strong>Cost is still set by the electronic ladder.</strong> The mixed block has \(o_{\rm e}v_{\rm e}o_{\rm p}v_{\rm p}\) amplitudes, which for one proton and a few tens of protonic functions is much smaller than the \(o^2v^2\) electronic doubles. The most expensive new contraction, \((T_{11}^{\rm ep})^2\), scales as \((o_{\rm e}v_{\rm e}o_{\rm p}v_{\rm p})^2\), and the ring terms as \(o^2v^2o_{\rm p}v_{\rm p}\); none approaches the \(o^2v^4\) of the electronic particle–particle ladder. NEO-CCSD costs a modest multiple of CCSD on the same electronic basis.</li>
+</ul>
+
+<h2 id="s8"><span class="num">8</span>Consequences for the Jacobian and the gradient</h2>
+<p>The Jacobian \(J_{\mu\nu}=\bra{\mu}[\Hb,\tau_\nu]\ket{0}\) is now a five-by-five block matrix. Its diagonal blocks are the single-component Jacobians plus cross-term corrections, its off-diagonal blocks couple the species through \(V^{\rm ep}\), and the row and column for the mixed amplitudes are entirely new. The \(\Lambda\) equations of the gradient notes use its transpose, so there are five multiplier blocks, solved together, and the mixed block of \(\lambda\) enters the electron–proton part of the response densities. Equation-of-motion NEO-CC for excitation energies diagonalizes the same matrix, with the mixed block giving states in which an electron and a proton are excited together.</p>
+
+<h2 id="s9"><span class="num">9</span>Further reading</h2>
+<ol class="refs">
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>J. Chem. Theory Comput.</em> <strong>15</strong>, 338 (2019). NEO-CCSD: the complete amplitude equations with all signs, factors and permutation operators.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>Chem. Rev.</em> <strong>120</strong>, 4222 (2020). The NEO framework, NEO-HF, NEO-MP2 and the coupled cluster methods built on them.</li>
+  <li>J. F. Stanton, J. Gauss, J. D. Watts and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>94</strong>, 4334 (1991). The single-component CCSD working equations that the electronic and protonic blocks reproduce.</li>
+  <li>H. Koch, O. Christiansen, R. Kobayashi, P. Jørgensen and T. Helgaker, <em>Chem. Phys. Lett.</em> <strong>228</strong>, 233 (1994). The \(T_1\)-transformed formulation of Section 6.</li>
+  <li>T. D. Crawford and H. F. Schaefer III, “An introduction to coupled cluster theory for computational chemists”, <em>Rev. Comput. Chem.</em> <strong>14</strong>, 33 (2000). The connectedness rule and the term-by-term derivation that Section 2 generalizes.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. Equations (5) to (7) show leading terms with the sign conventions of the refresher; the complete equations are in Pavošević, Culpitt and Hammes-Schiffer (2019) and should be checked against the conventions of any particular code.</footer>
+</div>

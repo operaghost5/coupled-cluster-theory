@@ -22,12 +22,14 @@ node build.js exponentials-for-coupled-cluster
 node build.js coupled-cluster-refresher
 node build.js cc-energy-coefficients
 node build.js neo-ccsd-energy-coefficients
+node build.js neo-ccsd-amplitude-equations
 node build.js coupled-cluster-gradients
 node build.js thouless-multicomponent-ccsd
 node pdf.js   exponentials-for-coupled-cluster
 node pdf.js   coupled-cluster-refresher
 node pdf.js   cc-energy-coefficients
 node pdf.js   neo-ccsd-energy-coefficients
+node pdf.js   neo-ccsd-amplitude-equations
 node pdf.js   coupled-cluster-gradients
 node pdf.js   thouless-multicomponent-ccsd
 ```
@@ -45,6 +47,7 @@ committed.
 | `coupled-cluster-refresher.src.html` | Source of the refresher on CC theory and the CCSD equations |
 | `cc-energy-coefficients.src.html` | Source of the notes on where the coefficients in the CC energy formula come from |
 | `neo-ccsd-energy-coefficients.src.html` | Source of the notes on which coefficients change in multicomponent (NEO) CCSD |
+| `neo-ccsd-amplitude-equations.src.html` | Source of the notes on how the amplitude equations change in NEO-CCSD |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
 | `thouless-multicomponent-ccsd.src.html` | Source of the notes on Thouless' theorem and multicomponent (NEO) CCSD |
 | `build.js` | TeX rendering, font embedding, page assembly |
