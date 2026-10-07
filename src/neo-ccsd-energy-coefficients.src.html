@@ -1,0 +1,230 @@
+<title>NEO-CCSD Energy Coefficients</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,table,.three li{break-inside:avoid}
+  .panel.eqs{break-inside:auto}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to “CC Energy Coefficients”</p>
+  <h1>NEO-CCSD Energy Coefficients</h1>
+  <p class="dek">Which coefficients in the coupled cluster energy change when the reference is a product of an electronic and a protonic determinant, which stay the same, and the one rule that decides.</p>
+  <div class="meta"><span>Written for a graduate student who has read the single-component coefficients notes</span><span>Spin orbitals, antisymmetrized same-species integrals, unrestricted sums unless stated otherwise</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">The NEO-CCSD energy</a></li>
+      <li><span class="num">2</span><a href="#s2">The rule: no symmetry factor between species</a></li>
+      <li><span class="num">3</span><a href="#s3">The mixed terms one at a time</a></li>
+      <li><span class="num">4</span><a href="#s4">The same rule in the mean field</a></li>
+      <li><span class="num">5</span><a href="#s5">Special cases</a></li>
+      <li><span class="num">6</span><a href="#s6">Conventions</a></li>
+      <li><span class="num">7</span><a href="#s7">A check by hand</a></li>
+      <li><span class="num">8</span><a href="#s8">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(i,j\;/\;a,b\;/\;p,q\)</dt><dd>occupied / virtual / general electronic spin orbitals, operators \(a_p^\dagger,a_p\).</dd>
+    <dt>\(I,J\;/\;A,B\;/\;P,Q\)</dt><dd>occupied / virtual / general protonic orbitals, operators \(b_P^\dagger,b_P\). Quantum protons are high-spin fermions unless stated otherwise.</dd>
+    <dt>\(\ket{0}=\ket{0^{\rm e}}\ket{0^{\rm p}}\)</dt><dd>NEO Hartree–Fock product reference; \(E_0=\bra{0}H\ket{0}\).</dd>
+    <dt>\(\langle ij\|ab\rangle,\;\langle IJ\|AB\rangle\)</dt><dd>antisymmetrized same-species integrals.</dd>
+    <dt>\((pq|PQ)\)</dt><dd>mixed Coulomb integral \(\int\phi_p(\bm r)\phi_q(\bm r)\,|\bm r-\bm R|^{-1}\chi_P(\bm R)\chi_Q(\bm R)\). No antisymmetrized form exists.</dd>
+    <dt>\(\ket{\Phi_{iI}^{aA}}=a_a^\dagger a_i\,b_A^\dagger b_I\ket{0}\)</dt><dd>the mixed double excitation, one electron and one proton excited at once.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>Every term that involves one species only keeps the single-component coefficients: 1 on singles, ¼ on doubles, ½ on the square of the singles.</div></li>
+    <li><span class="n">2</span><div>Every term that couples the two species has coefficient 1: the connected mixed amplitude, the product of an electronic and a protonic single, the mixed Coulomb energy of the reference, and the cross term in each Fock matrix.</div></li>
+    <li><span class="n">3</span><div>The reason is the same in every case. An electron and a proton are distinguishable, so there is no index ordering to compensate for, no exchange partner, and the cross term of \(\tfrac12(T_1^{\rm e}+T_1^{\rm p})^2\) carries \(2\cdot\tfrac12=1\).</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>The NEO-CCSD energy</h2>
+<p>The multicomponent Hamiltonian separates into electronic, protonic and mixed parts,</p>
+$$H=H^{\rm e}+H^{\rm p}+V^{\rm ep},\qquad V^{\rm ep}=-\sum_{pqPQ}(pq|PQ)\,a_p^\dagger a_q\,b_P^\dagger b_Q,\tag{1}$$
+<p>with the minus sign for the attraction. The NEO-CCSD cluster operator is</p>
+$$T=T_1^{\rm e}+T_2^{\rm e}+T_1^{\rm p}+T_2^{\rm p}+T_{11}^{\rm ep},\qquad T_{11}^{\rm ep}=\sum_{iIaA}t_{iI}^{aA}\,a_a^\dagger a_i\,b_A^\dagger b_I .\tag{2}$$
+<p>Project the Schrödinger equation onto the reference, as in the single-component case. \(H^{\rm e}\) connects the reference to electronic singles and doubles, \(H^{\rm p}\) to protonic singles and doubles, and \(V^{\rm ep}\), which contains one electronic and one protonic one-body operator, to the reference, to electronic singles, to protonic singles, and to the mixed double \(\Phi_{iI}^{aA}\). Expanding the exponential and keeping only the pieces that land on those determinants,</p>
+$$E=\Bigl\langle 0\Bigm|H\Bigl(1+T_1^{\rm e}+T_1^{\rm p}+T_2^{\rm e}+T_2^{\rm p}+T_{11}^{\rm ep}+\tfrac12(T_1^{\rm e})^2+\tfrac12(T_1^{\rm p})^2+T_1^{\rm e}T_1^{\rm p}\Bigr)\Bigm|0\Bigr\rangle .\tag{3}$$
+<p>The last three terms are the expansion of \(\tfrac12(T_1^{\rm e}+T_1^{\rm p})^2\). The two squares keep their ½; the cross term appears twice in the binomial, so its coefficient is \(2\cdot\tfrac12=1\). Applying the Slater rules to each term gives the energy:</p>
+<div class="panel eqs">
+  <p class="label">Key result · the NEO-CCSD energy</p>
+  $$\begin{aligned}
+  E={}&E_0+\sum_{ia}f^{\rm e}_{ia}\,t_i^a+\sum_{IA}f^{\rm p}_{IA}\,t_I^A\\
+  &+\tfrac14\sum_{ijab}\langle ij\|ab\rangle\,t_{ij}^{ab}+\tfrac12\sum_{ijab}\langle ij\|ab\rangle\,t_i^at_j^b\\
+  &+\tfrac14\sum_{IJAB}\langle IJ\|AB\rangle\,t_{IJ}^{AB}+\tfrac12\sum_{IJAB}\langle IJ\|AB\rangle\,t_I^At_J^B\\
+  &-\sum_{iIaA}(ia|IA)\bigl(t_{iI}^{aA}+t_i^at_I^A\bigr).
+  \end{aligned}\tag{4}$$
+</div>
+<p>The electronic line and the protonic line are copies of the single-component formula, derived exactly as in the coefficients notes, with \(f^{\rm e}\) and \(f^{\rm p}\) the NEO Fock matrices. The mixed line is new, and every coefficient in it is 1.</p>
+
+<h2 id="s2"><span class="num">2</span>The rule: no symmetry factor between species</h2>
+<p>In the single-component formula the ¼ and the ½ come from two sources: unrestricted sums over antisymmetric index pairs, which overcount each distinct term, and the \(1/k!\) of the exponential series for products of identical operators. Both sources are absent for any quantity that couples an electron to a proton.</p>
+<ul class="points">
+  <li><strong>No antisymmetry.</strong> The mixed integral \((pq|PQ)\) is symmetric in \(p\leftrightarrow q\) and in \(P\leftrightarrow Q\) separately, and there is no operation that swaps an electronic index with a protonic one. So \(V^{\rm ep}\) in (1) is written with no prefactor, \(T_{11}^{\rm ep}\) in (2) is written with no prefactor, and each term of an unrestricted sum over \(i,I,a,A\) is a distinct term. Compare the same-species two-body operator, \(\tfrac12\sum\langle pq|rs\rangle a_p^\dagger a_q^\dagger a_sa_r\), whose ½ undoes the symmetric swap of two identical electrons.</li>
+  <li><strong>No exchange partner.</strong> Two electronic singles \((i\to a)\) and \((j\to b)\) compose into the same determinant as \((i\to b)\) and \((j\to a)\), with a minus sign, which is why the antisymmetrized product \(t_i^at_j^b-t_i^bt_j^a\) appears. An electronic single and a protonic single cannot trade their targets, because an electron cannot be excited into a protonic orbital. The product \(t_i^at_I^A\) stands alone.</li>
+  <li><strong>No equivalent vertices.</strong> In the exponential, \(\tfrac12(T_1^{\rm e})^2\) has the ½ because the two vertices are identical. \(T_1^{\rm e}T_1^{\rm p}\) has two different vertices, and the binomial expansion of \(\tfrac12(T_1^{\rm e}+T_1^{\rm p})^2\) gives it coefficient 1.</li>
+</ul>
+<p>Everything in the rest of these notes is an instance of this one rule.</p>
+
+<h2 id="s3"><span class="num">3</span>The mixed terms one at a time</h2>
+
+<h3>The Slater rules for the mixed operator</h3>
+<p>Evaluating (1) between the reference and the four kinds of determinant it can reach gives</p>
+$$\begin{gathered}
+\bra{0}V^{\rm ep}\ket{0}=-\sum_{iI}(ii|II),\qquad
+\bra{0}V^{\rm ep}\ket{\Phi_i^a}=-\sum_I(ia|II),\\[4pt]
+\bra{0}V^{\rm ep}\ket{\Phi_I^A}=-\sum_i(ii|IA),\qquad
+\bra{0}V^{\rm ep}\ket{\Phi_{iI}^{aA}}=-(ia|IA).
+\end{gathered}\tag{5}$$
+<p>Look at the last one. In \(\bra{0}a_p^\dagger a_q\,b_P^\dagger b_Q\ket{\Phi_{iI}^{aA}}\) the electronic operator must de-excite the electron, forcing \(p=i\) and \(q=a\), and the protonic operator must de-excite the proton, forcing \(P=I\) and \(Q=A\). One index assignment survives, so the matrix element is one integral with coefficient 1. In the same-species rule \(\bra{0}H\ket{\Phi_{ij}^{ab}}=\langle ij\|ab\rangle\), four assignments survive and absorb the ¼ of the Hamiltonian. Here there is no ¼ to absorb and nothing to absorb it.</p>
+
+<h3>The connected mixed amplitude: coefficient 1</h3>
+$$\bra{0}HT_{11}^{\rm ep}\ket{0}=\sum_{iIaA}t_{iI}^{aA}\,\bra{0}V^{\rm ep}\ket{\Phi_{iI}^{aA}}=-\sum_{iIaA}(ia|IA)\,t_{iI}^{aA}.\tag{6}$$
+<p>The cluster operator has no prefactor and the Slater rule has one surviving ordering, so the term is the integral times the amplitude, once per mixed excitation.</p>
+
+<h3>The product of two singles: coefficient 1</h3>
+<p>Electronic and protonic operators commute, so the product of the two singles composes into the mixed double with no sign to track,</p>
+$$\tau_i^a\,\tau_I^A\ket{0}=a_a^\dagger a_i\,b_A^\dagger b_I\ket{0}=\ket{\Phi_{iI}^{aA}},\tag{7}$$
+<p>and the cross term of (3), which already carries coefficient 1 from the binomial, gives</p>
+$$\bra{0}HT_1^{\rm e}T_1^{\rm p}\ket{0}=\sum_{ia}\sum_{IA}t_i^at_I^A\,\bra{0}V^{\rm ep}\ket{\Phi_{iI}^{aA}}=-\sum_{iIaA}(ia|IA)\,t_i^at_I^A .\tag{8}$$
+<p>Contrast the single-component derivation, where the unrestricted double sum over two electronic singles reached each distinct determinant four times, two of them with a minus sign, and the ½ of the exponential reduced the count to one antisymmetrized copy. Here the double sum reaches each mixed determinant once, there is no sign, and there is no ½ to apply.</p>
+
+<h3>The energy as a projection of the wavefunction</h3>
+<p>Collecting (6) and (8), the mixed contribution is the integral contracted with the coefficient of the mixed determinant in \(e^{T}\ket{0}\),</p>
+<div class="panel">
+  <p class="label">Key result · the mixed doubles coefficient</p>
+  $$-\sum_{iIaA}(ia|IA)\,c_{iI}^{aA},\qquad c_{iI}^{aA}=t_{iI}^{aA}+t_i^at_I^A,\tag{9}$$
+</div>
+<p>to be compared with the single-component \(c_{ij}^{ab}=t_{ij}^{ab}+t_i^at_j^b-t_i^bt_j^a\). The structure is the same, a connected amplitude plus the product of singles, with the exchange term removed and the ½ replaced by 1. The whole energy (4) is \(\bra{0}H\ket{\Psi}\) with the Slater rules applied to the singles, the same-species doubles, and the mixed doubles, each with its own counting.</p>
+
+<h2 id="s4"><span class="num">4</span>The same rule in the mean field</h2>
+<p>The rule is not specific to correlation. It already governs the reference energy and the Fock matrices, and it is worth seeing it there first because the pattern is identical. The NEO Hartree–Fock energy is</p>
+$$E_0=\sum_i h^{\rm e}_{ii}+\tfrac12\sum_{ij}\langle ij\|ij\rangle+\sum_I h^{\rm p}_{II}+\tfrac12\sum_{IJ}\langle IJ\|IJ\rangle-\sum_{iI}(ii|II).\tag{10}$$
+<p>The ½ on each same-species Coulomb sum undoes the double counting of the pair \((i,j)\) as \((j,i)\). The cross sum counts each electron–proton pair once and needs no correction. The Fock matrices carry the other species’ field with coefficient 1 for the same reason,</p>
+$$f^{\rm e}_{pq}=h^{\rm e}_{pq}+\sum_j\langle pj\|qj\rangle-\sum_J(pq|JJ),\qquad
+f^{\rm p}_{PQ}=h^{\rm p}_{PQ}+\sum_J\langle PJ\|QJ\rangle-\sum_j(jj|PQ),\tag{11}$$
+<p>and these are the \(f^{\rm e}\) and \(f^{\rm p}\) that appear in the singles terms of (4). The middle two Slater rules in (5) are exactly the cross terms of (11) evaluated between the reference and a single excitation. With a NEO-HF reference both occupied–virtual blocks vanish, Brillouin’s theorem holding for each species separately, and the singles terms of (4) drop out.</p>
+
+<h2 id="s5"><span class="num">5</span>Special cases</h2>
+<ul class="points">
+  <li><strong>One quantum proton.</strong> With a single occupied protonic orbital there are no protonic doubles and no \((T_1^{\rm p})^2\) term, since both need two occupied protonic orbitals. The protonic line of (4) collapses to the singles term alone, which vanishes for a NEO-HF reference. The entire protonic contribution to the correlation energy then enters through the mixed line, and the protonic singles affect the energy only through the product \(t_i^at_I^A\) and through their coupling to the other amplitudes.</li>
+  <li><strong>Several quantum protons as high-spin fermions.</strong> The protonic line is a copy of the electronic one, ¼ and ½ included, because the protonic determinant is antisymmetric in the same way. Proton–proton exchange is numerically tiny when the protonic orbitals do not overlap, but the counting is unchanged.</li>
+  <li><strong>Several quantum protons as distinguishable particles.</strong> Some formulations give each proton its own orbital space and no antisymmetry between protons. Then every proton–proton term behaves like the electron–proton term: coefficient 1, no exchange, and a product of singles with no antisymmetrized partner.</li>
+</ul>
+
+<h2 id="s6"><span class="num">6</span>Conventions</h2>
+<p>As in the single-component case, the numbers above belong to one convention. The changes to watch for:</p>
+<ul class="points">
+  <li><strong>Closed-shell electrons in spatial orbitals.</strong> The electronic line becomes \(\sum_{ijab}[2(ia|jb)-(ib|ja)](t_{ij}^{ab}+t_i^at_j^b)\). The mixed amplitude is the same for an \(\alpha\) and a \(\beta\) electron, so summing over electron spin doubles the mixed line:
+  $$-2\sum_{iIaA}(ia|IA)\bigl(t_{iI}^{aA}+t_i^at_I^A\bigr),\tag{12}$$
+  with spatial electronic indices. The 2 is spin integration, not a symmetry factor, and it also appears on the mixed Coulomb term of \(E_0\) and on the protonic Fock cross term in that convention.</li>
+  <li><strong>Sign of the mixed integral.</strong> Some codes define the electron–proton integral with the attractive sign built in, so that the mixed line reads with a plus. Either way the magnitude of the coefficient is 1.</li>
+  <li><strong>Restricted sums.</strong> Writing the same-species sums over \(i\lt j\), \(a\lt b\) removes their ¼ and turns their ½ into an antisymmetrized product, exactly as in the single-component notes. The mixed sum is already over distinct terms and does not change.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span>A check by hand</h2>
+<p>The smallest multicomponent system is one electron and one quantum proton, each with two orbitals: electronic \(g,u\) and protonic \(G,U\). The space is spanned by four product determinants, \(\ket{gG}\), \(\ket{uG}\), \(\ket{gU}\) and \(\ket{uU}\). With one particle of each kind, \((T_1^{\rm e})^2=(T_1^{\rm p})^2=0\), there are no same-species doubles, and the cluster operator has three amplitudes: \(t_1=t_g^u\), \(t_2=t_G^U\), and \(t_{12}=t_{gG}^{uU}\). The exponential is now short enough to write out completely:</p>
+$$e^{T}\ket{gG}=\ket{gG}+t_1\ket{uG}+t_2\ket{gU}+\bigl(t_{12}+t_1t_2\bigr)\ket{uU}.\tag{13}$$
+<p>The coefficient of the mixed determinant is \(t_{12}+t_1t_2\), with a plus sign and coefficient 1 on the product, which is (9) made visible. Projecting with the Hamiltonian,</p>
+$$E=E_0+f^{\rm e}_{gu}\,t_1+f^{\rm p}_{GU}\,t_2-(gu|GU)\bigl(t_{12}+t_1t_2\bigr),\tag{14}$$
+<p>which is (4) for this system. The unrestricted sum over \(i,I,a,A\) in the mixed line has exactly one term, so there is nothing to compensate, in contrast to the two-electron check in the single-component notes where four terms of the unrestricted sum had to be reduced by the ¼. Setting the two Fock elements to zero for a NEO-HF reference, the correlation energy is the one mixed integral times the mixed coefficient of the wavefunction.</p>
+
+<h2 id="s8"><span class="num">8</span>Further reading</h2>
+<ol class="refs">
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>J. Chem. Theory Comput.</em> <strong>15</strong>, 338 (2019). NEO-CCSD, with the energy and amplitude equations and their sign conventions.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>Chem. Rev.</em> <strong>120</strong>, 4222 (2020). The NEO Hamiltonian, NEO-HF, and the correlated methods built on them.</li>
+  <li>A. Szabo and N. S. Ostlund, <em>Modern Quantum Chemistry</em> (Dover, 1996), Chapter 2. The Slater rules and the origin of the ½ in the same-species Coulomb energy.</li>
+  <li>I. Shavitt and R. J. Bartlett, <em>Many-Body Methods in Chemistry and Physics</em> (Cambridge, 2009), Chapter 4. Weight factors for equivalent lines and vertices, which give the same counting from the diagrammatic side.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. The closed-shell form (12) uses spatial electronic orbitals; everything else is in spin orbitals with high-spin fermionic protons.</footer>
+</div>
