@@ -18,9 +18,11 @@ access, and `pdf.js` prints it with Chromium.
 ```sh
 cd src
 sh fetch-assets.sh        # once: downloads KaTeX and the text fonts into vendor/
+node build.js exponentials-for-coupled-cluster
 node build.js coupled-cluster-refresher
 node build.js coupled-cluster-gradients
 node build.js thouless-multicomponent-ccsd
+node pdf.js   exponentials-for-coupled-cluster
 node pdf.js   coupled-cluster-refresher
 node pdf.js   coupled-cluster-gradients
 node pdf.js   thouless-multicomponent-ccsd
@@ -35,6 +37,7 @@ committed.
 
 | File | Purpose |
 | --- | --- |
+| `exponentials-for-coupled-cluster.src.html` | Source of the notes on the properties of operator exponentials that CC theory uses |
 | `coupled-cluster-refresher.src.html` | Source of the refresher on CC theory and the CCSD equations |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
 | `thouless-multicomponent-ccsd.src.html` | Source of the notes on Thouless' theorem and multicomponent (NEO) CCSD |

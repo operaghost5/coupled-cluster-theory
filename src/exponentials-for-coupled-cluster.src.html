@@ -1,0 +1,260 @@
+<title>Exponentials for Coupled Cluster</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+h3 .pnum{display:inline-block;min-width:1.6em;color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
+p{margin:16px 0}
+p.use{font-family:var(--font-display);font-size:14px;line-height:1.5;color:var(--muted);margin:12px 0 0;padding-left:14px;border-left:2px solid var(--rule)}
+p.use b{color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:12px;margin-right:6px}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--accent);font-family:var(--font-display);font-weight:600}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,table,p.use{break-inside:avoid}
+  .panel.eqs{break-inside:auto}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Mathematical background for the coupled cluster series</p>
+  <h1>Exponentials for Coupled Cluster</h1>
+  <p class="dek">The dozen facts about operator exponentials that coupled cluster theory rests on, each with a short proof and the place in the theory where it does its work.</p>
+  <div class="meta"><span>Written for a graduate student starting the refresher</span><span>Assumes second quantization and the notion of an excitation operator</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">One exponential</a></li>
+      <li><span class="num">2</span><a href="#s2">Two exponentials</a></li>
+      <li><span class="num">3</span><a href="#s3">Conjugating an operator</a></li>
+      <li><span class="num">4</span><a href="#s4">Derivatives</a></li>
+      <li><span class="num">5</span><a href="#s5">Logarithms and counting</a></li>
+      <li><span class="num">6</span><a href="#s6">Two practical remarks</a></li>
+      <li><span class="num">7</span><a href="#s7">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(\ket{0}\)</dt><dd>reference determinant with \(n\) electrons; \(i,j\) occupied, \(a,b\) virtual spin orbitals.</dd>
+    <dt>\(\tau_\mu\)</dt><dd>an excitation operator, \(\tau_i^a=a_a^\dagger a_i\), \(\tau_{ij}^{ab}=a_a^\dagger a_b^\dagger a_ja_i\), and so on; \(\mu\) runs over <em>distinct</em> excitations, with \(i\lt j\), \(a\lt b\).</dd>
+    <dt>\(T=\sum_\mu t_\mu\tau_\mu\)</dt><dd>the cluster operator; \(T_k\) its rank-\(k\) part. \(T\) is not Hermitian and \(T^\dagger\) is a de-excitation operator.</dd>
+    <dt>\(\kappa\)</dt><dd>an anti-Hermitian orbital-rotation generator, \(\kappa^\dagger=-\kappa\), so that \(e^{\kappa}\) is unitary.</dd>
+    <dt>\([A,B]\)</dt><dd>the commutator \(AB-BA\); \(\mathrm{ad}_T(X)=[X,T]\) is the map “take the commutator with \(T\)”.</dd>
+  </dl>
+</div>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>#</th><th>Property</th><th>Where coupled cluster uses it</th></tr></thead>
+  <tbody>
+    <tr><td class="c">1</td><td>\(e^{T}\) is a finite polynomial on \(\ket{0}\)</td><td>The CC wavefunction has finitely many terms; full \(T\) reproduces FCI</td></tr>
+    <tr><td class="c">2</td><td>\((e^{T})^{-1}=e^{-T}\), but \((e^{T})^\dagger=e^{T^\dagger}\neq e^{-T}\)</td><td>The similarity transform exists and is non-Hermitian</td></tr>
+    <tr><td class="c">3</td><td>\(\bra{0}e^{\pm T}=\bra{0}\)</td><td>Intermediate normalization; the energy formula; the \(\Lambda\) equations</td></tr>
+    <tr><td class="c">4</td><td>\(e^{A+B}=e^{A}e^{B}\) iff \([A,B]=0\)</td><td>Size extensivity; why \(T\) and \(T^\dagger\) cannot be combined</td></tr>
+    <tr><td class="c">5</td><td>\(e^{T}=\prod_\mu(1+t_\mu\tau_\mu)\)</td><td>The CI–CC coefficient relations and the \(1/n!\) factors</td></tr>
+    <tr><td class="c">6</td><td>\(e^{-T}He^{T}\) is a nested-commutator series</td><td>The linked CC equations</td></tr>
+    <tr><td class="c">7</td><td>That series stops at the fourth commutator</td><td>Polynomial equations of degree at most four</td></tr>
+    <tr><td class="c">8</td><td>One commutator closes it when \([T,[T,B]]=0\)</td><td>Thouless’ theorem and \(T_1\)-dressed integrals</td></tr>
+    <tr><td class="c">9</td><td>\(\partial_{t_\mu}e^{T}=\tau_\mu e^{T}\) because the \(\tau_\mu\) commute</td><td>The Jacobian, the \(\Lambda\) equations, response theory</td></tr>
+    <tr><td class="c">10</td><td>Non-commuting generators need the Duhamel formula</td><td>Orbital response; why unitary CC does not terminate</td></tr>
+    <tr><td class="c">11</td><td>\(T=\ln(1+C)\) and logarithms turn products into sums</td><td>Extracting amplitudes from CI; the linked-cluster theorem</td></tr>
+    <tr><td class="c">12</td><td>Truncating \(T\) does not truncate \(e^{T}\)</td><td>Why CCSD beats CISD; why the equations are projected</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s1"><span class="num">1</span>One exponential</h2>
+
+<h3><span class="pnum">1</span>The series is finite on the reference</h3>
+<p>The exponential of any operator is defined by its power series,</p>
+$$e^{T}=\sum_{k=0}^{\infty}\frac{T^k}{k!}=1+T+\tfrac12T^2+\tfrac16T^3+\cdots\tag{1}$$
+<p>and for a bounded operator the series converges. For a cluster operator acting on a determinant the question of convergence does not even arise. Every term of \(T\) removes at least one electron from an occupied orbital, and there are only \(n\) of them to remove, so</p>
+$$T^{k}\ket{0}=0\quad\text{for }k\gt n,\qquad T_2^{\,k}\ket{0}=0\quad\text{for }2k\gt n .\tag{2}$$
+<p>On the reference, \(e^{T}\) is a polynomial. With the complete cluster operator \(T=T_1+\cdots+T_n\) it generates every determinant with an independent coefficient, so full CC is full CI; every truncated CC method is a polynomial approximation to that.</p>
+<p class="use"><b>Used for</b> the finiteness of the CC wavefunction, and for property 5 below.</p>
+
+<h3><span class="pnum">2</span>The inverse is the exponential of the negative, and it is not the adjoint</h3>
+<p>Since \(T\) commutes with itself, the binomial theorem applies term by term to the product of two series:</p>
+$$e^{T}e^{-T}=\sum_{k}\frac{1}{k!}\sum_{j=0}^{k}\binom{k}{j}T^{j}(-T)^{k-j}=\sum_k\frac{(T-T)^k}{k!}=1 .\tag{3}$$
+<p>So \(e^{T}\) is always invertible, with inverse \(e^{-T}\). The adjoint is a different operator altogether:</p>
+$$(e^{T})^\dagger=e^{T^\dagger},\qquad e^{T^\dagger}=e^{-T}\ \text{only if}\ T^\dagger=-T .\tag{4}$$
+<p>A cluster operator excites, its adjoint de-excites, and neither is minus the other. Hence \(e^{T}\) is invertible but not unitary, and \(\Hb=e^{-T}He^{T}\) is a <em class="term">similarity transformation</em>: it has the same eigenvalues as \(H\), but it is not Hermitian. Its left and right eigenvectors differ, which is the origin of the \(\Lambda\) equations in the gradient notes. Orbital rotations are written as \(e^{\kappa}\) with \(\kappa^\dagger=-\kappa\) precisely so that (4) makes them unitary.</p>
+<p class="use"><b>Used for</b> the linked form of the CC equations, the non-Hermiticity of \(\Hb\), and the contrast between amplitude and orbital parametrizations.</p>
+
+<h3><span class="pnum">3</span>The reference cannot see the exponential from the left</h3>
+<p>\(\bra{0}\tau_\mu=(\tau_\mu^\dagger\ket{0})^\dagger=0\), because a de-excitation finds nothing to de-excite in the reference. Therefore \(\bra{0}T=0\), every term of the series beyond the first is killed, and</p>
+$$\bra{0}e^{\pm T}=\bra{0},\qquad\braket{0}{e^{T}0}=1 .\tag{5}$$
+<p>The second equality is intermediate normalization, obtained for free. The first is used every time a CC expression is projected onto the reference: \(\bra{0}e^{-T}He^{T}\ket{0}=\bra{0}He^{T}\ket{0}\), and by the Slater rules only the terms of \(e^{T}\) up to double excitation survive, which gives the short energy formula in the refresher. The same fact, in the form \(\bra{0}\tau_\nu=0\), is the step that reduces the stationarity condition of the Lagrangian to the \(\Lambda\) equations.</p>
+<p class="use"><b>Used for</b> intermediate normalization, \(E=\bra{0}He^{T}\ket{0}\), and the derivation of the \(\Lambda\) equations.</p>
+
+<h2 id="s2"><span class="num">2</span>Two exponentials</h2>
+
+<h3><span class="pnum">4</span>The exponential of a sum factorizes only for commuting operators</h3>
+<p>Multiplying out two series and regrouping gives \(e^{A}e^{B}=e^{A+B}\) if \(A\) and \(B\) commute, and the converse holds as well. In general the product is an exponential of a more complicated operator, the Baker–Campbell–Hausdorff formula,</p>
+$$e^{A}e^{B}=\exp\Bigl(A+B+\tfrac12[A,B]+\tfrac1{12}\bigl([A,[A,B]]+[B,[B,A]]\bigr)+\cdots\Bigr).\tag{6}$$
+<p>Excitation operators contain only virtual creators and occupied annihilators, which anticommute pairwise, so any two of them commute. Three consequences:</p>
+<ul class="points">
+  <li>\(e^{T_1+T_2}=e^{T_1}e^{T_2}\), so the singles exponential can be applied to the reference first; see property 8.</li>
+  <li>For two non-interacting subsystems, \(T=T_A+T_B\) and \(e^{T}\ket{0_A0_B}=\bigl(e^{T_A}\ket{0_A}\bigr)\bigl(e^{T_B}\ket{0_B}\bigr)\). The wavefunction is a product and the energy is additive. That is size extensivity, at any truncation level.</li>
+  <li>\(T\) and \(T^\dagger\) do <em>not</em> commute, so \(e^{T^\dagger}e^{T}\) is not \(e^{T^\dagger+T}\) and \(e^{T^\dagger}He^{T}\) has no simple structure. This is why the expectation value of \(H\) in the CC state is avoided and the energy is defined by projection instead.</li>
+</ul>
+<p class="use"><b>Used for</b> size extensivity, the ordering of exponentials, and the choice of projection over expectation value.</p>
+
+<h3><span class="pnum">5</span>The exponential is a product over excitations</h3>
+<p>Each distinct excitation operator squares to zero, \(\tau_\mu^2=0\), because it would have to create the same virtual orbital twice. Together with commutativity this gives an exact and very useful rewriting:</p>
+<div class="panel">
+  <p class="label">Key result · the exponential as a product</p>
+  $$e^{T}=\prod_\mu e^{t_\mu\tau_\mu}=\prod_\mu\bigl(1+t_\mu\tau_\mu\bigr).\tag{7}$$
+</div>
+<p>Expanding the product gives a sum over every <em>set</em> of distinct excitations, each set appearing exactly once with coefficient the product of its amplitudes, and sets whose excitations share an orbital vanishing by the Pauli principle. That is the whole combinatorial content of the exponential ansatz: a CC wavefunction is the sum of all ways of applying independent clusters simultaneously. The factors \(1/k!\) in (1) are what make the two sides of (7) agree; for instance the quadruples generated by \(\tfrac12T_2^2\) are \(\sum_{\mu\lt\nu}t_\mu t_\nu\tau_\mu\tau_\nu\), each unordered pair once. Collecting (7) by excitation level gives the relations between CI and CC coefficients quoted in the refresher: \(C_2=T_2+\tfrac12T_1^2\), \(C_4=T_4+T_1T_3+\tfrac12T_2^2+\tfrac12T_1^2T_2+\tfrac1{24}T_1^4\), and so on.</p>
+<p class="use"><b>Used for</b> the CI–CC relations, counting disconnected products, and understanding why the \(\tfrac12T_2^2\) quadruples of CCSD are physically the right ones.</p>
+
+<h2 id="s3"><span class="num">3</span>Conjugating an operator</h2>
+
+<h3><span class="pnum">6</span>Hadamard’s lemma: conjugation is a series of nested commutators</h3>
+<p>Define \(f(s)=e^{-sT}He^{sT}\). Differentiating with respect to \(s\) gives \(f'(s)=-Tf(s)+f(s)T=[f(s),T]\), and repeating, \(f^{(k)}(s)=\mathrm{ad}_T^{\,k}\,f(s)\). The Taylor series at \(s=0\), evaluated at \(s=1\), is</p>
+<div class="panel">
+  <p class="label">Key result · the Hadamard lemma</p>
+  $$e^{-T}He^{T}=\sum_{k=0}^{\infty}\frac{1}{k!}\,\mathrm{ad}_T^{\,k}(H)=H+[H,T]+\tfrac12[[H,T],T]+\tfrac16[[[H,T],T],T]+\cdots\tag{8}$$
+</div>
+<p>This is the most used formula in the subject. It replaces the opaque object \(e^{-T}He^{T}\) by a sum of commutators, and commutators of second-quantized operators are evaluated by Wick’s theorem as sums of contractions. Note that \(H\) and \(T\) do not commute, which is the whole point: if they did, \(\Hb\) would equal \(H\) and the transformation would do nothing.</p>
+<p class="use"><b>Used for</b> every working equation: the energy, the amplitude equations, the Jacobian, and the densities are all contractions produced by (8).</p>
+
+<h3><span class="pnum">7</span>The series terminates at the fourth commutator</h3>
+<p>Because all the \(T\)s commute, a term of \([X,T]\) with \(X\) a product of \(H\) and earlier \(T\)s survives only if the new \(T\) is contracted with \(H\) itself; contractions of \(T\) with another \(T\) cancel between the two orderings. Each contraction uses up one of the creation or annihilation operators in \(H\). A two-body Hamiltonian has at most four of them, so at most four \(T\)s can be contracted to it, and</p>
+$$\mathrm{ad}_T^{\,k}(H)=0\quad\text{for }k\geq5,\qquad\text{whatever the truncation of }T .\tag{9}$$
+<p>The series (8) is exact after five terms. Projected onto excited determinants it gives polynomial equations of degree at most four in the amplitudes, and the terms that survive are exactly the connected ones, which is why the linked form of the equations is size extensive term by term. The same counting says which products appear where: the singles equation reaches degree three because projecting onto a single excitation leaves one fewer line of \(H\) free, the doubles equation reaches degree four, and the energy, projected onto the reference, reaches only \(T_2\) and \(T_1^2\).</p>
+<p class="use"><b>Used for</b> the finiteness and connectedness of the CC equations, and the term classes listed in the refresher.</p>
+
+<h3><span class="pnum">8</span>One commutator closes the series when the second one vanishes</h3>
+<p>A special case of (8): if \([A,[A,B]]=0\) then</p>
+$$e^{A}Be^{-A}=B+[A,B].\tag{10}$$
+<p>With \(A=T_1\) and \(B=a_i^\dagger\), the first commutator \([T_1,a_i^\dagger]=\sum_a t_i^a a_a^\dagger\) is a sum of virtual creators, which commute with \(T_1\), so the second commutator vanishes. This is the three-line proof of Thouless’ theorem that \(e^{T_1}\ket{0}\) is a determinant with orbitals \(\phi_i+\sum_a t_i^a\phi_a\). The same closure, applied to each creation and annihilation operator in \(H\), is why \(e^{-T_1}He^{T_1}\) is simply \(H\) with dressed integrals.</p>
+<p class="use"><b>Used for</b> Thouless’ theorem, singles as orbital relaxation, and \(T_1\)-transformed integrals.</p>
+
+<div class="panel remark">
+  <p class="label">Why unitary coupled cluster does not terminate</p>
+  <p>Replace \(T\) in (8) by the anti-Hermitian \(T-T^\dagger\). The argument of property 7 fails, because \(T\) and \(T^\dagger\) do not commute and contractions among the generators no longer cancel. The series \(e^{-(T-T^\dagger)}He^{T-T^\dagger}\) is infinite, and unitary CC must truncate it by hand, which is also why it is the natural form for quantum-computing implementations, where the exponential of an anti-Hermitian operator is a circuit. The same non-termination affects \(e^{-\kappa}He^{\kappa}\) for orbital rotations, which is why orbital-optimized methods expand to second order in \(\kappa\) and iterate.</p>
+</div>
+
+<h2 id="s4"><span class="num">4</span>Derivatives</h2>
+
+<h3><span class="pnum">9</span>Differentiating with respect to an amplitude is trivial because the generators commute</h3>
+<p>With \(T=\sum_\mu t_\mu\tau_\mu\), the derivative of \(T^k\) with respect to \(t_\mu\) is \(k\,\tau_\mu T^{k-1}\), since \(\tau_\mu\) can be moved to the front of every product. Summing the series,</p>
+$$\pd{e^{T}}{t_\mu}=\tau_\mu e^{T}=e^{T}\tau_\mu,\qquad
+\pd{\Hb}{t_\mu}=e^{-T}[H,\tau_\mu]e^{T}=[\Hb,\tau_\mu].\tag{11}$$
+<p>Every response quantity in coupled cluster follows from (11). The Jacobian of the amplitude equations is \(J_{\mu\nu}=\bra{\mu}[\Hb,\tau_\nu]\ket{0}\); its transpose defines the \(\Lambda\) equations; and the same matrix governs equation-of-motion CC and linear response.</p>
+<p class="use"><b>Used for</b> the Jacobian, the \(\Lambda\) equations, excitation energies, and amplitude response to perturbations.</p>
+
+<h3><span class="pnum">10</span>Non-commuting generators need the Duhamel formula</h3>
+<p>If the generator does not commute with its own derivative, the chain rule is replaced by an integral over the whole exponential,</p>
+$$\frac{\dd}{\dd\lambda}e^{A(\lambda)}=\int_0^1 e^{sA}\,\frac{\dd A}{\dd\lambda}\,e^{(1-s)A}\,\dd s,\tag{12}$$
+<p>which reduces to \(A'e^{A}\) only when \([A,A']=0\). This is the situation for orbital rotations: the parameters \(\kappa_{pq}\) of \(e^{\kappa}\) do not commute with one another, so the orbital gradient and Hessian in coupled-perturbed Hartree–Fock and in orbital-optimized CC come from expanding \(e^{-\kappa}He^{\kappa}\) to second order rather than from a closed formula like (11). It is the reason orbital-response theory, and hence the Z-vector step of the gradient notes, is structurally different from amplitude-response theory. A simpler derivative also appears there: at fixed amplitudes, the derivative of \(\Hb\) with respect to an external parameter \(x\) is just \(e^{-T}H^{x}e^{T}\), with no commutators at all, because \(e^{\pm T}\) does not depend on \(x\).</p>
+<p class="use"><b>Used for</b> the orbital-response equations, and for keeping amplitude derivatives and orbital derivatives apart.</p>
+
+<h2 id="s5"><span class="num">5</span>Logarithms and counting</h2>
+
+<h3><span class="pnum">11</span>Cluster amplitudes are the logarithm of CI coefficients</h3>
+<p>If a normalized-to-the-reference CI wavefunction is \((1+C)\ket{0}\), then the cluster operator that reproduces it is</p>
+$$T=\ln(1+C)=C-\tfrac12C^2+\tfrac13C^3-\tfrac14C^4+\cdots,\tag{13}$$
+<p>a finite series on the reference by property 1. Collecting by excitation level,</p>
+$$T_1=C_1,\qquad T_2=C_2-\tfrac12C_1^2,\qquad T_3=C_3-C_1C_2+\tfrac13C_1^3,\qquad T_4=C_4-C_1C_3-\tfrac12C_2^2+C_1^2C_2-\tfrac14C_1^4 .\tag{14}$$
+<p>These are the inverse of the relations under property 5 and are how one extracts cluster amplitudes from a full CI vector to test a CC code. Read with \(C_1=C_3=0\), the last one says that the connected quadruples vanish exactly when the CI quadruples equal \(\tfrac12C_2^2\): CCD’s assumption is that the quadruples are products of pairs, no more.</p>
+<p>The logarithm also gives the cleanest proof of size extensivity. For non-interacting \(A\) and \(B\) the CI coefficients multiply, \(1+C=(1+C_A)(1+C_B)\), and since the two factors commute,</p>
+$$T=\ln\bigl[(1+C_A)(1+C_B)\bigr]=\ln(1+C_A)+\ln(1+C_B)=T_A+T_B .\tag{15}$$
+<p>Logarithms turn products into sums; the cluster operator is additive over independent subsystems, and so is any quantity linear in it, such as the connected energy expression. In the language of combinatorics this is the exponential formula: the exponential of the generating function of connected objects is the generating function of all objects, and the linked-cluster theorem is its many-body form.</p>
+<p class="use"><b>Used for</b> validating codes against FCI, interpreting truncations, and the linked-cluster theorem.</p>
+
+<h3><span class="pnum">12</span>Truncating the generator does not truncate the exponential</h3>
+<p>Keeping \(T=T_1+T_2\) still produces triples, quadruples and higher excitations through the products in (7). The CCSD wavefunction has components on every excitation level up to \(n\), while its equations are projected only onto singles and doubles. Two things follow. The quadruples \(\tfrac12T_2^2\), simultaneous but independent pair excitations, are included at no extra cost, which is most of the reason CCSD is far better than CISD. And because the wavefunction has components outside the projection space, the “unlinked” form of the equations carries the energy on its right-hand side, \(\bra{\mu}He^{T}\ket{0}=E\bra{\mu}e^{T}\ket{0}\), while the linked form (8) absorbs those terms and leaves zero. The two are equivalent only if every term is kept exactly.</p>
+<p class="use"><b>Used for</b> understanding the CCSD-versus-CISD comparison and the preference for the linked equations.</p>
+
+<h2 id="s6"><span class="num">6</span>Two practical remarks</h2>
+<ul class="points">
+  <li><strong>Nobody ever forms \(e^{T}\) as a matrix.</strong> Every working equation is evaluated as contractions of amplitudes with integrals, produced by properties 6 to 9. If a derivation seems to need the matrix of \(e^{T}\) in the determinant basis, it has taken a wrong turn.</li>
+  <li><strong>None of this depends on the amplitudes being small.</strong> The termination in property 7, the inverse in property 2, and the derivative in property 9 are exact identities. Small amplitudes matter only for how well a truncated \(T\) approximates the full one, and for how fast the iterations converge.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span>Further reading</h2>
+<ol class="refs">
+  <li>T. Helgaker, P. Jørgensen and J. Olsen, <em>Molecular Electronic-Structure Theory</em> (Wiley, 2000). Chapter 3 on exponential parametrizations and Chapter 13 on coupled cluster, including the termination argument and the unlinked versus linked forms.</li>
+  <li>I. Shavitt and R. J. Bartlett, <em>Many-Body Methods in Chemistry and Physics</em> (Cambridge, 2009). Chapters 9 and 10: the exponential ansatz, the connected-cluster expansion, and the diagrammatic form of the Hadamard series.</li>
+  <li>T. D. Crawford and H. F. Schaefer III, “An introduction to coupled cluster theory for computational chemists”, <em>Rev. Comput. Chem.</em> <strong>14</strong>, 33 (2000). The Hadamard expansion worked out term by term for CCSD.</li>
+  <li>B. C. Hall, <em>Lie Groups, Lie Algebras, and Representations</em>, 2nd ed. (Springer, 2015). Chapters 2 and 5 for the matrix exponential, the Baker–Campbell–Hausdorff formula, and the derivative formula (12), in a form independent of any physics.</li>
+  <li>J. Čížek, <em>J. Chem. Phys.</em> <strong>45</strong>, 4256 (1966). The paper that introduced the exponential ansatz to molecular electronic structure.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. Property numbers refer to the table at the top.</footer>
+</div>
