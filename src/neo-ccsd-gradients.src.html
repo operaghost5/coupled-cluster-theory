@@ -1,0 +1,276 @@
+<title>NEO-CCSD Gradients</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ol.steps{margin:18px 0;padding-left:0;list-style:none;counter-reset:step}
+ol.steps li{counter-increment:step;display:grid;grid-template-columns:2.2em 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule)}
+ol.steps li::before{content:counter(step);font-family:var(--font-display);font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+ol.steps li:last-child{border-bottom:0}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.k{font-family:var(--font-display);font-weight:600;color:var(--accent-ink);white-space:nowrap}
+td.no{color:var(--muted)}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,.three li,ol.steps li{break-inside:avoid}
+  .panel.eqs,table{break-inside:auto}
+  .panel .label{break-after:avoid}
+  tr{break-inside:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to the gradient notes and the NEO Lambda notes</p>
+  <h1>NEO-CCSD Gradients</h1>
+  <p class="dek">How the Z-vector equation becomes a coupled electronic–protonic system, how the multipliers fold into the densities, and everything else that is different about an analytic gradient when one of the particles in the wavefunction is a proton.</p>
+  <div class="meta"><span>Written for a graduate student who has read the gradient notes</span><span>Spin orbitals, high-spin fermionic protons, NEO Hartree–Fock reference</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">Two Brillouin conditions, one Lagrangian</a></li>
+      <li><span class="num">2</span><a href="#s2">The coupled Z-vector equation</a></li>
+      <li><span class="num">3</span><a href="#s3">Folding the multipliers into the densities</a></li>
+      <li><span class="num">4</span><a href="#s4">The working gradient and the algorithm</a></li>
+      <li><span class="num">5</span><a href="#s5">What the coordinates are</a></li>
+      <li><span class="num">6</span><a href="#s6">New integral derivatives</a></li>
+      <li><span class="num">7</span><a href="#s7">Why relaxation matters more</a></li>
+      <li><span class="num">8</span><a href="#s8">Hessians, and the constrained variant</a></li>
+      <li><span class="num">9</span><a href="#s9">Checks</a></li>
+      <li><span class="num">10</span><a href="#s10">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(i,j\;/\;a,b\;/\;p,q,r\)</dt><dd>occupied / virtual / general electronic spin orbitals; \(I,J\;/\;A,B\;/\;P,Q,R\) their protonic counterparts.</dd>
+    <dt>\(\mu,\nu,\lambda,\sigma\;/\;\Lambda,\Sigma,\Pi,\Theta\)</dt><dd>electronic / protonic basis functions.</dd>
+    <dt>\(\kappa^{\rm e}_{ai},\;\kappa^{\rm p}_{AI}\)</dt><dd>occupied–virtual rotation parameters of each species; \(\bm U^{{\rm e},x},\bm U^{{\rm p},x}\) their first-order responses to a perturbation \(x\).</dd>
+    <dt>\(\bm z^{\rm e},\;\bm z^{\rm p}\)</dt><dd>Z-vector multipliers for the electronic and protonic Brillouin conditions.</dd>
+    <dt>\(\gamma,\Gamma\)</dt><dd>response densities from the Lambda notes, with the mixed two-particle density \(\Gamma^{\rm ep}_{pqPQ}\).</dd>
+    <dt>\(X^{(x)}\) and \(X^{x}\)</dt><dd>skeleton derivative in the MO basis and full derivative of an AO integral, as in the gradient notes.</dd>
+    <dt>\(C\)</dt><dd>a classical nucleus; \(R_c\) the centre of a set of protonic basis functions.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>NEO-HF has two Brillouin conditions, so the Lagrangian carries two Z-vectors, and stationarity with respect to both kinds of orbital rotation gives one coupled linear system whose matrix is the NEO-HF orbital Hessian with its electron–proton off-diagonal blocks.</div></li>
+    <li><span class="n">2</span><div>The right-hand sides are the orbital gradients of the correlated energy, and both contain the mixed density, so the electronic Z-vector knows about electron–proton correlation and the protonic one about electron correlation.</div></li>
+    <li><span class="n">3</span><div>Everything else that differs comes from the proton having no position: the gradient is over classical nuclei and basis centres, the quantum proton is absent from the nuclear repulsion, and its interactions arrive entirely through derivative integrals, including a new mixed class.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>Two Brillouin conditions, one Lagrangian</h2>
+<p>The gradient notes build a Lagrangian from the CC energy, the amplitude equations with multipliers \(\lambda\), the Hartree–Fock Brillouin condition with multipliers \(z_{ai}\), and orbital orthonormality with its own multipliers. NEO Hartree–Fock optimizes two orbital sets, each in the mean field of the other, and leaves two Brillouin conditions, \(f^{\rm e}_{ai}=0\) and \(f^{\rm p}_{AI}=0\). The Lagrangian therefore carries two sets of orbital multipliers and two sets of orthonormality multipliers,</p>
+<div class="panel">
+  <p class="label">Key result · the NEO-CCSD Lagrangian</p>
+  $$\mathcal L=\bra{0}(1+\Lambda)\,\Hb\,\ket{0}+\sum_{ai}z^{\rm e}_{ai}f^{\rm e}_{ai}+\sum_{AI}z^{\rm p}_{AI}f^{\rm p}_{AI}
+  -\sum_{pq}w^{\rm e}_{pq}\bigl(S^{\rm e}_{pq}-\delta_{pq}\bigr)-\sum_{PQ}w^{\rm p}_{PQ}\bigl(S^{\rm p}_{PQ}-\delta_{PQ}\bigr),\tag{1}$$
+</div>
+<p>with \(\Lambda\) the five-block de-excitation operator of the Lambda notes. Stationarity with respect to \(\lambda\) and \(t\) gives the amplitude and \(\Lambda\) equations as before. Stationarity with respect to the two kinds of orbital rotation gives the Z-vector equation of the next section, and stationarity with respect to the orthonormality multipliers gives one energy-weighted density per species. Once all of this holds, the gradient is the partial derivative of \(\mathcal L\) at fixed multipliers, exactly as in the single-component case.</p>
+
+<h2 id="s2"><span class="num">2</span>The coupled Z-vector equation</h2>
+<p>Differentiate the NEO-HF conditions with respect to a perturbation. The orbital responses of the two species satisfy coupled-perturbed NEO-HF equations with a block matrix,</p>
+$$\begin{pmatrix}\bm A^{\rm ee}&\bm A^{\rm ep}\\ \bm A^{\rm pe}&\bm A^{\rm pp}\end{pmatrix}
+\begin{pmatrix}\bm U^{{\rm e},x}\\ \bm U^{{\rm p},x}\end{pmatrix}=
+\begin{pmatrix}\bm B^{{\rm e},x}\\ \bm B^{{\rm p},x}\end{pmatrix},\tag{2}$$
+<p>where \(\bm A\) is the NEO-HF orbital Hessian. Schematically, in spin orbitals and up to the factor conventions of a given code,</p>
+$$A^{\rm ee}_{ai,bj}=\delta_{ij}\delta_{ab}(\varepsilon_a-\varepsilon_i)+\langle aj\|ib\rangle+\langle ab\|ij\rangle,\qquad
+A^{\rm ep}_{ai,BJ}\propto-(ai|BJ),\tag{3}$$
+<p>with \(\bm A^{\rm pp}\) the protonic analogue of \(\bm A^{\rm ee}\) and \(\bm A^{\rm pe}\) the transpose of \(\bm A^{\rm ep}\). The diagonal blocks are the ordinary CPHF matrices of each species, built with the NEO Fock matrices; the off-diagonal blocks are the response of each species’ Fock operator to a rotation of the other species’ orbitals, first order in the mixed Coulomb integral.</p>
+<p>The orbital-response part of the gradient is \(\sum X^{\rm e}_{ai}U^{{\rm e},x}_{ai}+\sum X^{\rm p}_{AI}U^{{\rm p},x}_{AI}\), with \(\bm X^{\rm e}\) and \(\bm X^{\rm p}\) the orbital gradients of the correlated energy. The Handy–Schaefer identity of the gradient notes applies verbatim to block vectors:</p>
+<div class="panel">
+  <p class="label">Key result · the coupled Z-vector equation</p>
+  $$\begin{pmatrix}\bm X^{\rm e}\\ \bm X^{\rm p}\end{pmatrix}^{\!\tr}\!\bm A^{-1}\begin{pmatrix}\bm B^{{\rm e},x}\\ \bm B^{{\rm p},x}\end{pmatrix}
+  =\begin{pmatrix}\bm z^{\rm e}\\ \bm z^{\rm p}\end{pmatrix}^{\!\tr}\!\begin{pmatrix}\bm B^{{\rm e},x}\\ \bm B^{{\rm p},x}\end{pmatrix},\qquad
+  \begin{pmatrix}\bm A^{\rm ee}&\bm A^{\rm ep}\\ \bm A^{\rm pe}&\bm A^{\rm pp}\end{pmatrix}^{\!\tr}
+  \begin{pmatrix}\bm z^{\rm e}\\ \bm z^{\rm p}\end{pmatrix}=\begin{pmatrix}\bm X^{\rm e}\\ \bm X^{\rm p}\end{pmatrix}.\tag{4}$$
+</div>
+<p>One solve, perturbation-independent, for both multiplier vectors at once.</p>
+
+<h3>The right-hand sides</h3>
+<p>Each orbital gradient is the antisymmetric occupied–virtual part of a generalized Fock matrix, and in NEO each generalized Fock matrix contains a contribution from the mixed density of the Lambda notes:</p>
+<div class="panel eqs">
+  $$\begin{aligned}
+  F^{{\rm e},{\rm gen}}_{pq}&=\sum_r h^{\rm e}_{pr}\gamma^{\rm e}_{qr}+\tfrac12\sum_{rst}\langle pr\|st\rangle\,\Gamma^{\rm e}_{qrst}-\sum_{rPQ}(pr|PQ)\,\Gamma^{\rm ep}_{qrPQ},\\
+  F^{{\rm p},{\rm gen}}_{PQ}&=\sum_R h^{\rm p}_{PR}\gamma^{\rm p}_{QR}+\tfrac12\sum_{RST}\langle PR\|ST\rangle\,\Gamma^{\rm p}_{QRST}-\sum_{Rpq}(pq|PR)\,\Gamma^{\rm ep}_{pqQR},\\[4pt]
+  X^{\rm e}_{ai}&\propto F^{{\rm e},{\rm gen}}_{ai}-F^{{\rm e},{\rm gen}}_{ia},\qquad X^{\rm p}_{AI}\propto F^{{\rm p},{\rm gen}}_{AI}-F^{{\rm p},{\rm gen}}_{IA}.
+  \end{aligned}\tag{5}$$
+</div>
+<p>So the electronic Z-vector is driven in part by electron–proton correlation, through the last term of the first line, and the protonic Z-vector in part by electron correlation, through the last term of the second. Three practical remarks:</p>
+<ul class="points">
+  <li><strong>The protonic block is tiny.</strong> For one quantum proton there is one occupied protonic orbital, so \(\bm z^{\rm p}\) has as many elements as there are protonic virtuals, typically a few tens. The system is solved iteratively because of the electronic block, but the protonic part is free.</li>
+  <li><strong>For one proton, \(\bm A^{\rm pp}\) is nearly diagonal.</strong> With no second proton, the protonic Fock operator responds to a protonic rotation only through orbital-energy differences, up to the code’s treatment of protonic self-interaction. The protonic relaxation is therefore driven almost entirely through \(\bm A^{\rm pe}\), by the electrons.</li>
+  <li><strong>Orbital-optimized variants need none of this.</strong> If both orbital sets are optimized for the correlated energy, \(\bm X^{\rm e}=\bm X^{\rm p}=0\) and the coupled solve disappears, as in the single-component case. Brueckner orbitals do not have this property, as the gradient notes explain.</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span>Folding the multipliers into the densities</h2>
+<p>In the gradient notes, \(\bm z\) is added to the virtual–occupied block of the relaxed density, and, because the derivative Fock matrix contains derivative two-electron integrals contracted with the HF density, \(\bm z\) times the HF density is added to the effective two-particle density. NEO adds one more route. The electronic Fock matrix contains the proton’s mean field, \(-\sum_J(pq|JJ)\), so its derivative contains derivative mixed integrals contracted with the protonic HF density, and the protonic Fock matrix likewise. Collecting everything,</p>
+<div class="panel eqs">
+  <p class="label">Key result · the effective densities</p>
+  $$\begin{aligned}
+  D^{\rm e}&=\mathrm{sym}\,\gamma^{\rm e}+\bm z^{\rm e}\ (\text{vo block}),\qquad&\Gamma^{{\rm e},{\rm eff}}&=\Gamma^{\rm e}+\bm z^{\rm e}\otimes\gamma^{\rm e}_{\rm HF},\\
+  D^{\rm p}&=\mathrm{sym}\,\gamma^{\rm p}+\bm z^{\rm p}\ (\text{vo block}),\qquad&\Gamma^{{\rm p},{\rm eff}}&=\Gamma^{\rm p}+\bm z^{\rm p}\otimes\gamma^{\rm p}_{\rm HF},\\
+  &&\Gamma^{{\rm ep},{\rm eff}}&=\Gamma^{\rm ep}+\bm z^{\rm e}\otimes\gamma^{\rm p}_{\rm HF}+\gamma^{\rm e}_{\rm HF}\otimes\bm z^{\rm p},
+  \end{aligned}\tag{6}$$
+</div>
+<p>written schematically, with the products meaning the appropriate antisymmetrized or plain outer products of the conventions in use. The last line is the new one: the mixed effective density carries the orbital relaxation of each species in the field of the other. The energy-weighted densities \(\bm W^{\rm e}\) and \(\bm W^{\rm p}\) are built from the symmetric parts of the generalized Fock matrices of each species, one per orthonormality constraint, as in the single-component case.</p>
+
+<h2 id="s4"><span class="num">4</span>The working gradient and the algorithm</h2>
+<p>Back-transforming all densities to the basis-function representation, the gradient has the shape of a NEO-HF gradient with correlated densities in place of mean-field ones:</p>
+<div class="panel">
+  <p class="label">Key result · the NEO-CCSD gradient</p>
+  $$\begin{aligned}
+  \frac{\dd E}{\dd x}={}&\sum_{\mu\nu}D^{\rm e}_{\mu\nu}h^{{\rm e},x}_{\mu\nu}+\tfrac12\sum\Gamma^{{\rm e},{\rm eff}}_{\mu\nu\lambda\sigma}(\mu\nu|\lambda\sigma)^{x}-\sum_{\mu\nu}W^{\rm e}_{\mu\nu}S^{{\rm e},x}_{\mu\nu}\\
+  &+\sum_{\Lambda\Sigma}D^{\rm p}_{\Lambda\Sigma}h^{{\rm p},x}_{\Lambda\Sigma}+\tfrac12\sum\Gamma^{{\rm p},{\rm eff}}_{\Lambda\Sigma\Pi\Theta}(\Lambda\Sigma|\Pi\Theta)^{x}-\sum_{\Lambda\Sigma}W^{\rm p}_{\Lambda\Sigma}S^{{\rm p},x}_{\Lambda\Sigma}\\
+  &-\sum_{\mu\nu\Lambda\Sigma}\Gamma^{{\rm ep},{\rm eff}}_{\mu\nu\Lambda\Sigma}(\mu\nu|\Lambda\Sigma)^{x}+\frac{\dd V_{nn}}{\dd x}.
+  \end{aligned}\tag{7}$$
+</div>
+<p>The steps, in the order a code executes them:</p>
+<ol class="steps">
+  <li><div>Converge NEO-HF and the five NEO-CCSD amplitude blocks.</div></li>
+  <li><div>Solve the five-block \(\Lambda\) equations.</div></li>
+  <li><div>Build the unrelaxed densities: \(\gamma^{\rm e},\Gamma^{\rm e},\gamma^{\rm p},\Gamma^{\rm p}\) and the mixed \(\Gamma^{\rm ep}\).</div></li>
+  <li><div>Form both generalized Fock matrices (5), including the mixed-density terms, and the two orbital gradients \(\bm X^{\rm e},\bm X^{\rm p}\).</div></li>
+  <li><div>Solve the coupled Z-vector equation (4) for \(\bm z^{\rm e}\) and \(\bm z^{\rm p}\) together.</div></li>
+  <li><div>Assemble the effective densities (6) and the two energy-weighted densities.</div></li>
+  <li><div>Back-transform to the basis-function representation: electronic densities with \(\bm C^{\rm e}\), protonic with \(\bm C^{\rm p}\), the mixed one with both.</div></li>
+  <li><div>Contract with the derivative integrals of (7), one coordinate at a time, and add the nuclear repulsion derivative of the classical nuclei.</div></li>
+</ol>
+<p>Steps 1 to 3 cost what they cost for the energy. Steps 4 to 8 scale like a NEO-HF gradient, since the mixed density is small and the derivative-integral contractions are \(\mathcal O(N^4)\) per coordinate.</p>
+
+<h2 id="s5"><span class="num">5</span>What the coordinates are</h2>
+<p>This is the difference that has no single-component analogue. A quantum proton is part of the wavefunction and has no position. The gradient is taken with respect to the classical nuclei and, in most implementations, the centres of the protonic basis functions, and the two kinds of coordinate collect different terms of (7).</p>
+<ul class="points">
+  <li><strong>The quantum proton is absent from \(V_{nn}\).</strong> Its interaction with the classical nuclei is the operator \(\sum_C Z_C|\bm R-\bm R_C|^{-1}\) inside the protonic core Hamiltonian \(h^{\rm p}\). The proton–nucleus Hellmann–Feynman force therefore arrives through \(D^{\rm p}\) contracted with the derivative of \(h^{\rm p}\), exactly as the electron–nucleus force arrives through \(D^{\rm e}\) and \(h^{{\rm e},x}\).</li>
+  <li><strong>A protonic basis centre carries no charge.</strong> Its gradient consists only of derivatives of integrals through the basis functions placed there: the protonic functions, and the electronic functions of the same hydrogen when the two share a centre, which they usually do. There is no Hellmann–Feynman term and no nuclear-repulsion term for it.</li>
+  <li><strong>Geometry optimization moves both.</strong> The energy is minimized with respect to the classical nuclear positions and the basis centres together. At the minimum the force on a centre vanishes, which places the protonic basis where the correlated proton density wants it.</li>
+</ul>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Term of (7)</th><th>Derivative with respect to a classical nucleus \(C\)</th><th>Derivative with respect to a basis centre \(R_c\)</th></tr></thead>
+  <tbody>
+    <tr><td class="k">\(V_{nn}\)</td><td>classical pairs involving \(C\)</td><td class="no">none</td></tr>
+    <tr><td class="k">\(h^{{\rm e},x}\)</td><td>electron–nucleus attraction to \(C\), plus electronic functions centred on \(C\)</td><td>electronic functions centred at \(R_c\)</td></tr>
+    <tr><td class="k">\(h^{{\rm p},x}\)</td><td>proton–nucleus repulsion from \(C\)</td><td>protonic functions at \(R_c\): kinetic energy and all potential terms</td></tr>
+    <tr><td class="k">\(S^{{\rm e},x},\;S^{{\rm p},x}\)</td><td>electronic functions on \(C\)</td><td>functions of either species at \(R_c\)</td></tr>
+    <tr><td class="k">\((\mu\nu|\lambda\sigma)^{x}\)</td><td>electronic functions on \(C\)</td><td>electronic functions at \(R_c\)</td></tr>
+    <tr><td class="k">\((\mu\nu|\Lambda\Sigma)^{x}\)</td><td>electronic functions on \(C\)</td><td>both electronic and protonic functions at \(R_c\)</td></tr>
+    <tr><td class="k">\((\Lambda\Sigma|\Pi\Theta)^{x}\)</td><td class="no">none</td><td>protonic functions at \(R_c\)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Translational invariance follows from the table: the forces on all centres sum to zero only when every basis centre is a derivative variable. Holding the protonic centres fixed while moving the classical nuclei breaks the sum rule, which is harmless for a constrained scan but has to be remembered when the sum of forces is used as a check.</p>
+
+<h2 id="s6"><span class="num">6</span>New integral derivatives</h2>
+<p>Single-component gradients need derivatives of electronic overlap, core-Hamiltonian and two-electron integrals. NEO adds three classes:</p>
+<ul class="points">
+  <li><strong>Protonic one-particle and overlap derivatives</strong>, \(h^{{\rm p},x}\) and \(S^{{\rm p},x}\), over the protonic basis, which is typically a small set of tight functions with large exponents.</li>
+  <li><strong>Mixed Coulomb derivatives</strong>, \((\mu\nu|\Lambda\Sigma)^{x}\), with respect to electronic centres and protonic centres alike. These contract with the effective mixed density and carry both the correlation part \(\Gamma^{\rm ep}\) and the relaxation terms of (6).</li>
+  <li><strong>Protonic two-particle derivatives</strong>, \((\Lambda\Sigma|\Pi\Theta)^{x}\), only with several quantum protons.</li>
+</ul>
+<p>With density fitting, each class becomes a derivative of three-index quantities over the corresponding auxiliary basis, and the mixed block is fitted with an auxiliary set that has to span the product space of an electronic and a protonic function.</p>
+
+<h2 id="s7"><span class="num">7</span>Why relaxation matters more</h2>
+<p>The Thouless notes explain that the NEO-HF proton orbital is a poor starting point and that the protonic singles reshape it substantially. The same physics makes the protonic orbital response large. The protonic Z-vector and the relaxed protonic density differ from their unrelaxed counterparts far more than is typical for electrons, so two shortcuts that are tolerable in single-component work are not tolerable here: using an unrelaxed proton density for a protonic property, and dropping the protonic block of the Z-vector equation. For nuclear gradients the full coupled solve is mandatory in any case, because every coordinate moves both kinds of basis function.</p>
+
+<h2 id="s8"><span class="num">8</span>Hessians, and the constrained variant</h2>
+<p>Because the proton is in the wavefunction, its vibration is not a nuclear degree of freedom. A NEO Hessian over the classical nuclei and the basis centres has fewer modes than the molecule has atoms, and the stretch of the quantized proton appears instead as an excitation energy from an equation-of-motion or time-dependent NEO method. This is a conceptual difference from the single-component Hessian, not a technical one, and it is why frequencies from NEO calculations are reported in two separate lists.</p>
+<p>Constrained NEO restores a position coordinate for the proton. The expectation value of the proton position is held at a prescribed value \(\bm R_0\) by a Lagrange multiplier \(\bm f\), which enters the protonic Hamiltonian as a linear potential, and the energy becomes a function of \(\bm R_0\). Two consequences for derivatives follow from the Lagrangian argument of the gradient notes. The force on the constrained position is the multiplier itself, \(\dd E/\dd\bm R_0=-\bm f\) up to sign convention, with no further response calculation at the mean-field level. And for a correlated method built on the constrained reference, the constraint is one more condition in the Lagrangian: its multiplier responds to perturbations, so the Z-vector system is bordered by one additional row and column per constrained component. That bordered system is what a constrained-NEO MP2 or CC Hessian solves, and the proton’s vibrational modes then reappear in the Hessian over \(\bm R_0\).</p>
+
+<h2 id="s9"><span class="num">9</span>Checks</h2>
+<ul class="points">
+  <li><strong>Finite differences, twice.</strong> Displace a classical nucleus to test the electronic and protonic Hellmann–Feynman and basis terms; displace a protonic basis centre to test the basis-centre terms on their own. The two tests fail in different places.</li>
+  <li><strong>The sum of forces</strong> vanishes only when every basis centre is included; use it as a check only then.</li>
+  <li><strong>The unrelaxed-to-relaxed difference</strong> in the proton density is large and should be visible; a protonic Z-vector that changes nothing is a sign that \(\bm A^{\rm pe}\) or the mixed-density term of (5) is missing.</li>
+  <li><strong>Convergence thresholds</strong> apply to all five amplitude blocks, all five multiplier blocks and both Z-vectors; the gradient is first order in every residual.</li>
+</ul>
+
+<h2 id="s10"><span class="num">10</span>Further reading</h2>
+<ol class="refs">
+  <li>N. C. Handy and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>81</strong>, 5031 (1984). The Z-vector method, which applies unchanged to block vectors.</li>
+  <li>T. Helgaker and P. Jørgensen, <em>Theor. Chim. Acta</em> <strong>75</strong>, 111 (1989). The Lagrangian formulation that (1) extends to two species.</li>
+  <li>J. Gauss, J. F. Stanton and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>95</strong>, 2623 (1991). Relaxed densities and the folding of the Z-vector into effective densities.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>J. Chem. Theory Comput.</em> <strong>15</strong>, 338 (2019); <em>Chem. Rev.</em> <strong>120</strong>, 4222 (2020). NEO-CCSD and the NEO framework, including NEO-HF and the treatment of basis-function centres in geometry optimizations.</li>
+  <li>X. Xu and Y. Yang, <em>J. Chem. Phys.</em> <strong>152</strong>, 084107 (2020); <strong>153</strong>, 074106 (2020). Constrained NEO: the position constraint, its multiplier, and energy surfaces with nuclear quantum effects.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. Equations (3), (5) and (6) are schematic with respect to factors of two and antisymmetrization conventions; the structure is general, the numbers belong to a particular code.</footer>
+</div>

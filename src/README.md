@@ -25,6 +25,7 @@ node build.js neo-ccsd-energy-coefficients
 node build.js neo-ccsd-amplitude-equations
 node build.js coupled-cluster-gradients
 node build.js neo-ccsd-lambda-equations
+node build.js neo-ccsd-gradients
 node build.js thouless-multicomponent-ccsd
 node pdf.js   exponentials-for-coupled-cluster
 node pdf.js   coupled-cluster-refresher
@@ -33,6 +34,7 @@ node pdf.js   neo-ccsd-energy-coefficients
 node pdf.js   neo-ccsd-amplitude-equations
 node pdf.js   coupled-cluster-gradients
 node pdf.js   neo-ccsd-lambda-equations
+node pdf.js   neo-ccsd-gradients
 node pdf.js   thouless-multicomponent-ccsd
 ```
 
@@ -52,6 +54,7 @@ committed.
 | `neo-ccsd-amplitude-equations.src.html` | Source of the notes on how the amplitude equations change in NEO-CCSD |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
 | `neo-ccsd-lambda-equations.src.html` | Source of the notes on how the Lambda equations and response densities change in NEO-CCSD |
+| `neo-ccsd-gradients.src.html` | Source of the notes on the coupled Z-vector equation and the gradient approach in NEO-CCSD |
 | `thouless-multicomponent-ccsd.src.html` | Source of the notes on Thouless' theorem and multicomponent (NEO) CCSD |
 | `build.js` | TeX rendering, font embedding, page assembly |
 | `pdf.js` | PDF printing through Playwright |
