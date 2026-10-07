@@ -1,0 +1,318 @@
+<title>Coupled Cluster Gradients</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+ol.steps{margin:18px 0;padding-left:0;list-style:none;counter-reset:step}
+ol.steps li{counter-increment:step;display:grid;grid-template-columns:2.2em 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule)}
+ol.steps li::before{content:counter(step);font-family:var(--font-display);font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+ol.steps li:last-child{border-bottom:0}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,table,ol.steps li,.three li{break-inside:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Analytic derivatives in coupled cluster theory</p>
+  <h1>Coupled Cluster Gradients</h1>
+  <p class="dek">How the first derivative of a non-variational energy is obtained for the price of a few energies: the Lagrangian, the \(\Lambda\) equations, the response densities, and orbital relaxation through the Z-vector.</p>
+  <div class="meta"><span>Written for a graduate student meeting the subject for the first time</span><span>Assumes Hartree–Fock, second quantization, and the CCSD energy equations</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">Why the problem is hard</a></li>
+      <li><span class="num">2</span><a href="#s2">The Lagrangian and the \(\Lambda\) equations</a></li>
+      <li><span class="num">3</span><a href="#s3">Response density matrices</a></li>
+      <li><span class="num">4</span><a href="#s4">Orbital relaxation and the Z-vector</a></li>
+      <li><span class="num">5</span><a href="#s5">The algorithm and its cost</a></li>
+      <li><span class="num">6</span><a href="#s6">Points that confuse people</a></li>
+      <li><span class="num">7</span><a href="#s7">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(\ket{0}\)</dt><dd>Hartree–Fock reference determinant; \(E_0\) its energy.</dd>
+    <dt>\(i,j,k,\ldots\;/\;a,b,c,\ldots\;/\;p,q,r,s\)</dt><dd>occupied / virtual / general spin orbitals.</dd>
+    <dt>\(\mu,\nu,\kappa\)</dt><dd>excited determinants \(\ket{\mu}\) and their amplitude labels; \(\mathcal P\) is the set inside the truncation (singles and doubles for CCSD).</dd>
+    <dt>\(\tau_\mu,\;\tau_\mu^\dagger\)</dt><dd>excitation and de-excitation operators, e.g. \(\tau_{ij}^{ab}=a_a^\dagger a_b^\dagger a_j a_i\), so \(\tau_\mu\ket{0}=\ket{\mu}\).</dd>
+    <dt>\(x\)</dt><dd>a nuclear Cartesian coordinate, or any other perturbation strength.</dd>
+    <dt>\(A^{x}\)</dt><dd>full derivative \(\partial A/\partial x\). In Sections 1–3 the derivative of the Hamiltonian, \(H^{x}\), carries all of its \(x\) dependence, including the motion of the orbitals. Section 4 unpacks it.</dd>
+    <dt>\(A^{(x)}\)</dt><dd>skeleton derivative: derivative AO integrals transformed with the unperturbed MO coefficients.</dd>
+    <dt>\(o,\;v,\;N\)</dt><dd>numbers of occupied orbitals, virtual orbitals, and basis functions.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole theory in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>Solve one perturbation-independent linear system for the de-excitation amplitudes \(\lambda\): $$\bra{0}(1+\Lambda)\,(\Hb-E)\,\ket{\nu}=0 .$$</div></li>
+    <li><span class="n">2</span><div>The gradient is then a Hellmann–Feynman-like expectation value with a different bra and ket: $$\frac{\dd E}{\dd x}=\bra{0}(1+\Lambda)\,\Hb^{x}\,\ket{0},\qquad \Hb^{x}=e^{-T}H^{x}e^{T}.$$</div></li>
+    <li><span class="n">3</span><div>Orbital relaxation is folded in by one more perturbation-independent solve, \(\bm A^{\tr}\bm z=\bm X\), after which the gradient has the same shape as a Hartree–Fock gradient: densities contracted with derivative integrals.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>Why the problem is hard</h2>
+
+<p>Start from the coupled cluster (CC) ansatz and the three equations that define the energy:</p>
+$$\ket{\Psi}=e^{T}\ket{0},\qquad T=\sum_{\mu\in\mathcal P}t_\mu\tau_\mu,\tag{1}$$
+$$\Hb=e^{-T}He^{T},\tag{2}$$
+$$E(t)=\bra{0}\Hb\ket{0},\tag{3}$$
+$$\Omega_\mu(t)=\bra{\mu}\Hb\ket{0}=0\qquad\text{for all }\mu\in\mathcal P.\tag{4}$$
+<p>\(\Hb\) is the similarity-transformed Hamiltonian. It is not Hermitian, and the energy (3) and the amplitude equations (4) are projections, not the result of minimizing anything. That single fact is the root of every complication that follows.</p>
+
+<p>For a variational method the Hellmann–Feynman theorem makes first derivatives cheap. If an energy \(E(\bm c,x)\) satisfies \(\partial E/\partial\bm c=0\) at the solution, then the chain rule</p>
+$$\frac{\dd E}{\dd x}=\pd{E}{x}+\pd{E}{\bm c}\cdot\frac{\dd\bm c}{\dd x}$$
+<p>loses its second term, and the derivative needs no wavefunction response at all. For CC this fails. The energy functional (3) is not stationary with respect to the amplitudes, because \(\partial E/\partial t_\nu=\bra{0}[\Hb,\tau_\nu]\ket{0}=\bra{0}\Hb\tau_\nu\ket{0}\) is in general nonzero. The naive derivative therefore keeps the response term,</p>
+$$\frac{\dd E}{\dd x}=\bra{0}\Hb^{x}\ket{0}+\sum_\mu\pd{E}{t_\mu}\,\frac{\dd t_\mu}{\dd x},\qquad \Hb^{x}=e^{-T}H^{x}e^{T},\tag{5}$$
+<p>and the amplitude response is obtained by differentiating the amplitude equations (4):</p>
+$$\sum_{\nu}J_{\mu\nu}\,\frac{\dd t_\nu}{\dd x}=-\pd{\Omega_\mu}{x}=-\bra{\mu}\Hb^{x}\ket{0},\qquad J_{\mu\nu}=\pd{\Omega_\mu}{t_\nu}=\bra{\mu}[\Hb,\tau_\nu]\ket{0}.\tag{6}$$
+<p>\(\bm J\) is the CC Jacobian, the same matrix that appears in equation-of-motion CC and CC linear response. Equation (6) is a linear system the size of the amplitude space, and it must be solved once <em>per perturbation</em>. A molecule with \(N_{\rm at}\) atoms has \(3N_{\rm at}\) nuclear coordinates, so this route costs roughly \(3N_{\rm at}\) times an energy calculation, no better than central finite differences, which cost \(6N_{\rm at}\) energies. The entire point of analytic CC gradient theory is to never compute \(\dd t/\dd x\).</p>
+
+<h2 id="s2"><span class="num">2</span>The Lagrangian and the \(\Lambda\) equations</h2>
+
+<p>The cure is to construct a functional that equals the energy whenever the amplitude equations hold, but is stationary with respect to the amplitudes. Attach the constraints (4) with undetermined multipliers \(\lambda_\mu\):</p>
+$$\mathcal L(t,\lambda,x)=\bra{0}\Hb\ket{0}+\sum_{\mu\in\mathcal P}\lambda_\mu\bra{\mu}\Hb\ket{0}=\bra{0}(1+\Lambda)\,\Hb\,\ket{0},\qquad\Lambda=\sum_{\mu\in\mathcal P}\lambda_\mu\tau_\mu^\dagger.\tag{7}$$
+<p>\(\Lambda\) is a de-excitation operator: it moves excited determinants back towards the reference. Now demand stationarity with respect to both sets of parameters.</p>
+$$\pd{\mathcal L}{\lambda_\mu}=\bra{\mu}\Hb\ket{0}=0\qquad\text{(the amplitude equations again)},\tag{8}$$
+$$\pd{\mathcal L}{t_\nu}=\bra{0}(1+\Lambda)\,[\Hb,\tau_\nu]\,\ket{0}=0\qquad\text{(the \(\Lambda\) equations)}.\tag{9}$$
+<p>Equation (8) is nothing new. Equation (9) is a set of linear equations for \(\lambda\). Using the amplitude equations, it reduces to the form found in every CC gradient paper:</p>
+<div class="panel">
+  <p class="label">Key result · the \(\Lambda\) equations</p>
+  $$\bra{0}(1+\Lambda)\,(\Hb-E)\,\ket{\nu}=0\qquad\text{for all }\nu\in\mathcal P.\tag{10}$$
+</div>
+
+<div class="panel remark">
+  <p class="label">Why (9) reduces to (10)</p>
+  <p>Since \(\partial\Hb/\partial t_\nu=[\Hb,\tau_\nu]\), expand the commutator and use \(\bra{0}\tau_\nu=0\):</p>
+  $$\pd{\mathcal L}{t_\nu}=\bra{0}(1+\Lambda)\Hb\ket{\nu}-\sum_\mu\lambda_\mu\bra{\mu}\tau_\nu\Hb\ket{0}.$$
+  <p>Insert a resolution of the identity after \(\tau_\nu\). The state \(\Hb\ket{0}\) has a reference component \(E\ket{0}\), components inside \(\mathcal P\) that vanish by (4), and components outside \(\mathcal P\). For a determinant \(\kappa\) outside the truncation, \(\tau_\nu\ket{\kappa}\) has an even higher excitation rank, so its overlap with any \(\bra{\mu}\), \(\mu\in\mathcal P\), is zero. Only the reference survives, with \(\bra{\mu}\tau_\nu\ket{0}=\delta_{\mu\nu}\), so the second term equals \(E\lambda_\nu=\bra{0}(1+\Lambda)E\ket{\nu}\). In diagrammatic implementations this \(E\lambda_\nu\) term cancels the disconnected pieces of the first term, so the working equations contain only connected diagrams.</p>
+</div>
+
+<p>Three things to notice about (10).</p>
+<ul class="points">
+  <li><strong>It is a left eigenvalue problem.</strong> Within \(\mathcal P\), the ket \(\ket{0}\) is a right eigenvector of \(\Hb\) with eigenvalue \(E\), and (10) says that \(\bra{0}(1+\Lambda)\) is the corresponding left eigenvector. Because \(\Hb\) is not Hermitian, the left and right eigenvectors differ, and \(\Lambda\) is precisely the price of that non-Hermiticity.</li>
+  <li><strong>It is linear and perturbation-independent.</strong> In matrix form, \(\partial\mathcal L/\partial\bm t=\partial E/\partial\bm t+\bm J^{\tr}\boldsymbol\lambda=0\), i.e.
+  $$\bm J^{\tr}\boldsymbol\lambda=-\pd{E}{\bm t}.\tag{11}$$
+  The matrix is the transpose of the Jacobian from (6), so the same iterative machinery solves it, but there is only one right-hand side and no reference to \(x\). You solve it once.</li>
+  <li><strong>Its cost is that of one more CC calculation.</strong> For CCSD, each iteration of (10) scales as \(o^2v^4\), the same as an amplitude iteration.</li>
+</ul>
+
+<p>Now the payoff. \(\mathcal L\) is stationary in \(t\) and in \(\lambda\), and it equals \(E\) whenever (8) holds. So the total derivative of the energy collapses to a partial derivative at fixed amplitudes and multipliers:</p>
+$$\frac{\dd E}{\dd x}=\frac{\dd\mathcal L}{\dd x}=\pd{\mathcal L}{x}+\underbrace{\pd{\mathcal L}{\bm t}}_{=0}\cdot\frac{\dd\bm t}{\dd x}+\underbrace{\pd{\mathcal L}{\boldsymbol\lambda}}_{=0}\cdot\frac{\dd\boldsymbol\lambda}{\dd x}=\pd{\mathcal L}{x}.$$
+<div class="panel">
+  <p class="label">Key result · the gradient</p>
+  $$\frac{\dd E}{\dd x}=\bra{0}(1+\Lambda)\,\Hb^{x}\,\ket{0}=\pd{E}{x}+\sum_\mu\lambda_\mu\pd{\Omega_\mu}{x}.\tag{12}$$
+</div>
+<p>This is a Hellmann–Feynman formula for a non-variational method. The bra state</p>
+$$\bra{\tilde\Psi}=\bra{0}(1+\Lambda)\,e^{-T}\tag{13}$$
+<p>is the proper dual of \(\ket{\Psi}=e^{T}\ket{0}\). It is normalized so that \(\braket{\tilde\Psi}{\Psi}=1\), the energy is \(E=\bra{\tilde\Psi}H\ket{\Psi}\), and any first-order property is \(\bra{\tilde\Psi}A\ket{\Psi}\). In the untruncated limit \(\bra{\tilde\Psi}\) becomes proportional to the exact bra, but for truncated CC it is a different object. Using \(\bra{\Psi}A\ket{\Psi}/\braket{\Psi}{\Psi}\) instead would be non-terminating in \(T\) and, worse, inconsistent with the energy you differentiated.</p>
+
+<div class="panel remark">
+  <p class="label">Two ways to see the same trick</p>
+  <p><strong>Adjoint differentiation.</strong> If you know automatic differentiation, (11) and (12) are reverse mode. Forward mode propagates \(\dd t/\dd x\) for each input \(x\) and costs \(3N_{\rm at}\) solves of (6). Reverse mode propagates one sensitivity \(\boldsymbol\lambda\) backwards from the single scalar output and costs one solve of (11). Any constrained scalar \(E(t,x)\) with \(\Omega(t,x)=0\) obeys \(\dd E/\dd x=\partial E/\partial x+\boldsymbol\lambda\cdot\partial\Omega/\partial x\) with \(\bm J^{\tr}\boldsymbol\lambda=-\partial E/\partial\bm t\). CC gradient theory is this identity applied to the amplitude equations.</p>
+  <p><strong>The \(2n+1\) and \(2n+2\) rules.</strong> Amplitudes known through order \(n\) in the perturbation determine the energy through order \(2n+1\); multipliers known through order \(n\) determine it through order \(2n+2\). For a gradient, \(n=0\) for both, which is why zeroth-order \(t\) and \(\lambda\) suffice. For a Hessian you need the first-order amplitudes \(t^{x}\) from (6), one set per coordinate, but still only zeroth-order \(\lambda\).</p>
+</div>
+
+<h2 id="s3"><span class="num">3</span>Response density matrices</h2>
+
+<p>To make (12) computable, write the Hamiltonian in second quantization in the molecular orbital basis, with one-electron integrals \(h_{pq}\) and antisymmetrized two-electron integrals \(\langle pq\|rs\rangle\):</p>
+$$H=\sum_{pq}h_{pq}\,a_p^\dagger a_q+\tfrac14\sum_{pqrs}\langle pq\|rs\rangle\,a_p^\dagger a_q^\dagger a_s a_r .\tag{14}$$
+<p>All the \(x\) dependence of \(H\) sits in the integrals, so the gradient (12) becomes a contraction of integral derivatives with density matrices,</p>
+$$\frac{\dd E}{\dd x}=\sum_{pq}\gamma_{pq}\,\frac{\dd h_{pq}}{\dd x}+\tfrac14\sum_{pqrs}\Gamma_{pqrs}\,\frac{\dd\langle pq\|rs\rangle}{\dd x},\tag{15}$$
+<p>with the CC <em class="term">response</em> (or <em class="term">relaxed</em>, see Section 6) one- and two-particle reduced density matrices</p>
+$$\gamma_{pq}=\bra{0}(1+\Lambda)\,e^{-T}a_p^\dagger a_q\,e^{T}\ket{0},\qquad
+\Gamma_{pqrs}=\bra{0}(1+\Lambda)\,e^{-T}a_p^\dagger a_q^\dagger a_s a_r\,e^{T}\ket{0}.\tag{16}$$
+<p>These are built from \(t\) and \(\lambda\) only, so they are perturbation-independent and are evaluated once, with the same diagrammatic machinery as the amplitude equations. The nested commutator expansion of \(e^{-T}a_p^\dagger a_q e^{T}\) terminates after a few terms because each commutator with \(T\) removes annihilation operators, so every block of \(\gamma\) and \(\Gamma\) is a short closed-form polynomial in \(t\) and \(\lambda\). Two CCSD blocks of \(\gamma\), with the operator ordering of (16), show the pattern:</p>
+$$\gamma_{ai}=\lambda_i^a,\qquad
+\gamma_{ij}=\delta_{ij}-\sum_{e}t_i^e\lambda_j^e-\tfrac12\sum_{kef}t_{ik}^{ef}\lambda_{jk}^{ef}.\tag{17}$$
+<p>The de-excitation amplitudes appear directly in the virtual–occupied block, while the occupied block is the reference density minus a correlation correction quadratic in the amplitudes. The full CCSD set is tabulated in Salter, Trucks and Bartlett (1989) and in Gauss, Stanton and Bartlett (1991).</p>
+
+<p>Two properties are worth fixing in your mind. Because the bra and ket in (16) differ, \(\gamma\) and \(\Gamma\) are <em>not</em> symmetric; \(\gamma_{ia}\neq\gamma_{ai}\) in general. In a gradient they are contracted with symmetric real integrals, so only their symmetric parts contribute, and codes symmetrize them. And because \(\Lambda\) enters linearly, the densities are linear in \(\lambda\) and at most quadratic in \(t\) for each block, which keeps their cost at or below that of the \(\Lambda\) equations.</p>
+
+<h2 id="s4"><span class="num">4</span>Orbital relaxation and the Z-vector</h2>
+
+<h3>Where the orbitals enter</h3>
+<p>The MO integrals in (15) depend on \(x\) in two ways. The atomic orbital (AO) basis functions ride on the nuclei, so the AO integrals change. And the MO coefficients change because the Hartree–Fock equations are re-solved at every geometry. Write the coefficient response as</p>
+$$\bm C(x)=\bm C(0)\,\bigl[\bm 1+\bm U^{x}+\mathcal O(x^2)\bigr].\tag{18}$$
+<p>Then the derivative of a one-electron MO integral splits into a skeleton part and an orbital-response part,</p>
+$$\frac{\dd h_{pq}}{\dd x}=h^{(x)}_{pq}+\sum_r\bigl(U^{x}_{rp}\,h_{rq}+U^{x}_{rq}\,h_{pr}\bigr),\qquad
+h^{(x)}_{pq}=\sum_{\mu\nu}C_{\mu p}C_{\nu q}\,\pd{h_{\mu\nu}}{x},\tag{19}$$
+<p>and the two-electron integrals split the same way, with four \(\bm U^{x}\) terms. The skeleton derivative \(h^{(x)}\) is cheap: differentiate the AO integrals, transform with the unperturbed coefficients. The matrices \(\bm U^{x}\) are the problem.</p>
+
+<h3>What fixes the orbital response</h3>
+<p>Two conditions determine \(\bm U^{x}\). The orbitals must stay orthonormal at every geometry, which ties the symmetric part of \(\bm U^{x}\) to the skeleton derivative of the overlap,</p>
+$$U^{x}_{pq}+U^{x}_{qp}=-S^{(x)}_{pq},\tag{20}$$
+<p>and the Brillouin condition \(F_{ai}=0\) must continue to hold, which gives the coupled-perturbed Hartree–Fock (CPHF) equations for the virtual–occupied block,</p>
+$$\sum_{bj}A_{ai,bj}\,U^{x}_{bj}=B^{x}_{ai}.\tag{21}$$
+<p>\(\bm A\) is the Hartree–Fock orbital Hessian, and \(\bm B^{x}\) collects skeleton derivatives of the Fock and overlap matrices. Once again there is one right-hand side per nuclear coordinate. Same disease, same cure.</p>
+
+<h3>The Z-vector</h3>
+<p>Hartree–Fock orbitals are stationary for the Hartree–Fock energy, not for the CC energy. The CC energy therefore has a nonzero gradient with respect to occupied–virtual orbital rotations. Call it \(X_{ai}\). It is built from the densities of Section 3 through a generalized Fock matrix, schematically</p>
+$$F^{\rm gen}_{pq}=\sum_r h_{pr}\,\gamma_{qr}+\tfrac12\sum_{rst}\langle pr\|st\rangle\,\Gamma_{qrst},\qquad X_{ai}\propto F^{\rm gen}_{ai}-F^{\rm gen}_{ia},\tag{22}$$
+<p>with factors that depend on the conventions of the code. Substituting (19) into (15), the orbital-response part of the gradient is \(\sum_{ai}X_{ai}U^{x}_{ai}\). The observation of Handy and Schaefer (1984) is pure linear algebra:</p>
+<div class="panel">
+  <p class="label">Key result · the Z-vector trick</p>
+  $$\sum_{ai}X_{ai}\,U^{x}_{ai}=\bm X^{\tr}\bm A^{-1}\bm B^{x}=\bigl(\bm A^{-\tr}\bm X\bigr)^{\tr}\bm B^{x}=\bm z^{\tr}\bm B^{x},\qquad\text{where}\quad\bm A^{\tr}\bm z=\bm X.\tag{23}$$
+</div>
+<p>Solve one CPHF-like equation for \(\bm z\), with the CC orbital gradient as the right-hand side, and then contract \(\bm z\) with each cheap \(\bm B^{x}\). In the Lagrangian language of Section 2 this is the same manoeuvre a second time: add the Brillouin conditions \(F_{ai}=0\) to \(\mathcal L\) with multipliers \(z_{ai}\), add the orthonormality conditions with another set of multipliers, and demand stationarity with respect to orbital rotations. Stationarity in the rotations gives (23); stationarity in the orthonormality multipliers gives the \(\bm W\) matrix below.</p>
+
+<h3>Assembling the final formula</h3>
+<p>Collect everything. The \(\bm z\) contributions are folded into the densities, the orthonormality terms from (20) produce a contraction with an energy-weighted density \(\bm W\), and all three matrices are back-transformed to the AO basis. The result has exactly the shape of a Hartree–Fock gradient:</p>
+<div class="panel">
+  <p class="label">Key result · the working gradient</p>
+  $$\frac{\dd E}{\dd x}=\sum_{\mu\nu}D_{\mu\nu}\,h^{x}_{\mu\nu}+\tfrac12\sum_{\mu\nu\lambda\sigma}\Gamma^{\rm eff}_{\mu\nu\lambda\sigma}\,(\mu\nu|\lambda\sigma)^{x}-\sum_{\mu\nu}W_{\mu\nu}\,S^{x}_{\mu\nu}+\frac{\dd V_{nn}}{\dd x}.\tag{24}$$
+</div>
+<p>Here the Greek indices label AOs and the superscript \(x\) is an ordinary derivative of an AO integral.</p>
+<ul class="points">
+  <li>\(\bm D\) is the <em class="term">relaxed one-particle density</em>: the symmetrized \(\gamma\) of (16) plus \(\bm z\) in the virtual–occupied block.</li>
+  <li>\(\bm\Gamma^{\rm eff}\) is the CC two-particle density plus the product of \(\bm z\) with the Hartree–Fock density. The latter comes from the two-electron part of the derivative Fock matrix inside \(\bm B^{x}\), which is a derivative two-electron integral contracted with the reference density.</li>
+  <li>\(\bm W\) is the <em class="term">energy-weighted density</em>, built from the symmetric part of the generalized Fock matrix. For Hartree–Fock it reduces to the familiar \(W_{\mu\nu}=\sum_i\varepsilon_i C_{\mu i}C_{\nu i}\), and the \(\bm W\bm S^{x}\) term is the CC analogue of the Pulay force.</li>
+</ul>
+<p>The AO back-transformation matters in practice. You transform three density matrices once, instead of transforming \(3N_{\rm at}\) sets of derivative integrals into the MO basis. The contraction with derivative integrals then costs the same as a Hartree–Fock gradient and reuses the same integral-derivative code.</p>
+
+<h2 id="s5"><span class="num">5</span>The algorithm and its cost</h2>
+<p>For CCSD the steps, in the order a code executes them, are:</p>
+<ol class="steps">
+  <li><div>Converge Hartree–Fock and the CCSD amplitudes \(t\). <span style="color:var(--muted)">Cost \(o^2v^4\) per iteration.</span></div></li>
+  <li><div>Solve the \(\Lambda\) equations (10) for \(\lambda\). One linear solve, iterated with the transposed Jacobian. <span style="color:var(--muted)">Cost \(o^2v^4\) per iteration, about one CCSD.</span></div></li>
+  <li><div>Build the unrelaxed densities \(\gamma\) and \(\Gamma\) of (16) in the MO basis. <span style="color:var(--muted)">Cost \(o^2v^4\) for the all-virtual block of \(\Gamma\), done once.</span></div></li>
+  <li><div>Form the generalized Fock matrix (22) and the CC orbital gradient \(\bm X\). <span style="color:var(--muted)">Cost \(\mathcal O(N^5)\).</span></div></li>
+  <li><div>Solve the Z-vector equation (23) for \(\bm z\). <span style="color:var(--muted)">One CPHF-like solve, \(\mathcal O(N^4)\) per iteration.</span></div></li>
+  <li><div>Assemble the relaxed density \(\bm D\), the effective two-particle density \(\bm\Gamma^{\rm eff}\), and the energy-weighted density \(\bm W\), and back-transform them to the AO basis. <span style="color:var(--muted)">Cost \(\mathcal O(N^5)\).</span></div></li>
+  <li><div>Contract with the derivative integrals as in (24) and add the nuclear repulsion derivative. <span style="color:var(--muted)">Cost \(\mathcal O(N^4)\) per coordinate, as for a Hartree–Fock gradient.</span></div></li>
+</ol>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Approach</th><th>Expensive solves</th><th>Rough cost in CCSD energies</th></tr></thead>
+  <tbody>
+    <tr><td>Central finite differences</td><td class="c">\(6N_{\rm at}\) energies</td><td class="c">\(6N_{\rm at}\)</td></tr>
+    <tr><td>Amplitude response, eq. (6)</td><td class="c">\(3N_{\rm at}\) Jacobian solves</td><td class="c">\(\sim 3N_{\rm at}\)</td></tr>
+    <tr><td>Lagrangian + Z-vector, eqs. (10) and (23)</td><td class="c">1 \(\Lambda\) solve, 1 Z-vector solve</td><td class="c">\(\sim 2\) to \(3\), independent of \(N_{\rm at}\)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="panel remark">
+  <p class="label">Checks every implementation should pass</p>
+  <ul class="points">
+    <li><strong>Finite differences.</strong> The analytic gradient must agree with central differences of the energy to the precision of the convergence thresholds. This is the only test that catches a missing term.</li>
+    <li><strong>Invariance.</strong> The forces on all atoms sum to zero, and the net torque vanishes, for any molecule.</li>
+    <li><strong>Tighter convergence than for energies.</strong> The Lagrangian is stationary, so an error \(\delta t\) or \(\delta\lambda\) changes the energy only at second order. The gradient (12) is a partial derivative of \(\mathcal L\), not \(\mathcal L\) itself, and its error is first order in both residuals. Converge amplitudes and multipliers more tightly for a gradient than you would for an energy.</li>
+  </ul>
+</div>
+
+<h2 id="s6"><span class="num">6</span>Points that confuse people the first time</h2>
+
+<h3>Relaxed versus unrelaxed properties</h3>
+<p>For a one-electron property such as a dipole moment you can stop after step 3 and contract \(\gamma\) with the property integrals. That is the <em class="term">unrelaxed</em> property. It is the exact derivative of the CC energy with respect to the field only if the orbitals are held fixed, so it omits the orbital response. The <em class="term">relaxed</em> property adds the Z-vector term and is the derivative of the full calculation, orbitals included. For nuclear gradients there is no choice: the basis moves with the nuclei and the orbitals respond, so relaxation is mandatory.</p>
+
+<h3>Why \(\Lambda\) is not simply \(T^\dagger\)</h3>
+<p>To first order in perturbation theory \(\lambda_{ij}^{ab}=t_{ij}^{ab}\), and some approximate density schemes exploit that. The two differ beyond first order, and only the true \(\Lambda\) makes the Lagrangian stationary. With an approximate \(\Lambda\), the computed gradient is no longer the derivative of the energy, which shows up as non-conservative forces in geometry optimizations and energy drift in dynamics.</p>
+
+<h3>Orbital-optimized and Brueckner coupled cluster</h3>
+<p>If the orbitals are chosen so that the CC energy itself is stationary with respect to rotations, the orbital gradient \(\bm X\) vanishes, the Z-vector step disappears, and the gradient needs only \(\Lambda\). This is one of the practical attractions of orbital-optimized methods. The same remark applies to orbital rotations the energy is invariant to: for canonical CCSD the occupied–occupied and virtual–virtual blocks of \(\bm U^{x}\) carry no energy change and can be fixed by (20) alone.</p>
+
+<h3>Perturbative triples</h3>
+<p>The (T) correction is a closed-form function of the converged CCSD amplitudes, \(E_{(\rm T)}=E_{(\rm T)}(t)\). Its gradient adds \(\partial E_{(\rm T)}/\partial t\) to the right-hand side of the \(\Lambda\) equations and adds triples contributions to the densities. The \(\Lambda\) equations stay singles-and-doubles in size, but the extra terms cost the same \(o^3v^4\) as the (T) energy and are evaluated on the fly, without storing triples amplitudes. Because (T) uses canonical orbital energies, it is not invariant to occupied–occupied and virtual–virtual rotations, which adds orbital-response terms that a CCSD gradient does not have. Frozen-core calculations add a similar extra set of terms for frozen–active rotations.</p>
+
+<h3>Multicomponent and nuclear-electronic orbital methods</h3>
+<p>For nuclear-electronic orbital (NEO) coupled cluster the structure is identical, but there are two sets of orbitals and two sets of amplitudes coupled through the electron–proton interaction. The \(\Lambda\) equations become one coupled left eigenproblem, the Z-vector equation couples electronic and protonic orbital rotations, and the gradient with respect to a classical nucleus picks up terms from whichever protonic basis functions are centred on it. Which basis-function centres count as derivative variables is a modelling decision that has to be made explicitly.</p>
+
+<h3>Second derivatives</h3>
+<p>By the \(2n+1\) rule, a Hessian needs the first-order amplitudes \(t^{x}\), one set per coordinate, obtained from (6). By the \(2n+2\) rule it does not need \(\lambda^{x}\). So the gradient is the free lunch of the Lagrangian and the Hessian is only half of one. It also needs the first-order orbital response \(\bm U^{x}\) itself, which is why CC Hessians are built on top of a full CPHF solution rather than a single Z-vector.</p>
+
+<h2 id="s7"><span class="num">7</span>Further reading</h2>
+<ol class="refs">
+  <li>L. Adamowicz, W. D. Laidig and R. J. Bartlett, <em>Int. J. Quantum Chem. Symp.</em> <strong>18</strong>, 245 (1984). The first formulation of CC gradients.</li>
+  <li>N. C. Handy and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>81</strong>, 5031 (1984). The Z-vector method.</li>
+  <li>A. C. Scheiner, G. E. Scuseria, R. B. Rice, T. J. Lee and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>87</strong>, 5361 (1987). The first general CCSD gradient implementation.</li>
+  <li>T. Helgaker and P. Jørgensen, <em>Adv. Quantum Chem.</em> <strong>19</strong>, 183 (1988); <em>Theor. Chim. Acta</em> <strong>75</strong>, 111 (1989). The Lagrangian formulation and the \(2n+1\) and \(2n+2\) rules.</li>
+  <li>E. A. Salter, G. W. Trucks and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>90</strong>, 1752 (1989). The \(\Lambda\)-based densities in the form most codes use.</li>
+  <li>H. Koch, H. J. Aa. Jensen, P. Jørgensen, T. Helgaker, G. E. Scuseria and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>92</strong>, 4924 (1990). CC energy derivatives from the Lagrangian, with a clear treatment of orbital relaxation.</li>
+  <li>G. E. Scuseria, <em>J. Chem. Phys.</em> <strong>94</strong>, 442 (1991); J. Gauss, J. F. Stanton and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>95</strong>, 2623 (1991). CCSD(T) gradients.</li>
+  <li>J. Gauss, "Molecular properties", in <em>Modern Methods and Algorithms of Quantum Chemistry</em>, NIC Series Vol. 3, Jülich (2000). A readable review of the whole machinery.</li>
+  <li>T. D. Crawford and H. F. Schaefer III, "An introduction to coupled cluster theory for computational chemists", <em>Rev. Comput. Chem.</em> <strong>14</strong>, 33 (2000). Background on the energy and amplitude equations.</li>
+  <li>I. Shavitt and R. J. Bartlett, <em>Many-Body Methods in Chemistry and Physics</em> (Cambridge, 2009), Chapter 11. The diagrammatic derivation of the \(\Lambda\) equations and densities.</li>
+  <li>T. Helgaker, P. Jørgensen and J. Olsen, <em>Molecular Electronic-Structure Theory</em> (Wiley, 2000). The variational and Lagrangian view of derivatives in Chapters 4 and 13.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. The spin-orbital conventions follow Shavitt and Bartlett; factors in (22) depend on the code's density conventions.</footer>
+</div>

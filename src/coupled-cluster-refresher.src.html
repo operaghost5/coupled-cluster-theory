@@ -1,0 +1,395 @@
+<title>Coupled Cluster Refresher</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ol.steps{margin:18px 0;padding-left:0;list-style:none;counter-reset:step}
+ol.steps li{counter-increment:step;display:grid;grid-template-columns:2.2em 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule)}
+ol.steps li::before{content:counter(step);font-family:var(--font-display);font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+ol.steps li:last-child{border-bottom:0}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,table,ol.steps li,.three li{break-inside:avoid}
+  .panel.eqs{break-inside:auto}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to “Coupled Cluster Gradients”</p>
+  <h1>Coupled Cluster Refresher</h1>
+  <p class="dek">From the Hartree–Fock reference and second quantization to the exponential ansatz, the similarity-transformed Hamiltonian, and the CCSD energy and amplitude equations as a code actually solves them.</p>
+  <div class="meta"><span>Written for a graduate student returning to the subject</span><span>Assumes Hartree–Fock theory and Slater determinants; everything else is built here</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">The reference and the language</a></li>
+      <li><span class="num">2</span><a href="#s2">From configuration interaction to the exponential</a></li>
+      <li><span class="num">3</span><a href="#s3">The coupled cluster equations</a></li>
+      <li><span class="num">4</span><a href="#s4">CCSD written out</a></li>
+      <li><span class="num">5</span><a href="#s5">A worked example you can solve by hand</a></li>
+      <li><span class="num">6</span><a href="#s6">What the method gets right, and what it does not</a></li>
+      <li><span class="num">7</span><a href="#s7">Bridge to the gradient notes</a></li>
+      <li><span class="num">8</span><a href="#s8">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(\ket{0}\)</dt><dd>Hartree–Fock reference determinant; \(E_0=\bra{0}H\ket{0}\) its energy.</dd>
+    <dt>\(i,j,k,l,m,n\;/\;a,b,c,d,e,f\;/\;p,q,r,s\)</dt><dd>occupied / virtual / general spin orbitals.</dd>
+    <dt>\(\ket{\Phi_i^a},\;\ket{\Phi_{ij}^{ab}},\;\ldots\)</dt><dd>singly, doubly, … excited determinants; \(\ket{\mu}\) for a generic one, \(\mathcal P\) for the set inside the truncation.</dd>
+    <dt>\(\langle pq|rs\rangle,\;\langle pq\|rs\rangle\)</dt><dd>two-electron integral in physicists’ notation, \(\int\phi_p^*(1)\phi_q^*(2)\,r_{12}^{-1}\,\phi_r(1)\phi_s(2)\), and its antisymmetrized form \(\langle pq|rs\rangle-\langle pq|sr\rangle\).</dd>
+    <dt>\(h_{pq},\;f_{pq}\)</dt><dd>one-electron (core) integrals and Fock matrix elements; \(\varepsilon_p\) canonical orbital energies.</dd>
+    <dt>\(t_i^a,\;t_{ij}^{ab}\)</dt><dd>cluster amplitudes; \(t_{ij}^{ab}\) is antisymmetric in \(ij\) and in \(ab\).</dd>
+    <dt>\(P(ij)\)</dt><dd>antisymmetrizer, \(P(ij)\,g(i,j)=g(i,j)-g(j,i)\); \(P(i/jk)\,g=g(ijk)-g(jik)-g(kji)\).</dd>
+    <dt>\(o,\;v,\;N\)</dt><dd>numbers of occupied orbitals, virtual orbitals, and basis functions.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole theory in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>The wavefunction is an exponential of excitation operators acting on one determinant: $$\ket{\Psi}=e^{T}\ket{0},\qquad T=T_1+T_2+\cdots$$</div></li>
+    <li><span class="n">2</span><div>The energy and amplitudes come from projecting the similarity-transformed Schrödinger equation, not from a variational principle: $$E=\bra{0}\Hb\ket{0},\qquad \bra{\mu}\Hb\ket{0}=0,\qquad \Hb=e^{-T}He^{T}.$$</div></li>
+    <li><span class="n">3</span><div>With \(T=T_1+T_2\) the energy is a short closed formula, and the amplitude equations are coupled polynomials of degree at most four in the amplitudes: $$E_{\rm CCSD}=E_0+\sum_{ia}f_{ia}t_i^a+\tfrac14\sum_{ijab}\langle ij\|ab\rangle\,t_{ij}^{ab}+\tfrac12\sum_{ijab}\langle ij\|ab\rangle\,t_i^a t_j^b .$$</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>The reference and the language</h2>
+
+<h3>Spin orbitals and determinants</h3>
+<p>A Hartree–Fock calculation in a basis of \(N\) functions produces \(N\) orthonormal spin orbitals \(\phi_p\) with energies \(\varepsilon_p\). The \(n\) lowest are occupied in the reference determinant \(\ket{0}=|\phi_1\phi_2\cdots\phi_n|\), and the remaining \(v=N-n\) are virtual. Replacing occupied spin orbitals by virtual ones gives excited determinants: \(\ket{\Phi_i^a}\) with \(\phi_i\to\phi_a\), \(\ket{\Phi_{ij}^{ab}}\) with two replacements, and so on. All determinants together form an orthonormal basis of the \(n\)-electron space spanned by the one-particle basis, and the expansion of the exact wavefunction in all of them is full configuration interaction (FCI). Everything that follows is a way of approximating that expansion with far fewer parameters.</p>
+
+<h3>Second quantization</h3>
+<p>Determinants are clumsy to manipulate directly. Second quantization replaces them with operator algebra. \(a_p^\dagger\) creates an electron in \(\phi_p\), \(a_p\) removes one, and the anticommutation relations</p>
+$$\{a_p,a_q^\dagger\}=\delta_{pq},\qquad\{a_p,a_q\}=\{a_p^\dagger,a_q^\dagger\}=0\tag{1}$$
+<p>encode antisymmetry and the Pauli principle. In this language the electronic Hamiltonian is</p>
+$$H=\sum_{pq}h_{pq}\,a_p^\dagger a_q+\tfrac14\sum_{pqrs}\langle pq\|rs\rangle\,a_p^\dagger a_q^\dagger a_s a_r .\tag{2}$$
+<p>The two numbers that describe the reference follow from (2) and the Slater rules:</p>
+$$E_0=\bra{0}H\ket{0}=\sum_i h_{ii}+\tfrac12\sum_{ij}\langle ij\|ij\rangle,\qquad f_{pq}=h_{pq}+\sum_i\langle pi\|qi\rangle .\tag{3}$$
+<p>For canonical Hartree–Fock orbitals the Fock matrix is diagonal, \(f_{pq}=\varepsilon_p\delta_{pq}\), and in particular the occupied–virtual block vanishes. That is Brillouin’s theorem: \(\bra{\Phi_i^a}H\ket{0}=f_{ia}=0\). The other matrix elements you will need constantly are</p>
+$$\bra{\Phi_{ij}^{ab}}H\ket{0}=\langle ab\|ij\rangle,\qquad\bra{\Phi_{ijk}^{abc}}H\ket{0}=0 .\tag{4}$$
+<p>The second one is the reason the coupled cluster energy formula is so short: a two-body Hamiltonian cannot connect the reference to anything beyond a double excitation.</p>
+
+<h3>Excitation operators</h3>
+<p>Excited determinants are generated from the reference by excitation operators,</p>
+$$\tau_i^a=a_a^\dagger a_i,\qquad\tau_{ij}^{ab}=a_a^\dagger a_b^\dagger a_j a_i,\qquad\tau_\mu\ket{0}=\ket{\mu},\tag{5}$$
+<p>and the cluster operators are amplitude-weighted sums of them:</p>
+$$T_1=\sum_{ia}t_i^a\,\tau_i^a,\qquad T_2=\tfrac14\sum_{ijab}t_{ij}^{ab}\,\tau_{ij}^{ab},\qquad T=T_1+T_2+T_3+\cdots\tag{6}$$
+<p>The factor \(\tfrac14\) compensates for the unrestricted sum over \(ij\) and \(ab\), where each distinct double excitation appears four times. Three algebraic facts about excitation operators do most of the work in the theory:</p>
+<ul class="points">
+  <li><strong>They commute with one another.</strong> Each contains only virtual creators and occupied annihilators, which anticommute pairwise, and an even number of swaps gives a plus sign. So \([T_1,T_2]=0\), \(e^{T_1+T_2}=e^{T_1}e^{T_2}\), and any product of \(T\)s can be reordered freely.</li>
+  <li><strong>They are nilpotent in practice.</strong> \(\tau_\mu\ket{\nu}\) is either a higher excitation or zero, so a product of more than \(n\) of them annihilates everything.</li>
+  <li><strong>They cannot act leftwards on the reference.</strong> \(\bra{0}\tau_\mu=(\tau_\mu^\dagger\ket{0})^\dagger=0\), because the de-excitation operator \(\tau_\mu^\dagger\) finds nothing to de-excite in \(\ket{0}\).</li>
+</ul>
+
+<div class="panel remark">
+  <p class="label">Normal ordering, in one paragraph</p>
+  <p>Most papers write the Hamiltonian as \(H=E_0+H_N\), where the <em class="term">normal-ordered</em> part \(H_N=F_N+V_N\) has the reference energy subtracted out: \(F_N=\sum_{pq}f_{pq}\{a_p^\dagger a_q\}\) and \(V_N=\tfrac14\sum\langle pq\|rs\rangle\{a_p^\dagger a_q^\dagger a_s a_r\}\), with braces denoting strings reordered so that \(\bra{0}H_N\ket{0}=0\). Using \(H_N\) instead of \(H\) simply replaces the total energy by the correlation energy \(\Delta E=E-E_0\) everywhere. Wick’s theorem then turns every matrix element into a sum over contractions, which is what the diagrams in the textbooks keep track of. These notes stay with \(H\) and explicit matrix elements.</p>
+</div>
+
+<h2 id="s2"><span class="num">2</span>From configuration interaction to the exponential</h2>
+
+<h3>The linear ansatz and its flaw</h3>
+<p>The most direct approximation to FCI is to truncate it. Configuration interaction with singles and doubles (CISD) writes</p>
+$$\ket{\Psi_{\rm CISD}}=(1+C_1+C_2)\ket{0},\qquad C_1=\sum_{ia}c_i^a\tau_i^a,\quad C_2=\tfrac14\sum_{ijab}c_{ij}^{ab}\tau_{ij}^{ab},\tag{7}$$
+<p>and finds the coefficients by diagonalizing \(H\) in the space of the reference, singles, and doubles. CISD is variational, so its energy is an upper bound to the exact one, and the equations are a linear eigenvalue problem. It fails on a property that matters more: <em class="term">size extensivity</em>.</p>
+<p>Take two subsystems \(A\) and \(B\) far enough apart that \(H=H_A+H_B\). The exact wavefunction is a product \(\Psi_A\Psi_B\) and the exact energy is \(E_A+E_B\). Now expand the product. The term in which both \(A\) and \(B\) are doubly excited is a quadruple excitation of the whole system, and CISD throws it away. The CISD energy of \(A+B\) is therefore not \(E_A^{\rm CISD}+E_B^{\rm CISD}\), the error grows with system size, and for \(N\) identical non-interacting units the correlation energy per unit tends to zero as \(N\to\infty\). A method whose errors depend on how much else is in the box cannot be used to compare molecules of different sizes, which is most of chemistry.</p>
+
+<h3>The exponential ansatz</h3>
+<p>Coupled cluster theory keeps the same excitation operators and changes the way they are combined:</p>
+<div class="panel">
+  <p class="label">Key idea · the exponential ansatz</p>
+  $$\ket{\Psi_{\rm CC}}=e^{T}\ket{0},\qquad e^{T}=1+T+\tfrac12T^2+\tfrac16T^3+\cdots\tag{8}$$
+</div>
+<p>Expanding with \(T=T_1+T_2\) and collecting by excitation level shows how CC and CI coefficients are related:</p>
+$$\begin{aligned}
+C_1&=T_1,\\
+C_2&=T_2+\tfrac12T_1^2,\\
+C_3&=T_3+T_1T_2+\tfrac16T_1^3,\\
+C_4&=T_4+T_1T_3+\tfrac12T_2^2+\tfrac12T_1^2T_2+\tfrac1{24}T_1^4 .
+\end{aligned}\tag{9}$$
+<p>The terms with a single \(T\) are called <em class="term">connected</em> clusters, the products <em class="term">disconnected</em>. CCSD sets \(T_3=T_4=0\) but keeps every product of \(T_1\) and \(T_2\). In particular it keeps \(\tfrac12T_2^2\), the simultaneous but independent excitation of two electron pairs, which is physically the dominant part of the quadruples. That single term is most of the reason CCSD is so much better than CISD at the same cost.</p>
+<p>Size extensivity now follows in two lines. For non-interacting \(A\) and \(B\), amplitudes that mix the two vanish because the integrals that drive them vanish, so \(T=T_A+T_B\). The two pieces commute, hence</p>
+$$e^{T}\ket{0_A0_B}=e^{T_A}e^{T_B}\ket{0_A0_B}=\bigl(e^{T_A}\ket{0_A}\bigr)\bigl(e^{T_B}\ket{0_B}\bigr),\tag{10}$$
+<p>a product wavefunction at any truncation level, with additive energy. The exponential buys exactly the property the linear ansatz lacks.</p>
+
+<h2 id="s3"><span class="num">3</span>The coupled cluster equations</h2>
+
+<h3>Projection, not minimization</h3>
+<p>Insert the ansatz into the Schrödinger equation, \(He^{T}\ket{0}=Ee^{T}\ket{0}\). The amplitudes could in principle be fixed by minimizing \(\bra{\Psi}H\ket{\Psi}/\braket{\Psi}{\Psi}\), but that expectation value does not terminate: \(e^{T^\dagger}He^{T}\) contains products of arbitrarily many amplitudes. Instead, project the equation onto the reference and onto the excited determinants of the truncation. With intermediate normalization, \(\braket{0}{\Psi}=1\), the reference projection gives the energy and the others give one equation per amplitude:</p>
+$$E=\bra{0}He^{T}\ket{0},\qquad\bra{\mu}He^{T}\ket{0}=E\,\bra{\mu}e^{T}\ket{0}\quad(\mu\in\mathcal P).\tag{11}$$
+<p>This <em class="term">unlinked</em> form is correct but awkward. The energy multiplies \(\bra{\mu}e^{T}\ket{0}\), which contains products of amplitudes that are not connected to each other, and those terms cancel against pieces of the left-hand side only if every term is kept exactly.</p>
+
+<h3>The similarity transformation</h3>
+<p>Multiply the Schrödinger equation from the left by \(e^{-T}\) before projecting:</p>
+<div class="panel">
+  <p class="label">Key result · the linked coupled cluster equations</p>
+  $$\Hb=e^{-T}He^{T},\qquad E=\bra{0}\Hb\ket{0},\qquad\bra{\mu}\Hb\ket{0}=0\quad\text{for all }\mu\in\mathcal P.\tag{12}$$
+</div>
+<p>\(\Hb\) is the <em class="term">similarity-transformed Hamiltonian</em>. It has the same eigenvalues as \(H\) but is not Hermitian, since \(e^{-T}\neq(e^{T})^\dagger\). The reason for preferring (12) to (11) is the Baker–Campbell–Hausdorff expansion,</p>
+$$\Hb=H+[H,T]+\tfrac12[[H,T],T]+\tfrac16[[[H,T],T],T]+\tfrac1{24}[[[[H,T],T],T],T],\tag{13}$$
+<p>which <em>terminates</em> after the fourth nested commutator, whatever the truncation of \(T\). The argument: all \(T\)s commute, so each nested commutator survives only through contractions between \(H\) and the newly added \(T\); \(H\) contains at most four creation and annihilation operators; so at most four \(T\)s can be contracted to it. Equivalently,</p>
+$$\Hb\ket{0}=\bigl(He^{T}\bigr)_{\rm C}\ket{0},\tag{14}$$
+<p>where the subscript keeps only the terms in which every \(T\) is contracted with \(H\). Three consequences:</p>
+<ul class="points">
+  <li><strong>The energy and the amplitude equations are finite polynomials</strong> in the amplitudes, of degree at most four, and the amplitude equations have the structure “integral plus terms in \(t\) equals zero” with no energy on the right-hand side.</li>
+  <li><strong>Every term is connected</strong>, so the equations are size extensive at any truncation. This is the linked-cluster theorem in its coupled cluster form.</li>
+  <li><strong>The energy is a projection</strong>, \(\bra{0}\Hb\ket{0}\), not an expectation value. It is not an upper bound to the exact energy, and the functional is not stationary with respect to the amplitudes. That is exactly the fact the gradient notes have to work around.</li>
+</ul>
+
+<h3>The energy expression</h3>
+<p>Project (13) onto the reference. \(\bra{0}T=0\) removes every commutator term in which a \(T\) stands to the left, leaving</p>
+$$E=\bra{0}H\ket{0}+\bra{0}HT\ket{0}+\tfrac12\bra{0}HT^2\ket{0}+\cdots$$
+<p>By (4), \(\bra{0}H\) has nonzero overlap only with the reference, singles, and doubles, so only \(T_1\), \(T_2\) and \(\tfrac12T_1^2\) contribute:</p>
+<div class="panel">
+  <p class="label">Key result · the coupled cluster energy</p>
+  $$E=E_0+\sum_{ia}f_{ia}\,t_i^a+\tfrac14\sum_{ijab}\langle ij\|ab\rangle\,t_{ij}^{ab}+\tfrac12\sum_{ijab}\langle ij\|ab\rangle\,t_i^a t_j^b .\tag{15}$$
+</div>
+<p>This formula is the same for CCSD, CCSDT, and every higher level: triples and beyond change the energy only through their effect on \(t_i^a\) and \(t_{ij}^{ab}\). With canonical Hartree–Fock orbitals the first sum vanishes by Brillouin’s theorem. The correlation energy is then driven entirely by the doubles amplitudes, with singles entering through the quadratic \(T_1^2\) term.</p>
+
+<h2 id="s4"><span class="num">4</span>CCSD written out</h2>
+
+<h3>Which terms appear</h3>
+<p>The CCSD amplitude equations are the projections of (14) onto singles and doubles. Because \(H\) can change the excitation level by at most two, only a finite set of products of cluster operators survives in each:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Equation</th><th>Products of cluster operators that contribute</th><th>Highest degree</th></tr></thead>
+  <tbody>
+    <tr><td>\(\bra{\Phi_i^a}\Hb\ket{0}=0\)</td><td>\(1,\;T_1,\;T_2,\;T_1^2,\;T_1T_2,\;T_1^3\)</td><td class="c">3</td></tr>
+    <tr><td>\(\bra{\Phi_{ij}^{ab}}\Hb\ket{0}=0\)</td><td>\(1,\;T_1,\;T_2,\;T_1^2,\;T_1T_2,\;T_2^2,\;T_1^3,\;T_1^2T_2,\;T_1^4\)</td><td class="c">4</td></tr>
+  </tbody>
+</table>
+</div>
+<p>So CCSD is a system of \(ov+\tfrac14o^2v^2\) coupled polynomial equations, cubic in the singles equation and quartic in the doubles equation. They are solved iteratively.</p>
+
+<h3>The CCD equations in full</h3>
+<p>Dropping \(T_1\) gives CCD, which already shows every structural feature. With \(f\) the Fock matrix of the reference, the doubles equation reads</p>
+<div class="panel eqs">
+  <p class="label">The CCD amplitude equation</p>
+  $$\begin{aligned}
+  0={}&\langle ij\|ab\rangle
+  +P(ab)\sum_c f_{bc}\,t_{ij}^{ac}
+  -P(ij)\sum_k f_{kj}\,t_{ik}^{ab}\\
+  &+\tfrac12\sum_{cd}\langle ab\|cd\rangle\,t_{ij}^{cd}
+  +\tfrac12\sum_{kl}\langle kl\|ij\rangle\,t_{kl}^{ab}
+  +P(ij)P(ab)\sum_{kc}\langle kb\|cj\rangle\,t_{ik}^{ac}\\
+  &+\tfrac14\sum_{klcd}\langle kl\|cd\rangle\,t_{ij}^{cd}\,t_{kl}^{ab}
+  +\tfrac12P(ij)P(ab)\sum_{klcd}\langle kl\|cd\rangle\,t_{ik}^{ac}\,t_{jl}^{bd}\\
+  &-\tfrac12P(ab)\sum_{klcd}\langle kl\|cd\rangle\,t_{ij}^{ac}\,t_{kl}^{bd}
+  -\tfrac12P(ij)\sum_{klcd}\langle kl\|cd\rangle\,t_{ik}^{ab}\,t_{jl}^{cd}.
+  \end{aligned}\tag{16}$$
+</div>
+<p>Read it line by line. The first line is the driving integral and the Fock terms. The second line is linear in \(t\): the particle–particle ladder, the hole–hole ladder, and the ring (particle–hole) term, which together are the coupled-pair or CEPA-type content. The last two lines are quadratic, and they are what distinguish CCD from CID: in CID the only quadratic term would be \(-\Delta E\,t_{ij}^{ab}\) with \(\Delta E=\tfrac14\sum\langle kl\|cd\rangle t_{kl}^{cd}\), an unlinked product that does not scale correctly. The four CCD quadratic terms replace it with connected contractions that do.</p>
+
+<h3>Solving the equations</h3>
+<p>With canonical orbitals, move the diagonal Fock terms to the left. Defining the orbital-energy denominators</p>
+$$D_i^a=\varepsilon_i-\varepsilon_a,\qquad D_{ij}^{ab}=\varepsilon_i+\varepsilon_j-\varepsilon_a-\varepsilon_b,\tag{17}$$
+<p>equation (16) and its CCSD counterparts take the form \(t\,D=\langle ij\|ab\rangle+(\text{everything else})\), which is iterated as a fixed-point map:</p>
+$$t_{ij}^{ab}\leftarrow\frac{\langle ij\|ab\rangle+R_{ij}^{ab}(t)}{D_{ij}^{ab}} .\tag{18}$$
+<p>Starting from \(t=0\), the first iterate is \(t_{ij}^{ab}=\langle ij\|ab\rangle/D_{ij}^{ab}\) and the energy (15) evaluated with it is exactly second-order Møller–Plesset perturbation theory. Each further iteration adds a higher order of perturbation theory, and the converged amplitudes sum selected classes of diagrams to infinite order. In practice the plain iteration converges slowly or not at all, and every code accelerates it with DIIS extrapolation over the last few residual vectors, reaching a residual norm of \(10^{-7}\) or so in ten to twenty iterations.</p>
+
+<h3>The CCSD working equations</h3>
+<p>With singles included, the number of terms grows to about forty. The way codes keep that manageable is to group recurring contractions into <em class="term">intermediates</em>, each built once per iteration. The formulation below is the one of Stanton, Gauss, Watts and Bartlett (1991), which most spin-orbital implementations follow. Define the effective doubles</p>
+$$\tilde\tau_{ij}^{ab}=t_{ij}^{ab}+\tfrac12\bigl(t_i^at_j^b-t_i^bt_j^a\bigr),\qquad
+\tau_{ij}^{ab}=t_{ij}^{ab}+t_i^at_j^b-t_i^bt_j^a,\tag{19}$$
+<p>the one-body intermediates</p>
+<div class="panel eqs">
+  $$\begin{aligned}
+  \mathcal F_{ae}&=(1-\delta_{ae})f_{ae}-\tfrac12\sum_m f_{me}t_m^a+\sum_{mf}t_m^f\langle ma\|fe\rangle-\tfrac12\sum_{mnf}\tilde\tau_{mn}^{af}\langle mn\|ef\rangle,\\
+  \mathcal F_{mi}&=(1-\delta_{mi})f_{mi}+\tfrac12\sum_e t_i^e f_{me}+\sum_{en}t_n^e\langle mn\|ie\rangle+\tfrac12\sum_{nef}\tilde\tau_{in}^{ef}\langle mn\|ef\rangle,\\
+  \mathcal F_{me}&=f_{me}+\sum_{nf}t_n^f\langle mn\|ef\rangle,
+  \end{aligned}\tag{20}$$
+</div>
+<p>and the two-body intermediates</p>
+<div class="panel eqs">
+  $$\begin{aligned}
+  \mathcal W_{mnij}&=\langle mn\|ij\rangle+P(ij)\sum_e t_j^e\langle mn\|ie\rangle+\tfrac14\sum_{ef}\tau_{ij}^{ef}\langle mn\|ef\rangle,\\
+  \mathcal W_{abef}&=\langle ab\|ef\rangle-P(ab)\sum_m t_m^b\langle am\|ef\rangle+\tfrac14\sum_{mn}\tau_{mn}^{ab}\langle mn\|ef\rangle,\\
+  \mathcal W_{mbej}&=\langle mb\|ej\rangle+\sum_f t_j^f\langle mb\|ef\rangle-\sum_n t_n^b\langle mn\|ej\rangle-\sum_{nf}\bigl(\tfrac12t_{jn}^{fb}+t_j^ft_n^b\bigr)\langle mn\|ef\rangle .
+  \end{aligned}\tag{21}$$
+</div>
+<p>The singles equation is then</p>
+<div class="panel eqs">
+  $$\begin{aligned}
+  t_i^a D_i^a={}&f_{ia}+\sum_e t_i^e\mathcal F_{ae}-\sum_m t_m^a\mathcal F_{mi}+\sum_{me}t_{im}^{ae}\mathcal F_{me}\\
+  &-\sum_{nf}t_n^f\langle na\|if\rangle-\tfrac12\sum_{mef}t_{im}^{ef}\langle ma\|ef\rangle-\tfrac12\sum_{men}t_{mn}^{ae}\langle nm\|ei\rangle,
+  \end{aligned}\tag{22}$$
+</div>
+<p>and the doubles equation is</p>
+<div class="panel eqs">
+  $$\begin{aligned}
+  t_{ij}^{ab}D_{ij}^{ab}={}&\langle ij\|ab\rangle
+  +P(ab)\sum_e t_{ij}^{ae}\Bigl(\mathcal F_{be}-\tfrac12\sum_m t_m^b\mathcal F_{me}\Bigr)
+  -P(ij)\sum_m t_{im}^{ab}\Bigl(\mathcal F_{mj}+\tfrac12\sum_e t_j^e\mathcal F_{me}\Bigr)\\
+  &+\tfrac12\sum_{mn}\tau_{mn}^{ab}\mathcal W_{mnij}
+  +\tfrac12\sum_{ef}\tau_{ij}^{ef}\mathcal W_{abef}
+  +P(ij)P(ab)\sum_{me}\bigl(t_{im}^{ae}\mathcal W_{mbej}-t_i^et_m^a\langle mb\|ej\rangle\bigr)\\
+  &+P(ij)\sum_e t_i^e\langle ab\|ej\rangle-P(ab)\sum_m t_m^a\langle mb\|ij\rangle .
+  \end{aligned}\tag{23}$$
+</div>
+<p>Setting every \(t_i^a\) to zero in (20) to (23) collapses them to (16). Two things to notice about the structure. With a Hartree–Fock reference, \(f_{ia}=0\) and \(f_{me}=0\), yet \(T_1\) does not vanish: the last two terms of (22) feed it from \(T_2\). And the singles are not a small correction with no physical meaning. By Thouless’ theorem, \(e^{T_1}\ket{0}\) is itself a single determinant built from rotated orbitals, so \(T_1\) describes relaxation of the Hartree–Fock orbitals in the presence of correlation. Orbitals chosen to make \(T_1=0\) are called Brueckner orbitals.</p>
+
+<h3>Cost</h3>
+<p>The expensive contraction in (23) is the particle–particle ladder, \(\tfrac12\sum_{ef}\tau_{ij}^{ef}\langle ab\|ef\rangle\), with four virtual indices summed over two: \(o^2v^4\) operations per iteration. Since \(v\gg o\), that single term dominates, and it is why CCSD is quoted as an \(\mathcal O(N^6)\) method. It also needs the \(\langle ab\|ef\rangle\) integrals, \(v^4\) numbers, which is the storage bottleneck. Density fitting and Cholesky decomposition of the two-electron integrals replace that block by three-index quantities, \(v^2N_{\rm aux}\), at a small and controllable cost in accuracy, which is why density-fitted CCSD is the default in modern codes.</p>
+
+<h2 id="s5"><span class="num">5</span>A worked example you can solve by hand</h2>
+<p>The smallest non-trivial case is two electrons in two spatial orbitals: H\(_2\) in a minimal basis, with a bonding orbital \(\sigma_g\) and an antibonding orbital \(\sigma_u\). The singlet ground state lives in a two-dimensional space,</p>
+$$\ket{0}=|\sigma_g\alpha\,\sigma_g\beta|,\qquad\ket{D}=|\sigma_u\alpha\,\sigma_u\beta|=\ket{\Phi_{g\bar g}^{u\bar u}},$$
+<p>because single excitations have the wrong spatial symmetry to mix in. Write the Hamiltonian in this basis as</p>
+$$\bra{0}H\ket{0}=E_0,\qquad\bra{D}H\ket{D}=E_0+\Delta,\qquad\bra{0}H\ket{D}=\bra{D}H\ket{0}=K,\tag{24}$$
+<p>where \(K=\langle\sigma_g\sigma_g|\sigma_u\sigma_u\rangle\) is the exchange integral between the two orbitals and \(\Delta\) is the excitation energy of the doubly excited determinant. There is one amplitude, \(t\), and \(T=t\,\tau_{g\bar g}^{u\bar u}\). For two electrons \(T^2=0\), so \(e^{T}\ket{0}=\ket{0}+t\ket{D}\) and \(e^{-T}=1-T\). The energy equation gives</p>
+$$E=\bra{0}H(1+T)\ket{0}=E_0+K\,t .\tag{25}$$
+<p>The amplitude equation needs \(\bra{D}T\), which is \(t\bra{0}\) because \(T^\dagger\ket{D}=t\ket{0}\):</p>
+$$0=\bra{D}(1-T)H(1+T)\ket{0}=K+(E_0+\Delta)t-tE_0-t\,K\,t=K+\Delta\,t-K\,t^2 .\tag{26}$$
+<p>This is the whole content of CCD for this system, including the quadratic terms of (16), which collapse to \(-Kt^2\). Equation (26) has two roots,</p>
+$$t_\pm=\frac{\Delta\pm\sqrt{\Delta^2+4K^2}}{2K},\qquad \Delta E_\pm=K\,t_\pm=\frac{\Delta\pm\sqrt{\Delta^2+4K^2}}{2},\tag{27}$$
+<p>and these are precisely the two eigenvalues of the \(2\times2\) CI matrix \(\begin{pmatrix}0&K\\K&\Delta\end{pmatrix}\). Several lessons are packed into this:</p>
+<ul class="points">
+  <li><strong>CCSD is exact for two electrons.</strong> \(T=T_1+T_2\) is the complete cluster operator for two electrons, so CCSD reproduces FCI, as it must.</li>
+  <li><strong>The equations are nonlinear and have several solutions.</strong> The ground state is the root that goes continuously to \(t=0\) as the coupling \(K\) is switched off, \(t_-\approx-K/\Delta\). The fixed-point iteration (18) started from zero converges to it. The other root is an excited state, and in larger systems the spurious or excited-state roots of the CC polynomial are a known hazard when the reference is poor.</li>
+  <li><strong>Perturbation theory is the first iteration.</strong> Expanding (27) for small \(K/\Delta\) gives \(\Delta E_-\approx-K^2/\Delta\), the second-order estimate, and the iteration (18) adds the higher orders one at a time.</li>
+</ul>
+<p>With the minimal-basis integrals tabulated by Szabo and Ostlund at a bond length of \(1.4\,a_0\), \(K=0.1813\) and \(\Delta=1.577\) hartree. Then \(t_-=-0.1135\), the correlation energy is \(\Delta E_-=-0.0206\) hartree, and the second-order estimate \(-K^2/\Delta=-0.0208\) is already close because the coupling is weak. Stretching the bond shrinks \(\Delta\), \(t\) grows towards \(-1\), and the single-reference description of the problem degrades, which is the simplest picture of why single-reference CC struggles with bond breaking.</p>
+
+<h2 id="s6"><span class="num">6</span>What the method gets right, and what it does not</h2>
+
+<h3>The hierarchy</h3>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Method</th><th>Highest connected cluster</th><th>Cost per iteration</th><th>Exact for</th></tr></thead>
+  <tbody>
+    <tr><td>CCSD</td><td>\(T_2\)</td><td class="c">\(o^2v^4\), \(\mathcal O(N^6)\)</td><td>2 electrons</td></tr>
+    <tr><td>CCSD(T)</td><td>\(T_3\), non-iterative estimate</td><td class="c">\(o^3v^4\), \(\mathcal O(N^7)\), once</td><td>—</td></tr>
+    <tr><td>CCSDT</td><td>\(T_3\)</td><td class="c">\(o^3v^5\), \(\mathcal O(N^8)\)</td><td>3 electrons</td></tr>
+    <tr><td>CCSDTQ</td><td>\(T_4\)</td><td class="c">\(o^4v^6\), \(\mathcal O(N^{10})\)</td><td>4 electrons</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The series converges quickly for molecules that are well described by a single determinant. CCSD typically recovers about 95% of the correlation energy and leaves errors of a few kcal/mol in reaction energies; CCSD(T) brings that to about 1 kcal/mol, which is why it is called the gold standard of single-reference quantum chemistry. The (T) correction estimates the connected triples from the converged CCSD amplitudes with fourth- and fifth-order perturbation theory. In one common form,</p>
+$$E_{(\rm T)}=\tfrac1{36}\sum_{ijkabc}t_{ijk}^{abc}(\mathrm c)\,D_{ijk}^{abc}\,\bigl[t_{ijk}^{abc}(\mathrm c)+t_{ijk}^{abc}(\mathrm d)\bigr],\tag{28}$$
+$$D_{ijk}^{abc}\,t_{ijk}^{abc}(\mathrm c)=P(i/jk)P(a/bc)\Bigl[\sum_e t_{jk}^{ae}\langle ei\|bc\rangle-\sum_m t_{im}^{bc}\langle ma\|jk\rangle\Bigr],\qquad
+D_{ijk}^{abc}\,t_{ijk}^{abc}(\mathrm d)=P(i/jk)P(a/bc)\,t_i^a\langle jk\|bc\rangle,$$
+<p>with \(D_{ijk}^{abc}\) the triples orbital-energy denominator. The “connected” triples \(t(\mathrm c)\) come from \(T_2\), the “disconnected” ones \(t(\mathrm d)\) from \(T_1\), and the whole thing is evaluated once after CCSD converges, never stored, at \(o^3v^4\) cost.</p>
+
+<h3>Properties worth remembering</h3>
+<ul class="points">
+  <li><strong>Size extensive at every level</strong>, by the connectedness of (14). This is the reason to prefer CC over truncated CI even though CI is variational.</li>
+  <li><strong>Not variational.</strong> The energy is a projection and can lie below the exact energy. In practice the error is small for good references and the non-variational character only becomes visible when the method is failing anyway.</li>
+  <li><strong>Invariant to rotations within the occupied space and within the virtual space.</strong> CCSD gives the same energy with canonical or localized orbitals, as long as the full Fock matrix is used in the equations. The (T) correction is not invariant, because it uses canonical orbital energies in its denominators.</li>
+  <li><strong>Single-reference.</strong> When two or more determinants are needed to describe the state qualitatively, as in bond breaking, biradicals, or many transition-metal systems, the amplitudes become large and the hierarchy converges slowly or to the wrong state. The T1 diagnostic of Lee and Taylor, the norm of the singles amplitudes divided by the square root of the number of correlated electrons, is the common early warning; values above roughly 0.02 call for caution.</li>
+  <li><strong>Not an expectation value.</strong> Because \(\Hb\) is not Hermitian, the bra that pairs with \(e^{T}\ket{0}\) to give the energy and properties is not its adjoint. Finding that bra is the first job of the gradient notes.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span>Bridge to the gradient notes</h2>
+<p>Everything in the companion notes on gradients is built from objects introduced here. The correspondence is:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>In these notes</th><th>Role in the gradient notes</th></tr></thead>
+  <tbody>
+    <tr><td>\(\Hb=e^{-T}He^{T}\), equation (12)</td><td>The operator whose derivative with respect to a nuclear coordinate, \(\Hb^{x}=e^{-T}H^{x}e^{T}\), is contracted with the bra and ket to give the gradient.</td></tr>
+    <tr><td>Amplitude residuals \(\Omega_\mu=\bra{\mu}\Hb\ket{0}\)</td><td>The constraints attached to the Lagrangian with multipliers \(\lambda_\mu\).</td></tr>
+    <tr><td>The energy is a projection, not stationary in \(t\)</td><td>The reason the Hellmann–Feynman theorem fails and a Lagrangian is needed.</td></tr>
+    <tr><td>\(\Hb\) is non-Hermitian</td><td>The left eigenvector \(\bra{0}(1+\Lambda)\) differs from \(\ket{0}^\dagger\); \(\Lambda\) is the price of non-Hermiticity.</td></tr>
+    <tr><td>The iteration map (18) and its linearization</td><td>The Jacobian \(J_{\mu\nu}=\bra{\mu}[\Hb,\tau_\nu]\ket{0}\), whose transpose defines the \(\Lambda\) equations.</td></tr>
+    <tr><td>\(T_1\) as orbital relaxation (Thouless)</td><td>The orbital response the Z-vector handles for the Hartree–Fock orbitals; Brueckner or orbital-optimized CC removes the Z-vector step.</td></tr>
+    <tr><td>The energy formula (15) as a contraction of integrals with amplitudes</td><td>Generalized to a contraction of derivative integrals with response density matrices.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>If you can reproduce (15) from (13), derive (16) at least for the linear terms, and explain why (12) is preferred to (11), you have what the gradient notes assume.</p>
+
+<h2 id="s8"><span class="num">8</span>Further reading</h2>
+<ol class="refs">
+  <li>A. Szabo and N. S. Ostlund, <em>Modern Quantum Chemistry</em> (Dover, 1996). Second quantization, CI, and the minimal-basis H\(_2\) example of Section 5 with its integrals.</li>
+  <li>T. D. Crawford and H. F. Schaefer III, “An introduction to coupled cluster theory for computational chemists”, <em>Rev. Comput. Chem.</em> <strong>14</strong>, 33 (2000). The best first reading: derives the CCSD equations in full with diagrams.</li>
+  <li>J. F. Stanton, J. Gauss, J. D. Watts and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>94</strong>, 4334 (1991). The intermediate-based CCSD equations (20) to (23) as implemented in most codes.</li>
+  <li>I. Shavitt and R. J. Bartlett, <em>Many-Body Methods in Chemistry and Physics</em> (Cambridge, 2009). The standard reference; Chapters 9 and 10 cover the CC equations and their diagrammatic derivation.</li>
+  <li>T. Helgaker, P. Jørgensen and J. Olsen, <em>Molecular Electronic-Structure Theory</em> (Wiley, 2000), Chapter 13. Coupled cluster from the projected Schrödinger equation, with the linked and unlinked forms compared.</li>
+  <li>R. J. Bartlett and M. Musiał, “Coupled-cluster theory in quantum chemistry”, <em>Rev. Mod. Phys.</em> <strong>79</strong>, 291 (2007). A broad review of the method, its hierarchy, and its extensions.</li>
+  <li>J. Čížek, <em>J. Chem. Phys.</em> <strong>45</strong>, 4256 (1966). The original formulation of the exponential ansatz for molecules.</li>
+  <li>G. D. Purvis III and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>76</strong>, 1910 (1982). The first general CCSD implementation.</li>
+  <li>K. Raghavachari, G. W. Trucks, J. A. Pople and M. Head-Gordon, <em>Chem. Phys. Lett.</em> <strong>157</strong>, 479 (1989). The (T) correction.</li>
+  <li>T. J. Lee and P. R. Taylor, <em>Int. J. Quantum Chem. Symp.</em> <strong>23</strong>, 199 (1989). The T1 diagnostic.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. Spin-orbital conventions follow Crawford and Schaefer; the working equations (20) to (23) are transcribed from Stanton, Gauss, Watts and Bartlett and should be checked against the conventions of any particular code.</footer>
+</div>

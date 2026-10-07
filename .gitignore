@@ -1,0 +1,5 @@
+# Downloaded third-party assets and intermediate build output (see src/README.md)
+src/vendor/
+src/build/
+node_modules/
+src/package-lock.json
