@@ -1,0 +1,255 @@
+<title>NEO-CCSD Lambda Equations</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:center}
+td.k{font-family:var(--font-display);font-weight:600;color:var(--accent-ink);white-space:nowrap}
+td.dot{text-align:center;color:var(--accent);font-weight:700}
+td.no{text-align:center;color:var(--muted)}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,.three li,table{break-inside:avoid}
+  .panel.eqs{break-inside:auto}
+  .panel .label{break-after:avoid}
+  tr{break-inside:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to the gradient notes and the NEO amplitude-equation notes</p>
+  <h1>NEO-CCSD Lambda Equations</h1>
+  <p class="dek">How the \(\Lambda\) equations change when the reference is a product of an electronic and a protonic determinant: five multiplier blocks, the energy derivatives that drive them, the reversal of every cross coupling under transposition, and the mixed density that the gradient needs.</p>
+  <div class="meta"><span>Written for a graduate student who has read the gradient notes</span><span>Spin orbitals, high-spin fermionic protons, NEO Hartree–Fock reference</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">Five multiplier blocks, one linear system</a></li>
+      <li><span class="num">2</span><a href="#s2">The right-hand sides</a></li>
+      <li><span class="num">3</span><a href="#s3">The transpose reverses every coupling</a></li>
+      <li><span class="num">4</span><a href="#s4">The mixed \(\Lambda\) equation</a></li>
+      <li><span class="num">5</span><a href="#s5">Cross terms in the other \(\Lambda\) equations</a></li>
+      <li><span class="num">6</span><a href="#s6">Solving the equations</a></li>
+      <li><span class="num">7</span><a href="#s7">Response densities and the gradient</a></li>
+      <li><span class="num">8</span><a href="#s8">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(i,j,m\;/\;a,b,e\)</dt><dd>occupied / virtual electronic spin orbitals; \(I,J,M\;/\;A,B,E\) their protonic counterparts.</dd>
+    <dt>\(\mu,\nu\)</dt><dd>labels running over all five amplitude blocks: \(\mathrm{e}1=(i,a)\), \(\mathrm{e}2=(ij,ab)\), \(\mathrm{p}1=(I,A)\), \(\mathrm{p}2=(IJ,AB)\), \(\mathrm{ep}=(iI,aA)\).</dd>
+    <dt>\(T,\;\Hb\)</dt><dd>the NEO-CCSD cluster operator and \(e^{-T}He^{T}\), as in the amplitude-equation notes.</dd>
+    <dt>\(\Lambda\)</dt><dd>the de-excitation operator \(\sum_\mu\lambda_\mu\tau_\mu^\dagger\), with one block of multipliers per amplitude block.</dd>
+    <dt>\(J_{\mu\nu}\)</dt><dd>the Jacobian \(\bra{\mu}[\Hb,\tau_\nu]\ket{0}\), a five-by-five block matrix.</dd>
+    <dt>\(D_i^a,\;D_{ij}^{ab},\;D_{iI}^{aA}\)</dt><dd>orbital-energy denominators, e.g. \(D_{iI}^{aA}=\varepsilon_i+\varepsilon_I-\varepsilon_a-\varepsilon_A\).</dd>
+    <dt>\(\gamma,\;\Gamma\)</dt><dd>response density matrices, \(\gamma_{pq}=\bra{0}(1+\Lambda)e^{-T}a_p^\dagger a_q e^{T}\ket{0}\) and likewise for the two-particle and protonic cases.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>The \(\Lambda\) equations keep their form, \(\bra{0}(1+\Lambda)(\Hb-E)\ket{\nu}=0\), now projected onto five classes of determinant, and \(\Lambda\) gains a mixed block \(\lambda_{iI}^{aA}\) that de-excites one electron and one proton.</div></li>
+    <li><span class="n">2</span><div>Each block is driven by the derivative of the energy with respect to its amplitudes: the dressed Fock matrices for the singles, the integrals for the doubles, and \(-(ia|IA)\) for the mixed block, so that every block of \(\lambda\) equals the corresponding block of \(t\) to first order.</div></li>
+    <li><span class="n">3</span><div>Because the equations use the transpose of the Jacobian, every cross coupling runs backwards relative to the amplitude equations: where protonic amplitudes fed an electronic equation, electronic multipliers now feed the protonic one.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>Five multiplier blocks, one linear system</h2>
+<p>The gradient notes build the Lagrangian \(\mathcal L=\bra{0}(1+\Lambda)\Hb\ket{0}\) and obtain the \(\Lambda\) equations from its stationarity with respect to the amplitudes. Nothing in that derivation depends on the number of particle types, so for NEO-CCSD the de-excitation operator simply acquires one block per amplitude block,</p>
+$$\Lambda=\Lambda_1^{\rm e}+\Lambda_2^{\rm e}+\Lambda_1^{\rm p}+\Lambda_2^{\rm p}+\Lambda_{11}^{\rm ep},\qquad
+\Lambda_{11}^{\rm ep}=\sum_{iIaA}\lambda_{iI}^{aA}\,a_i^\dagger a_a\,b_I^\dagger b_A,\tag{1}$$
+<p>and the equations are projected onto the same five classes of determinant as the amplitude equations:</p>
+<div class="panel">
+  <p class="label">Key result · the NEO-CCSD \(\Lambda\) equations</p>
+  $$\bra{0}(1+\Lambda)\,(\Hb-E)\,\ket{\nu}=0\qquad\text{for }\nu\in\{\Phi_i^a,\;\Phi_{ij}^{ab},\;\Phi_I^A,\;\Phi_{IJ}^{AB},\;\Phi_{iI}^{aA}\},\tag{2}$$
+  <p>or in matrix form, with the five-by-five block Jacobian of the amplitude-equation notes,</p>
+  $$\bm J^{\tr}\boldsymbol\lambda=-\pd{E}{\bm t}.\tag{3}$$
+</div>
+<p>The bra \(\bra{0}(1+\Lambda)\) is the left eigenvector of \(\Hb\) in the five-block space, with eigenvalue \(E\), exactly as before. With one quantum proton the protonic doubles block is absent and four blocks remain. The system is linear in \(\lambda\), perturbation-independent, and solved once; everything the gradient notes say about the 2n+2 rule and the cost of one more coupled cluster calculation carries over unchanged.</p>
+
+<h2 id="s2"><span class="num">2</span>The right-hand sides</h2>
+<p>The inhomogeneous term of each equation is the derivative of the NEO-CCSD energy with respect to the corresponding amplitude, which by the energy formula of the NEO coefficients notes is</p>
+<div class="panel eqs">
+  <p class="label">Key result · the energy derivatives</p>
+  $$\begin{aligned}
+  \pd{E}{t_i^a}&=f^{\rm e}_{ia}+\sum_{jb}\langle ij\|ab\rangle\,t_j^b-\sum_{IA}(ia|IA)\,t_I^A,\qquad&\pd{E}{t_{ij}^{ab}}&=\langle ij\|ab\rangle,\\[4pt]
+  \pd{E}{t_I^A}&=f^{\rm p}_{IA}+\sum_{JB}\langle IJ\|AB\rangle\,t_J^B-\sum_{ia}(ia|IA)\,t_i^a,\qquad&\pd{E}{t_{IJ}^{AB}}&=\langle IJ\|AB\rangle,\\[4pt]
+  \pd{E}{t_{iI}^{aA}}&=-(ia|IA).
+  \end{aligned}\tag{4}$$
+</div>
+<p>In the left-eigenvector form (2) the same quantities appear as \(\bra{0}\Hb\ket{\nu}\): for the doubles and the mixed double no amplitude can bring the determinant back to the reference through \(H\), so the matrix element is the bare integral, while for the singles the result is the dressed Fock matrix of the amplitude-equation notes. Three consequences follow.</p>
+<ul class="points">
+  <li><strong>Every block of \(\lambda\) equals the corresponding block of \(t\) to first order.</strong> The diagonal of the Jacobian is \(-D\) for each block, so the leading solution of (3) is \(\lambda_{ij}^{ab}\approx\langle ij\|ab\rangle/D_{ij}^{ab}\) and \(\lambda_{iI}^{aA}\approx-(ia|IA)/D_{iI}^{aA}\), which are the first-order amplitudes. The mixed multipliers are driven directly by the mixed integral, with coefficient 1.</li>
+  <li><strong>The protonic singles multipliers have a driving term.</strong> With a NEO-HF reference the protonic singles amplitudes have none, since \(f^{\rm p}_{IA}=0\) and their equation is fed only by couplings. Their multipliers, by contrast, are driven by \(-\sum_{ia}(ia|IA)t_i^a\), the derivative of the product term in the energy, and by \(\sum\langle IJ\|AB\rangle t_J^B\) when there are several protons.</li>
+  <li><strong>The singles right-hand sides are dressed Fock matrices.</strong> \(\bra{0}\Hb\ket{\Phi_i^a}\) is the intermediate \(\mathcal F_{ia}\) of the single-component working equations with the proton’s correction \(-\sum(ia|IA)t_I^A\) added, which is the same dressing that appears throughout the amplitude equations.</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span>The transpose reverses every coupling</h2>
+<p>Equation (3) is the transpose of the linearized amplitude equations. A term “coefficient times \(t_\nu\) in the equation for \(\mu\)” becomes “the same coefficient times \(\lambda_\mu\) in the \(\Lambda\) equation for \(\nu\)”. So the block structure of the \(\Lambda\) equations is read off the term-class table of the amplitude-equation notes by swapping rows and columns. The amplitude equation for a block \(\mu\) contains \(t_\nu\) whenever the table lists a product with \(T_\nu\) in that row, which gives the following pattern of nonzero Jacobian blocks:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Amplitude equation for</th><th>e1</th><th>e2</th><th>p1</th><th>p2</th><th>ep</th></tr></thead>
+  <tbody>
+    <tr><td class="k">e1 · electronic singles</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td><td class="no">–</td><td class="dot">●</td></tr>
+    <tr><td class="k">e2 · electronic doubles</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td><td class="no">–</td><td class="dot">●</td></tr>
+    <tr><td class="k">p1 · protonic singles</td><td class="dot">●</td><td class="no">–</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td></tr>
+    <tr><td class="k">p2 · protonic doubles</td><td class="dot">●</td><td class="no">–</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td></tr>
+    <tr><td class="k">ep · mixed doubles</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The four blanks are the only zero blocks: an electronic equation never contains protonic doubles amplitudes, and a protonic equation never contains electronic doubles amplitudes, because the electron–proton attraction has only two lines of each species to spend. Reading the table down a column instead of across a row gives the \(\Lambda\) equations:</p>
+<ul class="points">
+  <li><strong>The electronic singles \(\Lambda\) equation and the mixed \(\Lambda\) equation receive contributions from all five multiplier blocks</strong>, because their columns are full.</li>
+  <li><strong>The electronic doubles \(\Lambda\) equation receives nothing from the protonic multipliers \(\lambda_1^{\rm p}\) and \(\lambda_2^{\rm p}\)</strong>, only from \(\lambda_1^{\rm e}\), \(\lambda_2^{\rm e}\) and \(\lambda^{\rm ep}\). In the amplitude equations the electronic doubles were fed by the protonic singles; after transposition that coupling has moved to the protonic singles \(\Lambda\) equation, where it is fed by \(\lambda_2^{\rm e}\).</li>
+  <li><strong>Mirror statements hold for the protonic blocks.</strong></li>
+</ul>
+<p>The direction of every physical coupling therefore flips. In the amplitude equations the electronic doubles drive the mixed amplitude through the term \(-\sum_{me}(me|IA)t_{im}^{ae}\); in the \(\Lambda\) equations the mixed multipliers drive the electronic doubles multipliers through the same integral. In the amplitude equations the protonic singles dress the electronic Fock matrix; in the \(\Lambda\) equations the electronic singles multipliers appear in the protonic singles equation with the same mixed integral. This is nothing deeper than the definition of a transpose, but it is the thing most likely to be coded backwards.</p>
+
+<h2 id="s4"><span class="num">4</span>The mixed \(\Lambda\) equation</h2>
+<p>Collecting, for the mixed block, the transposes of the linear cross terms displayed in the amplitude-equation notes, with canonical orbitals and the diagonal Fock terms on the left,</p>
+<div class="panel eqs">
+  <p class="label">Mixed multipliers: driving term and linear terms</p>
+  $$\begin{aligned}
+  \lambda_{iI}^{aA}\,D_{iI}^{aA}={}&-(ia|IA)\\
+  &-\sum_e\lambda_i^e\,(ea|IA)+\sum_m\lambda_m^a\,(mi|IA)
+   -\sum_E\lambda_I^E\,(ia|EA)+\sum_M\lambda_M^A\,(ia|MI)\\
+  &-\sum_{jb}\lambda_{ij}^{ab}\,(jb|IA)-\sum_{JB}\lambda_{IJ}^{AB}\,(ia|JB)\\
+  &-\sum_{me}\lambda_{mI}^{eA}\,\langle ie\|ma\rangle-\sum_{ME}\lambda_{iM}^{aE}\,\langle IE\|MA\rangle
+   +\text{(terms with amplitudes)}.
+  \end{aligned}\tag{5}$$
+</div>
+<p>Line by line: the driving term from (4); the singles multipliers of each species entering through the mixed integral, the transposes of the terms by which the mixed amplitude equation was fed by singles; the doubles multipliers of each species, the transposes of the terms by which the electronic and protonic doubles equations were fed by the mixed amplitude; and the ring terms, transposes of the ring terms of the mixed amplitude equation, with the proton or the electron as spectator. The shape mirrors the mixed amplitude equation term for term, but each coupling is the transpose of the corresponding one there, not the same one.</p>
+<p>The terms with amplitudes come from the dependence of the Jacobian on \(t\). The amplitude equations are at most quartic in \(t\), so the \(\Lambda\) equations are linear in \(\lambda\) and at most cubic in \(t\), as in the single-component case, and the products that can appear follow from the term-class table by the same transposition. All of the terms in which a singles amplitude multiplies an integral can be absorbed by dressing the integrals with the singles of each species, so a \(T_1\)-transformed implementation of the \(\Lambda\) equations needs only the doubles and mixed amplitudes explicitly.</p>
+
+<h2 id="s5"><span class="num">5</span>Cross terms in the other \(\Lambda\) equations</h2>
+<p>The same transposition gives the leading cross terms elsewhere. In the electronic singles \(\Lambda\) equation,</p>
+<div class="panel eqs">
+  <p class="label">Electronic singles multipliers: leading cross terms</p>
+  $$-\sum_{IA}\lambda_I^A\,(ia|IA)\;-\;\sum_{eIA}\lambda_{iI}^{eA}\,(ea|IA)\;+\;\sum_{mIA}\lambda_{mI}^{aA}\,(im|IA),\tag{6}$$
+</div>
+<p>the first from the protonic singles amplitude equation, the other two from the singles terms of the mixed amplitude equation. In the electronic doubles \(\Lambda\) equation the only cross term at this order is the transpose of the doubles-to-mixed coupling,</p>
+<div class="panel eqs">
+  <p class="label">Electronic doubles multipliers: leading cross term</p>
+  $$-P(ij)P(ab)\sum_{IA}\lambda_{iI}^{aA}\,(jb|IA),\tag{7}$$
+</div>
+<p>and the protonic singles and doubles \(\Lambda\) equations contain the mirror images of (6) and (7) with the species swapped. The permutation operators in (7) are there because the electronic doubles are antisymmetric; (5) has none, because the two de-excited particles in the mixed block are distinguishable.</p>
+
+<h2 id="s6"><span class="num">6</span>Solving the equations</h2>
+<p>Nothing changes in the method. Each block is updated from its own denominator,</p>
+$$\lambda_{iI}^{aA}\leftarrow\frac{-(ia|IA)+R_{iI}^{aA}(\lambda;t)}{D_{iI}^{aA}},\tag{8}$$
+<p>alongside the other four, with DIIS over the concatenated residual of all blocks. The converged amplitudes are fixed input, and because the system is linear in \(\lambda\) it typically converges in fewer iterations than the amplitude equations from the starting guess \(\lambda=t\). The cost is that of one more set of amplitude iterations, dominated as before by the electronic particle–particle ladder; the mixed block is small and its contractions scale no worse than \(o^2v^2\) times protonic dimensions. Converge the multipliers as tightly as the amplitudes: the gradient is first order in the residual of both, as the gradient notes explain.</p>
+
+<h2 id="s7"><span class="num">7</span>Response densities and the gradient</h2>
+<p>The multipliers exist to build densities. With the operator ordering of the gradient notes, the NEO-CCSD response densities are the electronic and protonic one- and two-particle densities and a new mixed two-particle density,</p>
+$$\begin{gathered}
+\gamma^{\rm e}_{pq}=\bra{0}(1+\Lambda)e^{-T}a_p^\dagger a_q e^{T}\ket{0},\qquad
+\gamma^{\rm p}_{PQ}=\bra{0}(1+\Lambda)e^{-T}b_P^\dagger b_Q e^{T}\ket{0},\\[4pt]
+\Gamma^{\rm ep}_{pqPQ}=\bra{0}(1+\Lambda)e^{-T}a_p^\dagger a_q\,b_P^\dagger b_Q e^{T}\ket{0}.
+\end{gathered}\tag{9}$$
+<p>Their simplest blocks show the mixed multipliers at work. Where \(a_a^\dagger a_i\) or \(a_a^\dagger a_i b_A^\dagger b_I\) is an excitation operator it commutes with \(T\), so the similarity transform does nothing and the bra picks out one multiplier:</p>
+$$\gamma^{\rm e}_{ai}=\lambda_i^a,\qquad\gamma^{\rm p}_{AI}=\lambda_I^A,\qquad\Gamma^{\rm ep}_{aiAI}=\lambda_{iI}^{aA}.\tag{10}$$
+<p>The occupied and virtual blocks of the one-particle densities contain products of amplitudes and multipliers, and the mixed pair now contributes to both species. For the protonic occupied block, one commutator with each part of \(T\) gives</p>
+$$\gamma^{\rm p}_{IJ}=\delta_{IJ}-\sum_E t_I^E\,\lambda_J^E-\sum_{iaE}t_{iI}^{aE}\,\lambda_{iJ}^{aE}-\tfrac12\sum_{MEF}t_{IM}^{EF}\,\lambda_{JM}^{EF},\tag{11}$$
+<p>with the mixed term carrying no ½ because no antisymmetric index pair is summed, and the electronic occupied block picks up the analogous \(-\sum_{aIA}t_{iI}^{aA}\lambda_{jI}^{aA}\). The proton density, which is the observable that multicomponent methods are judged by, is \(\gamma^{\rm p}\) back-transformed to the protonic basis, so the mixed multipliers enter it directly through (11).</p>
+<p>In the gradient, each density contracts with the derivative of its own integrals. Writing \(\mu,\nu\) for electronic and \(\Lambda,\Sigma\) for protonic basis functions,</p>
+<div class="panel">
+  <p class="label">Key result · the NEO-CCSD gradient</p>
+  $$\begin{aligned}
+  \frac{\dd E}{\dd x}={}&\sum_{\mu\nu}D^{\rm e}_{\mu\nu}h^{{\rm e},x}_{\mu\nu}+\tfrac12\sum\Gamma^{\rm e}_{\mu\nu\lambda\sigma}(\mu\nu|\lambda\sigma)^{x}-\sum_{\mu\nu}W^{\rm e}_{\mu\nu}S^{{\rm e},x}_{\mu\nu}\\
+  &+\sum_{\Lambda\Sigma}D^{\rm p}_{\Lambda\Sigma}h^{{\rm p},x}_{\Lambda\Sigma}+\tfrac12\sum\Gamma^{\rm p}_{\Lambda\Sigma\Pi\Theta}(\Lambda\Sigma|\Pi\Theta)^{x}-\sum_{\Lambda\Sigma}W^{\rm p}_{\Lambda\Sigma}S^{{\rm p},x}_{\Lambda\Sigma}\\
+  &-\sum_{\mu\nu\Lambda\Sigma}\Gamma^{\rm ep}_{\mu\nu\Lambda\Sigma}(\mu\nu|\Lambda\Sigma)^{x}+\frac{\dd V_{nn}}{\dd x}.
+  \end{aligned}\tag{12}$$
+</div>
+<p>Here \(D^{\rm e}\) and \(D^{\rm p}\) are the relaxed densities, each carrying its own Z-vector contribution, and the two multiplier vectors \(\bm z^{\rm e}\) and \(\bm z^{\rm p}\) come from one coupled linear system in which the NEO-HF orbital Hessian links the species through the electron–proton attraction. The mixed density contracts with the derivative of the mixed Coulomb integrals, which depends on the centres of the electronic basis functions and of the protonic ones. For a gradient with respect to a classical nucleus the electronic functions on that nucleus move with it; whether a protonic basis centre also moves is a modelling choice that has to be stated, as the Thouless notes remark. The energy-weighted densities and the overlap-derivative terms appear once per species, since each set of orbitals is orthonormal on its own.</p>
+
+<h2 id="s8"><span class="num">8</span>Further reading</h2>
+<ol class="refs">
+  <li>J. Gauss, J. F. Stanton and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>95</strong>, 2623 (1991); E. A. Salter, G. W. Trucks and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>90</strong>, 1752 (1989). The single-component \(\Lambda\) equations and response densities that each species block reproduces.</li>
+  <li>H. Koch, H. J. Aa. Jensen, P. Jørgensen, T. Helgaker, G. E. Scuseria and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>92</strong>, 4924 (1990). The Lagrangian formulation of CC derivatives, which transfers to any number of particle types.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>J. Chem. Theory Comput.</em> <strong>15</strong>, 338 (2019). NEO-CCSD, with the amplitude equations whose transposes these notes describe.</li>
+  <li>F. Pavošević and S. Hammes-Schiffer, <em>J. Chem. Phys.</em> <strong>151</strong>, 074104 (2019). Proton densities from multicomponent CCSD, which require the protonic response density of Section 7.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>Chem. Rev.</em> <strong>120</strong>, 4222 (2020). The NEO framework and its correlated methods.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. Equations (5) to (7) show leading terms with the sign conventions of the refresher and are obtained by transposing the cross terms of the amplitude-equation notes; the complete equations should be derived from, or checked against, the amplitude equations of Pavošević, Culpitt and Hammes-Schiffer (2019) in the conventions of a particular code.</footer>
+</div>
