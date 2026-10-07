@@ -20,8 +20,10 @@ cd src
 sh fetch-assets.sh        # once: downloads KaTeX and the text fonts into vendor/
 node build.js coupled-cluster-refresher
 node build.js coupled-cluster-gradients
+node build.js thouless-multicomponent-ccsd
 node pdf.js   coupled-cluster-refresher
 node pdf.js   coupled-cluster-gradients
+node pdf.js   thouless-multicomponent-ccsd
 ```
 
 or, equivalently, `npm run all`. `build.js` writes `../docs/<name>.html` and
@@ -35,6 +37,7 @@ committed.
 | --- | --- |
 | `coupled-cluster-refresher.src.html` | Source of the refresher on CC theory and the CCSD equations |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
+| `thouless-multicomponent-ccsd.src.html` | Source of the notes on Thouless' theorem and multicomponent (NEO) CCSD |
 | `build.js` | TeX rendering, font embedding, page assembly |
 | `pdf.js` | PDF printing through Playwright |
 | `fetch-assets.sh` | Downloads KaTeX 0.16.11 and the Google Fonts subsets |

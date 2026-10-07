@@ -1,0 +1,255 @@
+<title>Thouless in Multicomponent CCSD</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+.panel.eqs .katex-display{margin:10px 0}
+.panel.eqs .katex{font-size:1.0em}
+ol.steps{margin:18px 0;padding-left:0;list-style:none;counter-reset:step}
+ol.steps li{counter-increment:step;display:grid;grid-template-columns:2.2em 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule)}
+ol.steps li::before{content:counter(step);font-family:var(--font-display);font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+ol.steps li:last-child{border-bottom:0}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,table,ol.steps li,.three li{break-inside:avoid}
+  .panel.eqs{break-inside:auto}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to the refresher and the gradient notes</p>
+  <h1>Thouless in Multicomponent CCSD</h1>
+  <p class="dek">Why the singles amplitudes of a coupled cluster wavefunction are orbital rotations, what that means when the reference is a product of an electronic and a protonic determinant, and why the protonic singles do so much of the work in NEO-CCSD.</p>
+  <div class="meta"><span>Written for a graduate student who has read the refresher</span><span>Nuclear-electronic orbital (NEO) methods with quantum protons as the running example</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">The theorem for one particle type</a></li>
+      <li><span class="num">2</span><a href="#s2">The similarity transform as a change of integrals</a></li>
+      <li><span class="num">3</span><a href="#s3">Two particle types</a></li>
+      <li><span class="num">4</span><a href="#s4">What no rotation can produce</a></li>
+      <li><span class="num">5</span><a href="#s5">Why the protonic singles are large</a></li>
+      <li><span class="num">6</span><a href="#s6">Brueckner and orbital-optimized variants</a></li>
+      <li><span class="num">7</span><a href="#s7">Consequences for codes and for gradients</a></li>
+      <li><span class="num">8</span><a href="#s8">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(i,j\;/\;a,b\;/\;p,q\)</dt><dd>occupied / virtual / general electronic spin orbitals \(\phi_p\), with operators \(a_p^\dagger,\,a_p\).</dd>
+    <dt>\(I,J\;/\;A,B\;/\;P,Q\)</dt><dd>occupied / virtual / general protonic orbitals \(\chi_P\), with operators \(b_P^\dagger,\,b_P\). Quantum protons are treated as high-spin fermions, so they occupy a determinant too.</dd>
+    <dt>\(\ket{0}=\ket{0^{\rm e}}\ket{0^{\rm p}}\)</dt><dd>NEO Hartree–Fock reference: a product of an electronic and a protonic determinant.</dd>
+    <dt>\(\ket{\mathrm{vac}}\)</dt><dd>the true vacuum with no particles, \(a_p\ket{\mathrm{vac}}=b_P\ket{\mathrm{vac}}=0\).</dd>
+    <dt>\((pq|PQ)\)</dt><dd>mixed Coulomb integral \(\int\phi_p(\bm r)\phi_q(\bm r)\,|\bm r-\bm R|^{-1}\,\chi_P(\bm R)\chi_Q(\bm R)\); electronic integrals \(\langle pq\|rs\rangle\) as in the refresher.</dd>
+    <dt>\(\bm t\)</dt><dd>the \(N\times N\) matrix whose only nonzero block holds the singles amplitudes, \(t_{ai}=t_i^a\), in the virtual rows and occupied columns.</dd>
+    <dt>\(T_1^{\rm e},T_2^{\rm e},T_1^{\rm p},T_2^{\rm p},T_{11}^{\rm ep}\)</dt><dd>electronic singles and doubles, protonic singles and doubles, and the mixed electron–proton double excitation.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole argument in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>Thouless: the exponential of a singles operator turns a determinant into another determinant, $$e^{T_1}\ket{0}=|\tilde\phi_1\cdots\tilde\phi_n|,\qquad\tilde\phi_i=\phi_i+\sum_a t_i^a\phi_a .$$</div></li>
+    <li><span class="n">2</span><div>Electronic and protonic operators commute, so in NEO the theorem applies to each species separately: $$e^{T_1^{\rm e}+T_1^{\rm p}}\ket{0^{\rm e}0^{\rm p}}=\bigl(e^{T_1^{\rm e}}\ket{0^{\rm e}}\bigr)\bigl(e^{T_1^{\rm p}}\ket{0^{\rm p}}\bigr),$$ and for a single quantum proton the protonic singles reach every protonic orbital in the basis.</div></li>
+    <li><span class="n">3</span><div>The mixed amplitude \(t_{iI}^{aA}\) is the part of the wavefunction that no rotation of either reference can produce. It carries the electron–proton correlation, and through the amplitude equations it drives the large protonic singles that reshape the proton orbital.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>The theorem for one particle type</h2>
+
+<p>Take a single determinant \(\ket{0}=a_1^\dagger\cdots a_n^\dagger\ket{\mathrm{vac}}\) and the singles operator</p>
+$$T_1=\sum_{ia}t_i^a\,a_a^\dagger a_i .\tag{1}$$
+<p>Thouless’ theorem (1960) states that \(e^{T_1}\ket{0}\) is again a single determinant, and conversely that every determinant with nonzero overlap with \(\ket{0}\) can be written this way for a unique \(T_1\). The proof is three lines in second quantization. Because \([T_1,a_i^\dagger]=\sum_a t_i^a a_a^\dagger\) and this commutes with \(T_1\), the Baker–Campbell–Hausdorff series stops after one term:</p>
+$$e^{T_1}a_i^\dagger e^{-T_1}=a_i^\dagger+\sum_a t_i^a\,a_a^\dagger\equiv\tilde a_i^\dagger .\tag{2}$$
+<p>Insert \(e^{-T_1}e^{T_1}=1\) between the creation operators that build the reference, and use \(e^{T_1}\ket{\mathrm{vac}}=\ket{\mathrm{vac}}\), which holds because every term of \(T_1\) annihilates the empty state:</p>
+<div class="panel">
+  <p class="label">Key result · Thouless’ theorem</p>
+  $$e^{T_1}\ket{0}=\prod_i\bigl(e^{T_1}a_i^\dagger e^{-T_1}\bigr)\,e^{T_1}\ket{\mathrm{vac}}=\prod_i\tilde a_i^\dagger\ket{\mathrm{vac}}=|\tilde\phi_1\cdots\tilde\phi_n|,\qquad\tilde\phi_i=\phi_i+\sum_a t_i^a\phi_a .\tag{3}$$
+</div>
+<p>For the converse, let \(\ket{0'}\) be a determinant of orbitals \(\psi_k=\sum_p\phi_pU_{pk}\), and split the coefficient matrix into its occupied rows \(\bm U_{\rm oo}\) and virtual rows \(\bm U_{\rm vo}\). The overlap is \(\braket{0}{0'}=\det\bm U_{\rm oo}\). If it is nonzero, \(\bm U_{\rm oo}\) is invertible, and the orbitals \(\psi\,\bm U_{\rm oo}^{-1}=\phi_{\rm occ}+\phi_{\rm vir}\bm U_{\rm vo}\bm U_{\rm oo}^{-1}\) span the same occupied space. Comparing with (3),</p>
+$$\bm t=\bm U_{\rm vo}\bm U_{\rm oo}^{-1},\qquad\ket{0'}=\det(\bm U_{\rm oo})\,e^{T_1}\ket{0}.\tag{4}$$
+<p>Three remarks before moving on.</p>
+<ul class="points">
+  <li><strong>The rotation is not unitary.</strong> The orbitals \(\tilde\phi_i\) in (3) are neither normalized nor orthogonal, and \(e^{T_1}\ket{0}\) has unit overlap with \(\ket{0}\) but not unit norm. The determinant they define is nevertheless the same as the one built from their orthonormalized versions. To first order, \(\bm t\) equals the occupied–virtual block of a unitary rotation generator \(\bm\kappa\); beyond first order the two parametrizations differ.</li>
+  <li><strong>Singles are orbital relaxation.</strong> In a CCSD wavefunction \(e^{T_1+T_2}\ket{0}=e^{T_2}\bigl(e^{T_1}\ket{0}\bigr)\), so \(T_1\) relaxes the reference orbitals in the presence of the pair correlations described by \(T_2\). This is why CCSD tolerates non-Hartree–Fock references so well.</li>
+  <li><strong>The CCSD manifold is invariant under Thouless rotations of the reference.</strong> If \(\ket{0'}=e^{T_1'}\ket{0}\), then \(e^{T_1+T_2}\ket{0}=e^{T_2}e^{T_1-T_1'}\ket{0'}\), because all excitation operators commute. Every CCSD wavefunction relative to \(\ket{0}\) is a CCSD wavefunction relative to \(\ket{0'}\) with the same doubles and shifted singles. What does change with the reference is the space onto which the equations are projected, so CCSD energies depend on the reference orbitals weakly rather than not at all.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span>The similarity transform as a change of integrals</h2>
+
+<p>The same algebra shows what the singles do to the Hamiltonian. Transforming the elementary operators with \(e^{-T_1}\) on the left and \(e^{T_1}\) on the right gives</p>
+$$e^{-T_1}a_i^\dagger e^{T_1}=a_i^\dagger-\sum_a t_i^a\,a_a^\dagger,\qquad
+e^{-T_1}a_a\,e^{T_1}=a_a+\sum_i t_i^a\,a_i,\tag{5}$$
+<p>while virtual creators and occupied annihilators are unchanged. So \(e^{-T_1}He^{T_1}\) is an operator of exactly the same form as \(H\), with every creation index dressed by one matrix and every annihilation index by another:</p>
+<div class="panel">
+  <p class="label">Key result · the \(T_1\)-transformed Hamiltonian</p>
+  $$\begin{gathered}
+  \tilde h_{pq}=\sum_{\mu\nu}X_{\mu p}\,h_{\mu\nu}\,Y_{\nu q},\qquad
+  (\tilde p\tilde q|\tilde r\tilde s)=\sum_{\mu\nu\lambda\sigma}X_{\mu p}Y_{\nu q}X_{\lambda r}Y_{\sigma s}\,(\mu\nu|\lambda\sigma),\\[4pt]
+  \bm X=\bm C(\bm 1-\bm t^{\tr}),\qquad\bm Y=\bm C(\bm 1+\bm t).
+  \end{gathered}\tag{6}$$
+</div>
+<p>Here \(\bm C\) holds the reference orbital coefficients and Greek indices label atomic orbitals. The dressed integrals are not symmetric, because \(\bm X\neq\bm Y\), but they are ordinary four-index quantities. The practical consequence, due to Koch and co-workers (1994), is that CCSD with singles is CCD with dressed integrals: a code can evaluate all the singles terms by transforming the integrals once per iteration rather than coding forty extra contractions. Brueckner orbitals, where \(T_1=0\), are the case in which no dressing is needed.</p>
+
+<h2 id="s3"><span class="num">3</span>Two particle types</h2>
+
+<p>In the nuclear-electronic orbital (NEO) framework one or more protons are treated quantum mechanically on the same footing as the electrons, with their own basis functions and orbitals. The Hamiltonian separates into an electronic part, a protonic part, and the attraction between them,</p>
+$$H=H^{\rm e}+H^{\rm p}+V^{\rm ep},\qquad V^{\rm ep}=-\sum_{pqPQ}(pq|PQ)\,a_p^\dagger a_q\,b_P^\dagger b_Q .\tag{7}$$
+<p>NEO Hartree–Fock optimizes a product of two determinants, each in the mean field of the other, so Brillouin’s theorem holds separately for both species: \(f^{\rm e}_{ia}=0\) and \(f^{\rm p}_{IA}=0\). NEO-CCSD, in the formulation of Pavošević, Culpitt and Hammes-Schiffer (2019), keeps the product reference and uses the cluster operator</p>
+$$T=T_1^{\rm e}+T_2^{\rm e}+T_1^{\rm p}+T_2^{\rm p}+T_{11}^{\rm ep},\qquad
+T_{11}^{\rm ep}=\sum_{iIaA}t_{iI}^{aA}\,a_a^\dagger a_i\,b_A^\dagger b_I .\tag{8}$$
+<p>The mixed term is a double excitation from the point of view of the whole system, one electron and one proton excited at once, and it is the only place in CCSD where the two species are correlated rather than merely averaged over each other.</p>
+<p>Electronic and protonic operators act on different particles and commute. The singles exponential therefore factorizes,</p>
+<div class="panel">
+  <p class="label">Key result · Thouless for a product reference</p>
+  $$e^{T_1^{\rm e}+T_1^{\rm p}}\ket{0^{\rm e}0^{\rm p}}=\bigl(e^{T_1^{\rm e}}\ket{0^{\rm e}}\bigr)\bigl(e^{T_1^{\rm p}}\ket{0^{\rm p}}\bigr)
+  =|\tilde\phi_1\cdots\tilde\phi_n|\;|\tilde\chi_1\cdots\tilde\chi_{n_{\rm p}}| ,\tag{9}$$
+</div>
+<p>and the singles of the two species reach every product of determinants that overlaps the reference. Nothing in (9) mixes an electronic orbital into a protonic one or vice versa; there is no such rotation, because the particles are distinguishable.</p>
+<p>The most common NEO calculation has a single quantum proton. Then the protonic “determinant” is one orbital \(\chi_I\), the protonic doubles \(T_2^{\rm p}\) do not exist, and \((T_1^{\rm p})^2=0\), so</p>
+$$e^{T_1^{\rm p}}\ket{I}=\ket{I}+\sum_A t_I^A\ket{A}.\tag{10}$$
+<p>The protonic singles are literally the complete one-particle flexibility of the proton: any protonic orbital in the basis with a nonzero component along \(\chi_I\) is reachable. Whatever the proton orbital should look like once correlation is accounted for, \(T_1^{\rm p}\) can produce it.</p>
+
+<p>Expanding the exponential of (8) and collecting terms by excitation class, as in the refresher, gives the multicomponent counterpart of the CI-to-CC relations. The ones that matter here are</p>
+$$C_{11}^{\rm ep}=T_{11}^{\rm ep}+T_1^{\rm e}T_1^{\rm p},\qquad
+C_{21}^{\rm ep}=T_1^{\rm e}T_{11}^{\rm ep}+T_2^{\rm e}T_1^{\rm p}+\tfrac12(T_1^{\rm e})^2T_1^{\rm p},\tag{11}$$
+<p>and the same split shows up in the energy. With the sign convention of (7), the NEO-CCSD energy is</p>
+$$E=E_0+\sum_{ia}f^{\rm e}_{ia}t_i^a+\sum_{IA}f^{\rm p}_{IA}t_I^A+\tfrac14\sum_{ijab}\langle ij\|ab\rangle\,\tau_{ij}^{ab}+\tfrac14\sum_{IJAB}\langle IJ\|AB\rangle\,\tau_{IJ}^{AB}-\sum_{iIaA}(ia|IA)\bigl(t_{iI}^{aA}+t_i^at_I^A\bigr),\tag{12}$$
+<p>with \(\tau_{ij}^{ab}=t_{ij}^{ab}+t_i^at_j^b-t_i^bt_j^a\) as before. The Hamiltonian sees the mixed amplitude only in the combination \(t_{iI}^{aA}+t_i^at_I^A\) of (11).</p>
+
+<h2 id="s4"><span class="num">4</span>What no rotation can produce</h2>
+
+<p>Equation (11) draws the line that this whole document is about. The product \(T_1^{\rm e}T_1^{\rm p}\) is Thouless-type: by (9) it is two independent reorientations of the two references, and the resulting state is still a product of an electronic and a protonic determinant. The connected amplitude \(T_{11}^{\rm ep}\) is not of that form. A state containing it cannot be written as any product \(\Psi^{\rm e}\Psi^{\rm p}\); it is entanglement between the species, and it is what lets the electron distribution depend on where the proton is.</p>
+<p>That dependence is the physics NEO Hartree–Fock misses. In the mean-field product the proton moves in the potential of a static electron density. The electrons do not follow the proton as it displaces, so the potential it feels is too stiff, its orbital is too compact, and the resulting proton densities, vibrational frequencies and proton affinities are badly off. Two different corrections are tangled together here, and Thouless’ theorem is what untangles them:</p>
+<ul class="points">
+  <li><strong>The proton density can be fixed by a rotation.</strong> The density of a product state is a product of densities, and by (10) the protonic singles can make the proton orbital as broad as it needs to be. A broadened proton orbital is a Thouless rotation of the reference, nothing more.</li>
+  <li><strong>The force that determines the rotation cannot.</strong> How much the orbital should broaden, and in which direction, is decided by how the electrons respond to the proton’s displacement. That information lives in \(T_{11}^{\rm ep}\), and only there within CCSD.</li>
+</ul>
+<p>So in NEO-CCSD the mixed amplitudes supply the correlation, and the protonic singles supply the reshaping of the proton orbital that the correlation calls for. The next section shows the mechanism by which the first drives the second.</p>
+
+<h2 id="s5"><span class="num">5</span>Why the protonic singles are large</h2>
+
+<p>With a NEO-HF reference, \(f^{\rm p}_{IA}=0\). The protonic singles equation therefore has no driving integral of its own; its right-hand side is built entirely from contractions of other amplitudes. Schematically, keeping only the leading terms,</p>
+$$t_I^A\,D_I^A=-\sum_{jbB}(jb|AB)\,t_{jI}^{bB}+\sum_{jbJ}(jb|JI)\,t_{jJ}^{bA}+\cdots,\qquad D_I^A=\varepsilon_I-\varepsilon_A,\tag{13}$$
+<p>where the dots stand for terms involving the electronic singles and, with several quantum protons, the protonic doubles. The two displayed terms are the multicomponent analogues of the doubles-to-singles couplings in the single-component singles equation of the refresher, with the mixed Coulomb integrals in place of the electronic integrals. Read (13) as a statement about mechanism: the proton orbital relaxes exactly as much as the electron–proton correlation tells it to. Since the NEO-HF proton orbital is a poor starting point, the relaxation is large, and protonic singles amplitudes of several tenths are ordinary. Several facts about multicomponent calculations follow directly.</p>
+<ul class="points">
+  <li><strong>Large protonic singles are not a warning sign.</strong> In electronic CCSD a large singles norm, as measured by the T1 diagnostic of Lee and Taylor, signals multireference character. For the proton it signals only that the reference orbital was poor, which is the expected situation. The single-component threshold should not be applied to the protonic amplitudes.</li>
+  <li><strong>Why NEO-MP2 struggles and NEO-CCSD does not.</strong> Brillouin’s theorem for both species means the singles are absent from the first-order wavefunction, so second-order perturbation theory cannot reshape the proton orbital at all and gives poor proton densities. NEO-CCSD iterates (13) to self-consistency, which sums the relaxation to all orders.</li>
+  <li><strong>Why orbital optimization rescues perturbation theory.</strong> Orbital-optimized NEO-MP2, introduced by Pavošević, Rousseau and Hammes-Schiffer (2020), makes the orbitals of both species variational parameters of the MP2 energy. That restores precisely the relaxation that (13) provides in CCSD, which is the Thouless argument turned into a method.</li>
+  <li><strong>The proton density is more sensitive to singles than the energy is.</strong> In the energy (12) the protonic singles enter only through products and through their effect on the other amplitudes. In the one-particle density the occupied–virtual block contains \(t_I^A\) at first order, so any property of the proton distribution responds to the singles linearly. This is why proton densities are the sharpest test of a multicomponent method.</li>
+</ul>
+
+<h2 id="s6"><span class="num">6</span>Brueckner and orbital-optimized variants</h2>
+
+<p>If the singles are orbital rotations, one can rotate the reference until they vanish. Brueckner orbitals are defined by the condition that the singles amplitudes are zero when the cluster operator contains no singles,</p>
+$$\bra{\Phi_i^a}e^{-T}He^{T}\ket{0}=0,\qquad\bra{\Phi_I^A}e^{-T}He^{T}\ket{0}=0,\qquad T=T_2^{\rm e}+T_2^{\rm p}+T_{11}^{\rm ep},\tag{14}$$
+<p>and the resulting method, Brueckner doubles, replaces the singles equations by orbital rotations of both species. In the limit of an untruncated cluster operator, the Brueckner determinant is the single determinant with maximum overlap with the exact wavefunction. Pavošević and Hammes-Schiffer (2019) formulated multicomponent Brueckner doubles, NEO-BCCD, and compared its proton densities with those of NEO-CCSD. The protonic Brueckner orbital is the correlated proton orbital made explicit: the reference itself carries the broadened proton distribution, and the doubles then describe only genuine correlation on top of it.</p>
+<p>Orbital-optimized coupled cluster chooses the orbitals differently, by making the CC energy stationary with respect to rotations of the reference,</p>
+$$\pd{E}{\kappa_{ai}}=0,\qquad\pd{E}{\kappa_{AI}}=0 .\tag{15}$$
+<p>The Brueckner condition (14) and the stationarity condition (15) agree to first order in the amplitudes but are not the same, and the difference matters for derivatives: (15) is a variational condition and (14) is not. Section 7 returns to this.</p>
+
+<h2 id="s7"><span class="num">7</span>Consequences for codes and for gradients</h2>
+
+<h3>In an implementation</h3>
+<ul class="points">
+  <li><strong>\(T_1\)-dressing extends species by species.</strong> Because the two singles exponentials factorize, (6) applies to each set of orbitals with its own amplitudes. The electronic integrals are dressed with \(\bm X^{\rm e},\bm Y^{\rm e}\), the protonic ones with \(\bm X^{\rm p},\bm Y^{\rm p}\), and the mixed Coulomb integrals \((pq|PQ)\) with the electronic pair on one side and the protonic pair on the other. No new structure is needed for the multicomponent case.</li>
+  <li><strong>Convergence.</strong> Large protonic singles slow the fixed-point iteration, since they are driven indirectly through (13). Extrapolating all amplitude blocks together with DIIS, rather than species by species, is the usual remedy.</li>
+  <li><strong>Reference dependence as a check.</strong> By the invariance argument of Section 1, NEO-CCSD energies should change only slightly when the reference orbitals are changed by a rotation, for instance from NEO-HF to NEO-DFT orbitals. A strong dependence points to a projection-space problem or a bug.</li>
+  <li><strong>Diagnostics.</strong> Report the electronic and protonic singles norms separately and judge them separately.</li>
+</ul>
+
+<h3>In analytic gradients</h3>
+<p>Thouless’ theorem says the singles relax the orbitals inside the correlated wavefunction. It does not make the energy stationary with respect to the reference orbitals, so the Z-vector step of the gradient notes remains necessary. In NEO the orbital gradient has an electronic block \(X_{ai}\) and a protonic block \(X_{AI}\), the NEO-HF orbital Hessian couples the two through the electron–proton attraction, and the two multiplier vectors \(\bm z^{\rm e}\) and \(\bm z^{\rm p}\) are obtained from one coupled linear system. The relaxed densities of both species then carry their respective \(\bm z\) contributions, and the protonic energy-weighted density contracts with the derivative of the protonic overlap matrix in the same way as the electronic one.</p>
+<p>The two orbital choices of Section 6 behave differently here. With orbital-optimized orbitals the condition (15) makes the orbital gradient vanish identically, the Z-vector step disappears, and the gradient needs only the \(\Lambda\) multipliers. With Brueckner orbitals the orbital gradient does not vanish, because (14) is not a stationarity condition. The Brillouin conditions in the Lagrangian are replaced by the Brueckner conditions (14), and an orbital response equation built on those constraints takes the place of the Z-vector equation. The companion gradient notes originally lumped the two cases together; this paragraph is the correct statement.</p>
+
+<h2 id="s8"><span class="num">8</span>Further reading</h2>
+<ol class="refs">
+  <li>D. J. Thouless, “Stability conditions and nuclear rotations in the Hartree–Fock theory”, <em>Nucl. Phys.</em> <strong>21</strong>, 225 (1960). The theorem.</li>
+  <li>H. Koch, O. Christiansen, R. Kobayashi, P. Jørgensen and T. Helgaker, <em>Chem. Phys. Lett.</em> <strong>228</strong>, 233 (1994). The \(T_1\)-transformed Hamiltonian in CCSD.</li>
+  <li>N. C. Handy, J. A. Pople, M. Head-Gordon, K. Raghavachari and G. W. Trucks, <em>Chem. Phys. Lett.</em> <strong>164</strong>, 185 (1989). Brueckner doubles.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>J. Chem. Theory Comput.</em> <strong>15</strong>, 338 (2019). NEO-CCSD, with the full amplitude equations.</li>
+  <li>F. Pavošević and S. Hammes-Schiffer, <em>J. Chem. Phys.</em> <strong>151</strong>, 074104 (2019). Multicomponent CCSD and Brueckner doubles: proton densities and energies.</li>
+  <li>F. Pavošević, B. J. G. Rousseau and S. Hammes-Schiffer, <em>J. Phys. Chem. Lett.</em> <strong>11</strong>, 1578 (2020). Multicomponent orbital-optimized perturbation theory.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>Chem. Rev.</em> <strong>120</strong>, 4222 (2020). Review of the NEO framework and its correlated methods.</li>
+  <li>I. Shavitt and R. J. Bartlett, <em>Many-Body Methods in Chemistry and Physics</em> (Cambridge, 2009). Thouless’ theorem and its coupled cluster consequences in Chapter 9.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. Equation (13) is schematic; the complete multicomponent amplitude equations, with their sign conventions, are in Pavošević, Culpitt and Hammes-Schiffer (2019).</footer>
+</div>
