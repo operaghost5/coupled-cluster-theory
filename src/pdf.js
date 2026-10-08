@@ -5,7 +5,9 @@
 //
 // Reads <out>/html/<name>.html (written by build.js; default <out> is ../docs)
 // and writes <out>/pdf/<name>.pdf, Letter size, light theme, with the page's
-// <title> and page numbers in the footer.
+// <title> and page numbers in the footer. The margins default to 20mm; a
+// source may override them with <meta name="pdf-margin" content="12mm 14mm">
+// using the CSS shorthand order (one to four values).
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -31,7 +33,12 @@ const { chromium } = loadPlaywright();
 (async () => {
   const htmlPath = path.join(docsDir, 'html', name + '.html');
   if (!fs.existsSync(htmlPath)) throw new Error(htmlPath + ' not found: run build.js first');
-  const title = (/<title>([^<]*)<\/title>/.exec(fs.readFileSync(htmlPath, 'utf8')) || [, name])[1];
+  const html = fs.readFileSync(htmlPath, 'utf8');
+  const title = (/<title>([^<]*)<\/title>/.exec(html) || [, name])[1];
+  const marginMeta = /<meta\s+name="pdf-margin"\s+content="([^"]+)"/.exec(html);
+  const m = marginMeta ? marginMeta[1].trim().split(/\s+/) : ['20mm'];
+  if (m.length < 1 || m.length > 4) throw new Error('pdf-margin needs one to four values');
+  const margin = { top: m[0], right: m[1] || m[0], bottom: m[2] || m[0], left: m[3] || m[1] || m[0] };
 
   const browser = await chromium.launch();
   const page = await browser.newPage();
@@ -55,7 +62,7 @@ const { chromium } = loadPlaywright();
     footerTemplate:
       '<div style="font-size:8.5px;color:#666;width:100%;text-align:center;font-family:Helvetica,Arial,sans-serif;">' +
       title + ' &middot; page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
-    margin: { top: '20mm', bottom: '20mm', left: '20mm', right: '20mm' },
+    margin,
   });
   await browser.close();
 

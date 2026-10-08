@@ -25,6 +25,7 @@ node build.js neo-ccsd-energy-coefficients
 node build.js setup-a-convention
 node build.js neo-ccsd-amplitude-equations
 node build.js coupled-cluster-gradients
+node build.js cc-gradients-on-one-page
 node build.js analytic-vs-numerical-gradients
 node build.js orbital-response-vs-relaxation
 node build.js neo-ccsd-lambda-equations
@@ -37,6 +38,7 @@ node pdf.js   neo-ccsd-energy-coefficients
 node pdf.js   setup-a-convention
 node pdf.js   neo-ccsd-amplitude-equations
 node pdf.js   coupled-cluster-gradients
+node pdf.js   cc-gradients-on-one-page
 node pdf.js   analytic-vs-numerical-gradients
 node pdf.js   orbital-response-vs-relaxation
 node pdf.js   neo-ccsd-lambda-equations
@@ -61,6 +63,7 @@ directory, with the same `html/` and `pdf/` subfolders. `vendor/` and
 | `setup-a-convention.src.html` | Source of the notes on the three setups of Goudy and co-workers for the NEO Hamiltonian and its partitioning, and the Setup A convention cited for multi-proton NEO-HF references |
 | `neo-ccsd-amplitude-equations.src.html` | Source of the notes on how the amplitude equations change in NEO-CCSD |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
+| `cc-gradients-on-one-page.src.html` | Source of the one-page summary of the gradient notes: the four equations, the recipe, and four self-test questions |
 | `analytic-vs-numerical-gradients.src.html` | Source of the notes comparing the cost and accuracy of analytic and finite-difference CCSD gradients |
 | `orbital-response-vs-relaxation.src.html` | Source of the terminology note on orbital response, orbital relaxation, and relaxed versus unrelaxed densities |
 | `neo-ccsd-lambda-equations.src.html` | Source of the notes on how the Lambda equations and response densities change in NEO-CCSD |
@@ -78,6 +81,8 @@ A source file has three parts, in order:
    font tokens on `:root` for light and dark themes, holds the two placeholder
    comments `/*GFONTS_CSS*/` and `/*KATEX_CSS*/` that `build.js` replaces with
    the embedded fonts and the KaTeX stylesheet, and ends with the print rules.
+   An optional `<meta name="pdf-margin" content="...">` after the title sets
+   the PDF page margins in CSS shorthand order; the default is 20mm all round.
 2. The marker line `<!-- BODY -->`. Everything before it goes into the
    document head of the standalone page, everything after it into the body.
 3. The content.
