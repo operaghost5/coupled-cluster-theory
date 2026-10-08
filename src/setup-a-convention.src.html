@@ -1,0 +1,204 @@
+<title>The Setup A Convention</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+blockquote{margin:18px 0;padding:4px 0 4px 18px;border-left:2px solid var(--accent);color:var(--fg)}
+blockquote p{margin:8px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.caution{border-color:var(--mark)}
+.caution .label{color:var(--mark)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.k{font-family:var(--font-display);font-weight:600;color:var(--accent-ink);white-space:nowrap}
+td.yes{color:var(--accent);font-weight:600}
+td.no{color:var(--muted)}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,.three li,table,blockquote{break-inside:avoid}
+  .panel .label{break-after:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · A convention for the multi-proton NEO reference</p>
+  <h1>The Setup A Convention</h1>
+  <p class="dek">What the “Setup A convention of Goudy and coworkers” means when it is cited for the protonic Fock operators of a multicomponent Hartree–Fock reference with several quantum protons, what it includes and excludes, why the choice matters for triples corrections and derivatives, and how to tell which setup a code uses.</p>
+  <div class="meta"><span>Written for a graduate student who has read the NEO coefficients and NEO gradient notes</span><span>Protons treated as distinguishable particles in a Hartree product</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">Where the label appears</a></li>
+      <li><span class="num">2</span><a href="#s2">What the convention contains</a></li>
+      <li><span class="num">3</span><a href="#s3">As implemented in a production code</a></li>
+      <li><span class="num">4</span><a href="#s4">The alternative setup</a></li>
+      <li><span class="num">5</span><a href="#s5">Why the choice matters</a></li>
+      <li><span class="num">6</span><a href="#s6">How to tell which setup a code uses</a></li>
+      <li><span class="num">7</span><a href="#s7">Sources and what was verified</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(\alpha,\beta\)</dt><dd>labels for the quantum nuclei; \(\mathrm p\alpha\) the orbital space of nucleus \(\alpha\).</dd>
+    <dt>\(\hat h^{\mathrm p\alpha}\)</dt><dd>core Hamiltonian of nucleus \(\alpha\): its kinetic energy and its Coulomb interaction with the classical nuclei.</dd>
+    <dt>\(\hat v^{\mathrm{ep},\mathrm p\alpha}_{\rm HF}\)</dt><dd>the mean field of the electrons acting on nucleus \(\alpha\), attractive.</dd>
+    <dt>\(\hat v^{\mathrm p\beta\,\mathrm p\alpha}_{\rm HF}\)</dt><dd>the Coulomb mean field of nucleus \(\beta\) acting on nucleus \(\alpha\), repulsive.</dd>
+    <dt>\(\hat J,\ \hat K\)</dt><dd>Coulomb and exchange operators, in the sense of ordinary Hartree–Fock theory.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>Setup A defines one Fock operator per quantum nucleus: its core Hamiltonian, the electrons’ mean field, and the Coulomb mean field of the <em>other</em> quantum nuclei. No proton–proton exchange and no self-interaction.</div></li>
+    <li><span class="n">2</span><div>Every convention of this kind gives the same NEO-HF energy, because the terms they differ by cancel exactly in the energy. They differ in the virtual protonic orbitals and their energies.</div></li>
+    <li><span class="n">3</span><div>That is why the choice must be stated: perturbative triples, CC3-type triples and every orbital-energy denominator depend on it, and a gradient Lagrangian inherits it through the Fock operators, the orbital Hessian and the effective densities.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>Where the label appears</h2>
+<p>The analytic gradient paper for multicomponent CCSD by Tucker and Brorsen defines its reference in Section 2.1 with the sentence</p>
+<blockquote><p>“The reference is the multicomponent HF wave function with Fock operators defined using the Setup A convention of Goudy and coworkers. In this convention, the Fock operator for quantum nucleus α is”</p></blockquote>
+<div class="panel">
+  <p class="label">Key result · the Setup A protonic Fock operator (Eq. 3 of the gradient paper)</p>
+  $$\hat F^{\mathrm p\alpha}=\hat h^{\mathrm p\alpha}+\hat v^{\mathrm{ep},\mathrm p\alpha}_{\rm HF}+\sum_{\beta\neq\alpha}\hat v^{\mathrm p\beta\,\mathrm p\alpha}_{\rm HF}.\tag{1}$$
+</div>
+<p>The citation is to Goudy, Pavošević and Hammes-Schiffer, <em>J. Chem. Phys.</em> <strong>163</strong>, 224119 (2025), the paper that introduced triple excitations into NEO coupled cluster theory for systems with several quantum protons. The gradient paper also states the setting the convention belongs to: the quantum nuclei are distinguishable, the reference is the product</p>
+$$\ket{0}=\ket{0^{\rm e}}\otimes\prod_\alpha\ket{0^{\mathrm p\alpha}},\tag{2}$$
+<p>with \(\ket{0^{\mathrm p\alpha}}\) the single occupied orbital of nucleus \(\alpha\), each nucleus has its own orbital space, and the proton–proton part of the two-particle density has no exchange term.</p>
+
+<h2 id="s2"><span class="num">2</span>What the convention contains</h2>
+<p>Read (1) term by term.</p>
+<ul class="points">
+  <li><strong>One Fock operator per nucleus.</strong> Nucleus \(\alpha\) has its own orbital set, its own occupied orbital and its own virtuals, and its own eigenvalue problem. There is no shared protonic Fock operator.</li>
+  <li><strong>The core Hamiltonian</strong> carries the nucleus’s kinetic energy, with its own mass, and its Coulomb repulsion from the classical nuclei. It is the only place the classical nuclei act on the quantum proton directly.</li>
+  <li><strong>The electrons enter as a mean field</strong>, the attractive potential of the electronic Hartree–Fock density, which couples the two species at the mean-field level and is the origin of the off-diagonal blocks of the NEO-HF orbital Hessian.</li>
+  <li><strong>The other quantum nuclei enter as Coulomb mean fields only.</strong> The sum runs over \(\beta\neq\alpha\), so the nucleus does not see its own density, and there is no exchange operator, because distinguishable particles have none.</li>
+</ul>
+<p>Two things are therefore absent that an unrestricted high-spin Hartree–Fock treatment of identical protons would contain: a self-Coulomb term \(\hat J_\alpha\) acting on nucleus \(\alpha\), and an exchange term \(-\hat K_\beta\) from every nucleus, including \(\beta=\alpha\). Section 4 returns to these.</p>
+
+<h2 id="s3"><span class="num">3</span>As implemented in a production code</h2>
+<p>The NEO coupled cluster package these notes accompany, which builds on the NEO extension of PySCF, implements (1) literally. Each quantum nucleus is a separate SCF component, documented as a distinguishable single particle that does not see a same-species two-particle potential: its own Coulomb and exchange contributions are returned as zero. The interactions between components, electron–nucleus and nucleus–nucleus alike, are Coulomb potentials computed from the other component’s density and added to the component’s Fock matrix. The second-order SCF solver sets the same-nucleus orbital-Hessian block to zero for this reason, and the CPHF module’s protonic orbital Hessian has Coulomb coupling only between distinct nuclei, with no same-nucleus two-particle integrals. The multi-proton CC3 and CCSDT solvers in the same package are built on this reference and use its canonical orbital energies in their triples denominators, which is where the convention enters the correlated methods.</p>
+
+<h2 id="s4"><span class="num">4</span>The alternative setup</h2>
+<div class="panel caution">
+  <p class="label">Caution · reconstructed, not quoted</p>
+  <p>The Goudy paper is available by subscription only, and its definitions of Setup A and its alternative could not be read for these notes. This section reconstructs the contrast from a closely related open paper by the same group and should be checked against the original.</p>
+</div>
+<p>Chow, Paenurk and Hammes-Schiffer, <em>J. Chem. Phys.</em> <strong>164</strong>, 074103 (2026), compare two representations of the nuclear part of a NEO-SCF wavefunction with several quantum protons.</p>
+<ul class="points">
+  <li><strong>Slater-determinant representation.</strong> The protons are identical high-spin fermions in one determinant, with one protonic Fock operator shared by all of them. Its proton–proton Coulomb sum is unrestricted, so each proton’s own self-Coulomb is included, and an exchange operator appears, including self-exchange.</li>
+  <li><strong>Hartree-product representation.</strong> Each distinguishable nucleus has its own Fock operator, the exchange operator is absent, and the Coulomb sum is restricted to the other nuclei. This is (1).</li>
+</ul>
+<p>The same paper notes that the self-Coulomb and self-exchange terms cancel exactly in the Hartree–Fock energy, so they can be added back to the Hartree-product Fock operators without changing the converged energy, and tests that variant too. On this reading, Setup A is the Hartree-product convention without the self-terms, and the alternative setup is a form that retains the self-interaction or exchange terms in the protonic Fock operators. Whichever of these the Goudy paper labels as its other setup, the physics of the distinction is the one described next.</p>
+
+<h2 id="s5"><span class="num">5</span>Why the choice matters</h2>
+<p>All of these conventions give the same NEO-HF energy and the same occupied protonic orbitals, because for a single particle in an orbital the Coulomb and exchange self-terms are equal and cancel, and for distinct protons with non-overlapping orbitals the exchange is negligible. What they do not share is the virtual space: adding \(\hat J_\alpha-\hat K_\alpha\) to the Fock operator of nucleus \(\alpha\) leaves its occupied orbital an eigenfunction with the same eigenvalue but changes every virtual orbital and every virtual orbital energy. Consequences follow for everything built on the virtuals.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Quantity</th><th>Depends on the setup</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td class="k">NEO-HF energy</td><td class="no">no</td><td>the self-terms cancel in the energy</td></tr>
+    <tr><td class="k">Occupied protonic orbitals</td><td class="no">no</td><td>they remain eigenfunctions with the same eigenvalue</td></tr>
+    <tr><td class="k">Virtual protonic orbitals and energies</td><td class="yes">yes</td><td>the added operator is not zero on the virtual space</td></tr>
+    <tr><td class="k">NEO-MP2, NEO-CCSD(T), CC3-type triples</td><td class="yes">yes</td><td>orbital-energy denominators enter explicitly</td></tr>
+    <tr><td class="k">Converged NEO-CCSD energy</td><td class="no">no, if the full Fock matrix is used</td><td>CCSD is invariant to rotations within the protonic virtual space and the off-diagonal Fock terms are kept</td></tr>
+    <tr><td class="k">NEO-CCSD convergence rate</td><td class="yes">yes</td><td>the denominators of the fixed-point iteration change</td></tr>
+    <tr><td class="k">Gradient Lagrangian pieces</td><td class="yes">yes</td><td>the Fock operators, their derivatives, the orbital Hessian blocks and the effective densities all carry the convention</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The last row is why a gradient paper has to name the convention even when its correlated energy does not depend on it. The Lagrangian of the NEO gradient notes attaches the Brillouin conditions \(f^{\mathrm p\alpha}_{AI}=0\) of each nucleus, differentiates each Fock matrix with respect to the perturbation, and builds the protonic orbital Hessian blocks; in Setup A the same-nucleus block contains only orbital-energy differences and the coupling between nuclei is Coulomb only, and the effective proton–proton density carries no exchange. With the self-terms present, every one of these objects would have additional pieces, and a gradient derived in one convention would be wrong in the other.</p>
+
+<h2 id="s6"><span class="num">6</span>How to tell which setup a code uses</h2>
+<ul class="points">
+  <li><strong>Add the self-terms and watch the energy.</strong> Including \(\hat J_\alpha-\hat K_\alpha\) in the Fock operator of nucleus \(\alpha\) must leave the NEO-HF energy unchanged to the convergence threshold. If it does not, the code is not computing a Hartree–Fock energy at all.</li>
+  <li><strong>Watch the virtual orbital energies.</strong> They will shift. A code in Setup A reports the unshifted values; the shift is the size of the self-interaction on the virtual space and is not small for compact protonic basis sets.</li>
+  <li><strong>Run NEO-CCSD and NEO-CCSD(T) both ways.</strong> The CCSD energy should agree to the amplitude convergence threshold, provided the implementation keeps the full Fock matrix; the (T) correction will differ. A CCSD difference points to a code that assumes a diagonal protonic Fock matrix.</li>
+  <li><strong>Check the CPHF matrix.</strong> In Setup A the protonic diagonal block for a single quantum nucleus reduces to orbital-energy differences, and the proton–proton coupling block is pure Coulomb.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span>Sources and what was verified</h2>
+<p>The quotation and Eq. (1) are taken from the open-access text of the gradient paper, and the implementation statements in Section 3 from the production code these notes accompany. The Goudy paper could not be accessed, so its own wording for the setups, and the identity of the alternative setup, are unverified; Section 4 is an inference from the Chow, Paenurk and Hammes-Schiffer paper.</p>
+<ol class="refs">
+  <li>G. B. Tucker and K. R. Brorsen, “An Analytic Nuclear Energy Gradient for Multicomponent CCSD”, <em>J. Chem. Theory Comput.</em> <strong>22</strong>, 8813 (2026). Section 2.1, Eqs. (2) and (3), and reference 31.</li>
+  <li>R. J. Goudy, F. Pavošević and S. Hammes-Schiffer, “Triple excitations in nuclear–electronic orbital coupled cluster theory for multiple quantum protons”, <em>J. Chem. Phys.</em> <strong>163</strong>, 224119 (2025). The source of the Setup A label; subscription access.</li>
+  <li>M. Chow, E. Paenurk and S. Hammes-Schiffer, “Efficient and robust optimization of nuclear and electronic orbitals within the nuclear Hartree product representation”, <em>J. Chem. Phys.</em> <strong>164</strong>, 074103 (2026). The Slater-determinant and Hartree-product Fock operators and the cancellation of the self-terms.</li>
+  <li>F. Pavošević, T. Culpitt and S. Hammes-Schiffer, <em>Chem. Rev.</em> <strong>120</strong>, 4222 (2020). The NEO framework and NEO-HF.</li>
+</ol>
+
+<footer>Equation (1) is quoted from the gradient paper with its notation. Section 4 reconstructs the alternative setup from a related paper and is marked as such; it should be replaced by the original definitions when the Goudy paper is at hand.</footer>
+</div>

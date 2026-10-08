@@ -24,12 +24,13 @@ equations and a matching PDF.
 | 6 | Response versus Relaxation | A terminology note: orbital response as a derivative, the two different relaxations in a CC gradient, relaxed versus unrelaxed densities, and the other meanings of relaxation in the literature | [page](docs/html/orbital-response-vs-relaxation.html) · [pdf](docs/pdf/orbital-response-vs-relaxation.pdf) |
 | 7 | Thouless in Multicomponent CCSD | Singles as orbital rotations, the T1-transformed Hamiltonian, what that means for a product electronic–protonic reference, and why the protonic singles are large | [page](docs/html/thouless-multicomponent-ccsd.html) · [pdf](docs/pdf/thouless-multicomponent-ccsd.pdf) |
 | 8 | NEO-CCSD Energy Coefficients | Which coefficients change when the reference is a product of two determinants, and the one rule that decides | [page](docs/html/neo-ccsd-energy-coefficients.html) · [pdf](docs/pdf/neo-ccsd-energy-coefficients.pdf) |
-| 9 | NEO-CCSD Amplitude Equations | The five projected equations, the counting rule for allowed terms, the leading cross terms, and the mixed doubles equation | [page](docs/html/neo-ccsd-amplitude-equations.html) · [pdf](docs/pdf/neo-ccsd-amplitude-equations.pdf) |
-| 10 | NEO-CCSD Lambda Equations | Five multiplier blocks, the energy derivatives that drive them, the reversal of couplings under transposition, and the mixed response density | [page](docs/html/neo-ccsd-lambda-equations.html) · [pdf](docs/pdf/neo-ccsd-lambda-equations.pdf) |
-| 11 | NEO-CCSD Gradients | The coupled electronic–protonic Z-vector equation and everything else that differs in a multicomponent analytic gradient, including the constrained variant | [page](docs/html/neo-ccsd-gradients.html) · [pdf](docs/pdf/neo-ccsd-gradients.pdf) |
+| 9 | The Setup A Convention | What the Setup A convention for the protonic Fock operators of a multi-proton NEO-HF reference includes and excludes, why it matters for triples and derivatives, and how to tell which setup a code uses | [page](docs/html/setup-a-convention.html) · [pdf](docs/pdf/setup-a-convention.pdf) |
+| 10 | NEO-CCSD Amplitude Equations | The five projected equations, the counting rule for allowed terms, the leading cross terms, and the mixed doubles equation | [page](docs/html/neo-ccsd-amplitude-equations.html) · [pdf](docs/pdf/neo-ccsd-amplitude-equations.pdf) |
+| 11 | NEO-CCSD Lambda Equations | Five multiplier blocks, the energy derivatives that drive them, the reversal of couplings under transposition, and the mixed response density | [page](docs/html/neo-ccsd-lambda-equations.html) · [pdf](docs/pdf/neo-ccsd-lambda-equations.pdf) |
+| 12 | NEO-CCSD Gradients | The coupled electronic–protonic Z-vector equation and everything else that differs in a multicomponent analytic gradient, including the constrained variant | [page](docs/html/neo-ccsd-gradients.html) · [pdf](docs/pdf/neo-ccsd-gradients.pdf) |
 
 Documents 1 to 6 are single-component theory and can be read on their own.
-Documents 7 to 11 assume the refresher and the gradient notes and extend
+Documents 7 to 12 assume the refresher and the gradient notes and extend
 them to NEO-CCSD.
 
 ## Conventions
