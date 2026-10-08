@@ -1,7 +1,7 @@
 # Building the notes
 
-The pages and PDFs in `../docs` are generated from the `*.src.html` files in
-this directory. Each source is an HTML page whose mathematics is written in
+The pages in `../docs/html` and the PDFs in `../docs/pdf` are generated from
+the `*.src.html` files in this directory. Each source is an HTML page whose mathematics is written in
 TeX; `build.js` renders the TeX with KaTeX ahead of time and embeds the
 stylesheet and fonts, so the finished page needs no JavaScript and no network
 access, and `pdf.js` prints it with Chromium.
@@ -24,6 +24,7 @@ node build.js cc-energy-coefficients
 node build.js neo-ccsd-energy-coefficients
 node build.js neo-ccsd-amplitude-equations
 node build.js coupled-cluster-gradients
+node build.js analytic-vs-numerical-gradients
 node build.js neo-ccsd-lambda-equations
 node build.js neo-ccsd-gradients
 node build.js thouless-multicomponent-ccsd
@@ -33,15 +34,17 @@ node pdf.js   cc-energy-coefficients
 node pdf.js   neo-ccsd-energy-coefficients
 node pdf.js   neo-ccsd-amplitude-equations
 node pdf.js   coupled-cluster-gradients
+node pdf.js   analytic-vs-numerical-gradients
 node pdf.js   neo-ccsd-lambda-equations
 node pdf.js   neo-ccsd-gradients
 node pdf.js   thouless-multicomponent-ccsd
 ```
 
-or, equivalently, `npm run all`. `build.js` writes `../docs/<name>.html` and
-`build/<name>.artifact.html`; `pdf.js` writes `../docs/<name>.pdf`. Both take
-`--out <dir>` to write somewhere else. `vendor/` and `build/` are not
-committed.
+or, equivalently, `npm run all`. `build.js` writes `../docs/html/<name>.html`
+and `build/<name>.artifact.html`; `pdf.js` reads that page and writes
+`../docs/pdf/<name>.pdf`. Both take `--out <dir>` to use a different docs
+directory, with the same `html/` and `pdf/` subfolders. `vendor/` and
+`build/` are not committed.
 
 ## Files
 
@@ -53,6 +56,7 @@ committed.
 | `neo-ccsd-energy-coefficients.src.html` | Source of the notes on which coefficients change in multicomponent (NEO) CCSD |
 | `neo-ccsd-amplitude-equations.src.html` | Source of the notes on how the amplitude equations change in NEO-CCSD |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
+| `analytic-vs-numerical-gradients.src.html` | Source of the notes comparing the cost and accuracy of analytic and finite-difference CCSD gradients |
 | `neo-ccsd-lambda-equations.src.html` | Source of the notes on how the Lambda equations and response densities change in NEO-CCSD |
 | `neo-ccsd-gradients.src.html` | Source of the notes on the coupled Z-vector equation and the gradient approach in NEO-CCSD |
 | `thouless-multicomponent-ccsd.src.html` | Source of the notes on Thouless' theorem and multicomponent (NEO) CCSD |

@@ -1,0 +1,213 @@
+<title>Analytic versus Numerical Gradients</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+th.c{text-align:right}
+td.k{font-family:var(--font-display);font-weight:600;color:var(--accent-ink);white-space:nowrap}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,.three li,table{break-inside:avoid}
+  .panel .label{break-after:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · Companion to the gradient notes</p>
+  <h1>Analytic versus Numerical Gradients</h1>
+  <p class="dek">What a CCSD gradient costs when it is computed analytically and when it is computed by finite differences, measured in units of one CCSD energy, and how the two compare in accuracy, memory and effort.</p>
+  <div class="meta"><span>Written for a graduate student who has read the gradient notes</span><span>Counts are for a canonical closed-shell or spin-orbital CCSD implementation without symmetry</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">The unit of cost</a></li>
+      <li><span class="num">2</span><a href="#s2">Numerical gradients</a></li>
+      <li><span class="num">3</span><a href="#s3">Analytic gradients</a></li>
+      <li><span class="num">4</span><a href="#s4">The comparison</a></li>
+      <li><span class="num">5</span><a href="#s5">Accuracy</a></li>
+      <li><span class="num">6</span><a href="#s6">Memory, parallelism and effort</a></li>
+      <li><span class="num">7</span><a href="#s7">One level up: CCSD(T) and Hessians</a></li>
+      <li><span class="num">8</span><a href="#s8">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(N_{\rm at}\)</dt><dd>number of atoms, so \(3N_{\rm at}\) nuclear Cartesian coordinates. In multicomponent calculations it also counts every basis centre treated as a derivative variable.</dd>
+    <dt>\(N\)</dt><dd>number of basis functions; \(o\) and \(v\) the numbers of occupied and virtual orbitals. All three grow in proportion to \(N_{\rm at}\) for a given basis set.</dd>
+    <dt>\(n_{\rm iter}\)</dt><dd>number of iterations to converge the amplitude equations, typically 10 to 20.</dd>
+    <dt>\(E_{\rm CCSD}\)</dt><dd>used as a unit: the cost of one converged CCSD energy.</dd>
+    <dt>\(h,\ \varepsilon\)</dt><dd>finite-difference step and the error in each computed energy.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>A central-difference gradient costs \(6N_{\rm at}\) energies, which is \(\mathcal O(N_{\rm at}N^6)\), effectively \(\mathcal O(N^7)\).</div></li>
+    <li><span class="n">2</span><div>An analytic gradient costs about two to three energies, whatever the number of atoms, so it stays \(\mathcal O(N^6)\).</div></li>
+    <li><span class="n">3</span><div>The analytic gradient is also more accurate, by two orders of magnitude or more, and exactly consistent with the energy surface; the numerical one is easier to obtain and trivially parallel.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>The unit of cost</h2>
+<p>One CCSD energy requires converging the amplitude equations. Each iteration is dominated by the particle–particle ladder of the doubles equation, which costs \(o^2v^4\) operations, so</p>
+$$E_{\rm CCSD}\;\approx\;n_{\rm iter}\times o^2v^4\;=\;\mathcal O(N^6).\tag{1}$$
+<p>Everything below is measured against this unit, which makes the comparison independent of hardware and implementation details. The important feature of (1) for what follows is that it does not contain \(N_{\rm at}\) explicitly; the number of atoms enters only through \(o\), \(v\) and \(N\).</p>
+
+<h2 id="s2"><span class="num">2</span>Numerical gradients</h2>
+<p>A finite-difference gradient displaces each nuclear coordinate in turn and recomputes the energy. Central differences need two displaced energies per coordinate,</p>
+$$g_x\approx\frac{E(x+h)-E(x-h)}{2h},\qquad\text{cost}=6N_{\rm at}\times E_{\rm CCSD},\tag{2}$$
+<p>and one-sided differences need \(3N_{\rm at}+1\) energies at the price of a larger error. Each displaced energy is a full CCSD calculation, so</p>
+<div class="panel">
+  <p class="label">Key result · numerical scaling</p>
+  $$\text{cost}_{\rm num}=6N_{\rm at}\times\mathcal O(N^6)=\mathcal O(N_{\rm at}N^6)\;\sim\;\mathcal O(N^7),\tag{3}$$
+</div>
+<p>since \(N_{\rm at}\) and \(N\) grow together. Point-group symmetry reduces the number of distinct displacements, sometimes substantially for small symmetric molecules, but does nothing for the large low-symmetry systems where the cost matters. Richardson extrapolation improves the accuracy at the price of further displacements.</p>
+
+<h2 id="s3"><span class="num">3</span>Analytic gradients</h2>
+<p>The analytic gradient of the gradient notes is a sequence of steps whose costs are each fixed multiples, or lower powers, of the energy:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Step</th><th>Scaling</th><th class="c">Cost in CCSD energies</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Amplitude equations</td><td>\(n_{\rm iter}\times o^2v^4\)</td><td class="c">1</td></tr>
+    <tr><td class="k">\(\Lambda\) equations</td><td>\(n_{\rm iter}\times o^2v^4\), transposed Jacobian</td><td class="c">about 1</td></tr>
+    <tr><td class="k">Response densities</td><td>\(o^2v^4\), once, for the all-virtual block of \(\Gamma\)</td><td class="c">a fraction</td></tr>
+    <tr><td class="k">Generalized Fock matrix and orbital gradient</td><td>\(\mathcal O(N^5)\)</td><td class="c">small</td></tr>
+    <tr><td class="k">Z-vector equation</td><td>\(\mathcal O(N^4)\) per iteration, about 10 iterations</td><td class="c">small</td></tr>
+    <tr><td class="k">AO back-transformation of the densities</td><td>\(\mathcal O(N^5)\)</td><td class="c">small</td></tr>
+    <tr><td class="k">Contraction with derivative integrals</td><td>\(3N_{\rm at}\times\mathcal O(N^4)\), with screening less</td><td class="c">like an HF gradient</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The \(\Lambda\) equations are the only step comparable to the energy itself, and the only step proportional to \(N_{\rm at}\) is the last, which scales like a Hartree–Fock gradient and is negligible next to the \(\mathcal O(N^6)\) steps. Hence</p>
+<div class="panel">
+  <p class="label">Key result · analytic scaling</p>
+  $$\text{cost}_{\rm an}\approx(2\text{ to }3)\times E_{\rm CCSD}=\mathcal O(N^6),\qquad\text{independent of }N_{\rm at}.\tag{4}$$
+</div>
+<p>This is the content of the Lagrangian and Z-vector tricks in the gradient notes: both replace \(3N_{\rm at}\) response calculations by a single perturbation-independent solve, and the price of a gradient becomes a constant multiple of the energy rather than a multiple that grows with the molecule.</p>
+
+<h2 id="s4"><span class="num">4</span>The comparison</h2>
+<p>Dividing (3) by (4), the numerical route costs about \(2N_{\rm at}\) to \(3N_{\rm at}\) times the analytic one. In energies:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th class="c">Atoms</th><th class="c">Coordinates</th><th class="c">Numerical, central differences</th><th class="c">Analytic</th><th class="c">Ratio</th></tr></thead>
+  <tbody>
+    <tr><td class="c">3</td><td class="c">9</td><td class="c">18</td><td class="c">about 3</td><td class="c">6</td></tr>
+    <tr><td class="c">10</td><td class="c">30</td><td class="c">60</td><td class="c">about 3</td><td class="c">20</td></tr>
+    <tr><td class="c">30</td><td class="c">90</td><td class="c">180</td><td class="c">about 3</td><td class="c">60</td></tr>
+    <tr><td class="c">100</td><td class="c">300</td><td class="c">600</td><td class="c">about 3</td><td class="c">200</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The crossover at which finite differences are competitive is a one-atom system. For a geometry optimization that takes twenty or thirty gradient evaluations, the difference is between a calculation that costs a hundred energies and one that costs several thousand.</p>
+
+<h2 id="s5"><span class="num">5</span>Accuracy</h2>
+<p>Expanding the energy about \(x\), the central difference (2) carries a truncation error from the third derivative and a noise error from the finite precision of each energy:</p>
+$$\bigl|g_h-g\bigr|\;\lesssim\;\frac{h^2}{6}\,|E'''|+\frac{\varepsilon}{h},\qquad
+h^{\ast}=\Bigl(\frac{3\varepsilon}{|E'''|}\Bigr)^{1/3}.\tag{5}$$
+<p>With energies converged to \(\varepsilon\approx10^{-10}\) hartree and third derivatives of order one hartree per bohr cubed, the optimal step is about \(7\times10^{-4}\) bohr and the error floor about \(2\times10^{-7}\) hartree per bohr. That is sufficient for a geometry optimization, marginal for differentiating again to obtain a Hessian, and poor for molecular dynamics, where the forces must be consistent with the energy to conserve it. Reaching \(\varepsilon\approx10^{-10}\) in a CC energy is itself demanding: the projected CC energy is first order in the amplitude residual, not second order as a variational energy would be, so the amplitudes must be converged more tightly than for a routine energy.</p>
+<p>The analytic gradient has no step error. Its error is first order in the residuals of the amplitude, \(\Lambda\) and Z-vector equations, as the gradient notes explain, so with residual norms of \(10^{-8}\) the gradient is accurate to about \(10^{-8}\) hartree per bohr, and it is exactly the derivative of the computed energy surface, which the numerical gradient only approximates. The practical rule is the one stated in the gradient notes: converge amplitudes and multipliers more tightly for a gradient than for an energy, because the Lagrangian is stationary but its derivative is not.</p>
+
+<h2 id="s6"><span class="num">6</span>Memory, parallelism and effort</h2>
+<ul class="points">
+  <li><strong>Memory.</strong> The analytic gradient stores the \(\Lambda\) amplitudes, the same size as the doubles, and the two-particle density, whose all-virtual block is \(v^4\), the same size as the \(\langle ab\|cd\rangle\) integrals. Implementations avoid storing that block by contracting it on the fly. A numerical gradient needs nothing beyond the energy code.</li>
+  <li><strong>Parallelism.</strong> The \(6N_{\rm at}\) displaced energies are independent and can run on separate machines with no communication, which is the one practical advantage of the numerical route. The analytic gradient parallelizes like the energy does, within one calculation.</li>
+  <li><strong>Effort.</strong> An analytic gradient is a substantial implementation: the \(\Lambda\) equations, the densities, the orbital response and the derivative integrals, each of which must be validated against finite differences. A numerical gradient exists the moment the energy does. This is why numerical gradients remain the first thing available for any new method and the reference against which the analytic ones are tested.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span>One level up: CCSD(T) and Hessians</h2>
+<p><strong>CCSD(T).</strong> The (T) correction is a non-iterative \(o^3v^4\) step, \(\mathcal O(N^7)\). Its analytic gradient adds triples contributions to the \(\Lambda\) equations and the densities at a cost of about twice the (T) energy, so the total stays at two to three energies, against \(6N_{\rm at}\) energies numerically. The ratio is the same as for CCSD; only the unit has grown.</p>
+<p><strong>Hessians.</strong> The picture changes for second derivatives. By the 2n+1 rule, an analytic CCSD Hessian needs the first-order amplitudes for each of the \(3N_{\rm at}\) perturbations, and each is a linear solve costing about one CCSD, so</p>
+$$\text{cost}_{\rm Hessian,\,an}\approx3N_{\rm at}\times E_{\rm CCSD}=\mathcal O(N_{\rm at}N^6),\tag{6}$$
+<p>which is the same scaling as differentiating analytic gradients numerically, \(6N_{\rm at}\) gradients at two to three energies each. The analytic Hessian has the smaller prefactor and the better accuracy; the numerical Hessian from analytic gradients needs no further implementation and is trivially parallel. Both are common. Differentiating energies twice, at \(\mathcal O(N_{\rm at}^2N^6)\) with a noise floor magnified by \(1/h^2\), is used only when nothing else exists.</p>
+<p><strong>Multicomponent calculations.</strong> Nothing in the comparison changes for NEO-CCSD except that \(N_{\rm at}\) also counts every protonic basis centre treated as a derivative variable, as described in the NEO gradient notes, and the unit \(E_{\rm CCSD}\) becomes the cost of a NEO-CCSD energy. The analytic gradient remains two to three energies.</p>
+
+<h2 id="s8"><span class="num">8</span>Further reading</h2>
+<ol class="refs">
+  <li>P. Pulay, <em>Mol. Phys.</em> <strong>17</strong>, 197 (1969). The paper that introduced analytic energy gradients to molecular electronic structure.</li>
+  <li>Y. Yamaguchi, Y. Osamura, J. D. Goddard and H. F. Schaefer III, <em>A New Dimension to Quantum Chemistry: Analytic Derivative Methods in Ab Initio Molecular Electronic Structure Theory</em> (Oxford, 1994). The systematic treatment of derivative methods and their cost.</li>
+  <li>A. C. Scheiner, G. E. Scuseria, R. B. Rice, T. J. Lee and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>87</strong>, 5361 (1987). The first CCSD gradient implementation, with the original cost analysis.</li>
+  <li>J. F. Stanton and J. Gauss, <em>Int. Rev. Phys. Chem.</em> <strong>19</strong>, 61 (2000). Analytic second derivatives in coupled cluster theory, including the comparison with numerical differentiation of gradients.</li>
+  <li>T. Helgaker and P. Jørgensen, <em>Adv. Quantum Chem.</em> <strong>19</strong>, 183 (1988). The 2n+1 and 2n+2 rules that fix which quantities each derivative order needs.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. The iteration counts and the two-to-three multiple are typical values; a particular implementation may differ by a modest factor without changing any conclusion.</footer>
+</div>
