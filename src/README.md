@@ -58,7 +58,7 @@ directory, with the same `html/` and `pdf/` subfolders. `vendor/` and
 | `coupled-cluster-refresher.src.html` | Source of the refresher on CC theory and the CCSD equations |
 | `cc-energy-coefficients.src.html` | Source of the notes on where the coefficients in the CC energy formula come from |
 | `neo-ccsd-energy-coefficients.src.html` | Source of the notes on which coefficients change in multicomponent (NEO) CCSD |
-| `setup-a-convention.src.html` | Source of the notes on the Setup A convention for the protonic Fock operators of a multi-proton NEO-HF reference |
+| `setup-a-convention.src.html` | Source of the notes on the three setups of Goudy and co-workers for the NEO Hamiltonian and its partitioning, and the Setup A convention cited for multi-proton NEO-HF references |
 | `neo-ccsd-amplitude-equations.src.html` | Source of the notes on how the amplitude equations change in NEO-CCSD |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
 | `analytic-vs-numerical-gradients.src.html` | Source of the notes comparing the cost and accuracy of analytic and finite-difference CCSD gradients |
