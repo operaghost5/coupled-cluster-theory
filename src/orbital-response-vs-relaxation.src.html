@@ -1,0 +1,220 @@
+<title>Response versus Relaxation</title>
+<style>
+/* Layout: one textbook reading column; remarks and key results as bordered panels; equations tagged at the right margin. */
+:root{
+  --bg:#fbfcfd; --surface:#f1f4f8; --fg:#18202c; --muted:#5b6676; --rule:#d5dbe4;
+  --accent:#27509e; --accent-ink:#1c3d7c; --accent-soft:#e5edf9; --mark:#9a4a16;
+  --font-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+    --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --fg:#e4e9f0; --muted:#9aa6b6; --rule:#2a3441;
+  --accent:#8db2ff; --accent-ink:#b9cfff; --accent-soft:#1a2740; --mark:#e8a46e; color-scheme:dark;
+}
+/*GFONTS_CSS*/
+/*KATEX_CSS*/
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.62;
+  padding-inline:clamp(16px,4vw,40px);padding-block:0;-webkit-font-smoothing:antialiased}
+.page{max-width:76ch;margin:0 auto;padding-block:44px 80px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover,a:focus-visible{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,6vw,50px);font-weight:700;letter-spacing:-0.015em}
+h2{font-size:26px;font-weight:600;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule)}
+h2 .num{font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums;font-size:20px;margin-right:14px}
+h3{font-size:19px;font-weight:600;margin-top:34px;color:var(--accent-ink)}
+p{margin:16px 0}
+.eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.dek{font-size:20px;line-height:1.5;color:var(--muted);margin:18px 0 0;max-width:62ch}
+.meta{font-family:var(--font-display);font-size:13px;color:var(--muted);margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px}
+header{padding-bottom:28px;border-bottom:1px solid var(--rule)}
+nav.contents{margin:28px 0 0;font-family:var(--font-display);font-size:14px}
+nav.contents ol{margin:8px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 20px}
+nav.contents li{display:flex;gap:10px}
+nav.contents .num{color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.4em}
+.panel{border:1px solid var(--rule);background:var(--surface);padding:18px 22px;margin:26px 0}
+.panel .label{font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.panel p{margin:10px 0}
+.panel > :last-child{margin-bottom:0}
+.remark{border:0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);background:transparent;padding:14px 0 16px}
+.remark .label{color:var(--accent-ink)}
+.notation dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0;font-size:16px}
+.notation dt{color:var(--fg)}
+.notation dd{margin:0;color:var(--muted)}
+@media (max-width:520px){.notation dl{grid-template-columns:1fr;gap:2px 0}.notation dd{margin-bottom:8px}}
+.three{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.three li{display:grid;grid-template-columns:1.6em 1fr;gap:8px;align-items:baseline}
+.three .n{font-family:var(--font-display);color:var(--accent);font-weight:600}
+.three .katex-display{margin:6px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 2px;margin:18px 0}
+.katex{font-size:1.06em}
+.katex-display > .katex{text-align:left}
+ul.points{padding-left:1.2em;margin:14px 0}
+ul.points li{margin:8px 0}
+.tablewrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.k{font-family:var(--font-display);font-weight:600;color:var(--accent-ink);white-space:nowrap}
+td.yes{color:var(--accent);font-weight:600}
+td.no{color:var(--muted)}
+ol.refs{padding-left:1.6em;margin:14px 0;font-size:15.5px}
+ol.refs li{margin:7px 0;padding-left:.2em}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-family:var(--font-display);font-size:13px;color:var(--muted)}
+em.term{font-style:italic;color:var(--accent-ink)}
+@page{size:Letter}
+@media print{
+  :root{--bg:#fff;--surface:#f2f4f7;--fg:#000;--muted:#3c4450;--rule:#b9c0ca;--accent:#1c3d7c;--accent-ink:#1c3d7c;--accent-soft:#eef2f9;--mark:#7a3810;color-scheme:light}
+  body{font-size:10.6pt;line-height:1.5;padding-inline:0}
+  .page{max-width:none;padding-block:0}
+  h1{font-size:30pt} h2{font-size:17pt;margin-top:30pt} h3{font-size:12.5pt;margin-top:20pt}
+  .dek{font-size:13pt}
+  h2,h3{break-after:avoid}
+  .panel,.katex-display,.three li,table{break-inside:avoid}
+  .panel .label{break-after:avoid}
+  nav.contents{display:none}
+  a{color:inherit;border-bottom:0}
+  .katex-display{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+<!-- BODY -->
+<div class="page">
+<header>
+  <p class="eyebrow">Lecture notes · A note on terminology for the gradient series</p>
+  <h1>Response versus Relaxation</h1>
+  <p class="dek">Orbital response and orbital relaxation describe the same physical effect from two angles, but in coupled cluster derivative theory the words have settled into distinct roles. This note fixes them, and separates the two different relaxations that a CC gradient contains.</p>
+  <div class="meta"><span>Written for a graduate student who has read the gradient notes and the Thouless notes</span><span>Single-component conventions; the multicomponent case is noted at the end</span></div>
+  <nav class="contents" aria-label="Contents">
+    <ol>
+      <li><span class="num">1</span><a href="#s1">A derivative and what it describes</a></li>
+      <li><span class="num">2</span><a href="#s2">Two relaxations in one gradient</a></li>
+      <li><span class="num">3</span><a href="#s3">Relaxed and unrelaxed densities</a></li>
+      <li><span class="num">4</span><a href="#s4">An illustration with a dipole moment</a></li>
+      <li><span class="num">5</span><a href="#s5">When relaxation is left out on purpose</a></li>
+      <li><span class="num">6</span><a href="#s6">Other meanings in the literature</a></li>
+      <li><span class="num">7</span><a href="#s7">In multicomponent calculations</a></li>
+      <li><span class="num">8</span><a href="#s8">Glossary</a></li>
+      <li><span class="num">9</span><a href="#s9">Further reading</a></li>
+    </ol>
+  </nav>
+</header>
+
+<div class="panel notation">
+  <p class="label">Notation</p>
+  <dl>
+    <dt>\(x\)</dt><dd>a perturbation strength: a nuclear coordinate or an external field component.</dd>
+    <dt>\(\bm U^{x}\)</dt><dd>the first-order orbital response, \(\bm C(x)=\bm C(0)(\bm 1+\bm U^{x}+\cdots)\), from coupled-perturbed Hartree–Fock.</dd>
+    <dt>\(\bm X,\ \bm z,\ \bm A,\ \bm B^{x}\)</dt><dd>the CC orbital gradient, the Z-vector, the HF orbital Hessian and the CPHF right-hand side, as in the gradient notes.</dd>
+    <dt>\(T_1\)</dt><dd>the singles cluster operator; \(e^{T_1}\ket{0}\) is a rotated determinant by Thouless’ theorem.</dd>
+    <dt>\(\gamma,\ \bm D\)</dt><dd>the unrelaxed CC response density and the relaxed density that adds the Z-vector contribution.</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <p class="label">The whole answer in three lines</p>
+  <ol class="three">
+    <li><span class="n">1</span><div>Response is a derivative: the matrix \(\bm U^{x}\) that says how the orbitals change per unit perturbation. Relaxation is the adjustment that derivative describes, and the contribution it makes to an energy derivative or a property.</div></li>
+    <li><span class="n">2</span><div>A CC gradient contains two different relaxations: the singles relax the orbitals with respect to correlation, inside the wavefunction; the Z-vector carries the response of the reference orbitals to the perturbation. The first never removes the need for the second.</div></li>
+    <li><span class="n">3</span><div>“Relaxed” and “unrelaxed” densities refer only to the second kind. An unrelaxed CC density already contains the singles relaxation; what it lacks is the orbital response to the perturbation.</div></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="num">1</span>A derivative and what it describes</h2>
+<p>When a nucleus moves or a field is switched on, the Hartree–Fock orbitals are re-optimized in the new Hamiltonian. The <em class="term">orbital response</em> is the first-order part of that change,</p>
+$$\bm C(x)=\bm C(0)\bigl[\bm 1+\bm U^{x}+\mathcal O(x^2)\bigr],\qquad\bm A\,\bm U^{x}=\bm B^{x},\tag{1}$$
+<p>a definite matrix obtained from a definite linear equation. <em class="term">Orbital relaxation</em> is the physical adjustment that \(\bm U^{x}\) quantifies, and, in a derivative expression, the term it produces. In a CC gradient that term is</p>
+$$\Bigl(\frac{\dd E}{\dd x}\Bigr)_{\rm relaxation}=\sum_{ai}X_{ai}\,U^{x}_{ai}=\bm z^{\tr}\bm B^{x},\qquad\bm A^{\tr}\bm z=\bm X,\tag{2}$$
+<p>and the Z-vector identity on the right is the whole reason the two words come apart in practice. The response \(\bm U^{x}\) is never computed; the relaxation contribution is, through \(\bm z\), without any reference to a particular perturbation.</p>
+<p>The same distinction separates finite and infinitesimal perturbations. In a finite-field or displaced-geometry calculation the orbitals relax fully and nobody speaks of a response. In analytic derivative theory the first-order response is all that enters a first derivative, by the \(2n+1\) rule applied to the orbital parameters, and “relaxation contribution” means exactly the term (2).</p>
+
+<h2 id="s2"><span class="num">2</span>Two relaxations in one gradient</h2>
+<p>This is the distinction that matters most, and the one most easily blurred. A coupled cluster gradient contains orbital relaxation of two different kinds, with different origins and different machinery.</p>
+<div class="panel">
+  <p class="label">Key distinction</p>
+  <p><strong>Relaxation inside the wavefunction, through \(T_1\).</strong> By Thouless’ theorem the singles rotate the reference orbitals in the presence of the pair correlations described by \(T_2\). This is relaxation with respect to correlation itself, not with respect to any external perturbation. It is contained in the converged amplitudes and needs no response equation.</p>
+  <p><strong>Relaxation of the reference orbitals under the perturbation, through the Z-vector.</strong> The Hartree–Fock orbitals change when \(x\) changes, and because the CC energy is not stationary with respect to orbital rotations, that change contributes to the derivative. The Z-vector computes the contribution (2) once, for all perturbations.</p>
+</div>
+<p>The first does not remove the need for the second. Converged singles make the CC wavefunction as good as it would be with a rotated reference, but they do not make the energy stationary in the orbital parameters: the orbital gradient \(\bm X\) is nonzero at convergence, so the response \(\bm U^{x}\) still multiplies something. Only orbital-optimized CC, which imposes \(\bm X=0\) as a condition on the orbitals, eliminates the Z-vector step. Brueckner CC, which imposes \(T_1=0\) instead, does not: as the gradient notes explain, vanishing singles is not a stationarity condition, and an orbital response equation built on the Brueckner condition remains.</p>
+<p>A useful way to keep the two apart is to ask what each one responds to. The singles respond to correlation and are determined by the amplitude equations. The Z-vector responds to the energy’s lack of stationarity and is determined by the orbital Hessian. One is part of the wavefunction; the other is part of the derivative.</p>
+
+<h2 id="s3"><span class="num">3</span>Relaxed and unrelaxed densities</h2>
+<p>The CC response density of the gradient notes,</p>
+$$\gamma_{pq}=\bra{0}(1+\Lambda)e^{-T}a_p^\dagger a_q e^{T}\ket{0},\tag{3}$$
+<p>is called the <em class="term">unrelaxed</em> density. The <em class="term">relaxed</em> density adds the Z-vector to its virtual–occupied block,</p>
+$$\bm D=\mathrm{sym}\,\gamma+\bm z\quad\text{(virtual–occupied block)},\tag{4}$$
+<p>and is the one that appears in the gradient. The names refer only to the second kind of relaxation of Section 2. The table says what each density contains:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Density</th><th>Contains the singles relaxation, through the singles amplitudes and multipliers</th><th>Contains the orbital response to the perturbation, through the Z-vector</th><th>Is the exact derivative of</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Unrelaxed, \(\gamma\)</td><td class="yes">yes</td><td class="no">no</td><td>the CC energy with the perturbation added to \(H\) and the orbitals held fixed</td></tr>
+    <tr><td class="k">Relaxed, \(\bm D\)</td><td class="yes">yes</td><td class="yes">yes</td><td>the CC energy with the orbitals re-optimized in the perturbed Hamiltonian</td></tr>
+  </tbody>
+</table>
+</div>
+<p>So an unrelaxed density is not a density without orbital relaxation. It is a density without the orbital response to the perturbation, which is a narrower statement, and the naming is unfortunate but entrenched.</p>
+
+<h2 id="s4"><span class="num">4</span>An illustration with a dipole moment</h2>
+<p>Add a uniform field to the Hamiltonian, \(H(F)=H-F\hat\mu\), and consider the derivative of the CC energy with respect to \(F\) at \(F=0\), which is the dipole moment up to sign. There are two finite-field calculations one could run, and they give the two densities of Section 3.</p>
+<ul class="points">
+  <li><strong>Orbitals frozen.</strong> Solve Hartree–Fock without the field, then run CC with \(H(F)\) for several small \(F\) and differentiate numerically. The orbitals never see the field. The result is the unrelaxed dipole,
+  $$\mu_{\rm unrel}=\sum_{pq}\gamma_{pq}\,\mu_{pq},\tag{5}$$
+  which includes the singles relaxation, since \(T_1\) and \(\Lambda_1\) adjust to the field through the amplitude and \(\Lambda\) equations, but not the orbital response.</li>
+  <li><strong>Orbitals re-optimized.</strong> Solve Hartree–Fock in the field at each \(F\), then run CC on those orbitals and differentiate. The result is the relaxed dipole,
+  $$\mu_{\rm rel}=\sum_{pq}D_{pq}\,\mu_{pq},\tag{6}$$
+  which is what the analytic Z-vector machinery produces in one calculation.</li>
+</ul>
+<p>The difference between (5) and (6) is the term \(\bm z^{\tr}\bm B^{F}\) of (2) with the field as the perturbation. It is usually small for electronic dipoles of closed-shell molecules near equilibrium, a few percent, because the singles have already done most of the relaxing; Section 7 describes a case where it is not small. For nuclear gradients the comparison cannot even be set up, because the basis functions move with the nuclei and the orbitals cannot be held fixed in any meaningful sense. A nuclear gradient is always relaxed.</p>
+
+<h2 id="s5"><span class="num">5</span>When relaxation is left out on purpose</h2>
+<p>For frequency-dependent properties the two densities lead to two different response theories, and the unrelaxed one is the standard choice. Including the Hartree–Fock orbital response in a CC linear response function introduces poles at the time-dependent Hartree–Fock excitation energies, which are spurious: the physical poles of a CC response function should sit at the CC excitation energies, which come from the Jacobian alone. Koch and Jørgensen showed that the orbital-unrelaxed formulation, in which the orbitals are fixed and only the amplitudes respond, has the correct pole structure, and this is how CC response theory and equation-of-motion CC are built. Static properties and gradients, by contrast, use the relaxed formulation, because there the orbital response is a genuine part of the derivative and introduces no poles.</p>
+<p>The lesson for reading papers is that “unrelaxed” is not a synonym for “approximate”. For a static property it is the derivative of a slightly different energy functional; for a dynamic property it is the formulation with the right physics.</p>
+
+<h2 id="s6"><span class="num">6</span>Other meanings in the literature</h2>
+<p>The word relaxation carries at least three meanings in electronic structure, and only two of them have appeared so far.</p>
+<ul class="points">
+  <li><strong>Relaxation with respect to correlation</strong>, through singles or Brueckner orbitals, as in Section 2. No perturbation is involved.</li>
+  <li><strong>Relaxation in response to a perturbation</strong>, through \(\bm U^{x}\) or \(\bm z\), as in Sections 1, 3 and 4. This is the meaning in “relaxed density”.</li>
+  <li><strong>Relaxation upon ionization or excitation</strong>, as in the \(\Delta\)SCF literature: the energy lowering when the orbitals of an ion or an excited state are re-optimized rather than taken from the neutral ground state. Koopmans’ theorem errors are discussed in terms of this relaxation and of correlation, and no derivative is involved at all.</li>
+</ul>
+<p>“Response” is more uniform. It almost always means a derivative of something with respect to a perturbation: orbital response for \(\bm U^{x}\), amplitude response for \(\dd t/\dd x\), and response functions for the frequency-dependent derivatives of the energy in response theory. When a paper says “orbital response” it means a solved linear equation. When it says “orbital relaxation” you have to decide from context which of the three meanings is in play.</p>
+
+<h2 id="s7"><span class="num">7</span>In multicomponent calculations</h2>
+<p>Both kinds of relaxation appear for each species in NEO-CCSD. The protonic singles relax the proton orbital with respect to electron–proton correlation, which the Thouless notes show is a large effect because the NEO-HF proton orbital is a poor starting point. The protonic Z-vector carries the proton orbital’s response to a nuclear displacement or a field, which the NEO gradient notes show is also large, for the same physical reason. Neither substitutes for the other, and the difference between unrelaxed and relaxed protonic properties is correspondingly larger than for electronic ones. The dipole example of Section 4 applied to a quantum proton is a case where (5) and (6) differ by far more than a few percent.</p>
+
+<h2 id="s8"><span class="num">8</span>Glossary</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Term</th><th>Meaning in these notes</th><th>Where it appears</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Orbital response</td><td>the first-order change of the orbital coefficients, \(\bm U^{x}\), from CPHF</td><td>gradient notes, Section 4</td></tr>
+    <tr><td class="k">Amplitude response</td><td>the first-order change of the amplitudes, \(\dd t/\dd x\), from the Jacobian</td><td>gradient notes, Section 1</td></tr>
+    <tr><td class="k">Relaxation contribution</td><td>the term \(\sum X_{ai}U^{x}_{ai}=\bm z^{\tr}\bm B^{x}\) in a derivative</td><td>gradient notes, Section 4</td></tr>
+    <tr><td class="k">Singles relaxation</td><td>the rotation of the reference orbitals by \(e^{T_1}\), with respect to correlation</td><td>Thouless notes</td></tr>
+    <tr><td class="k">Z-vector</td><td>the multipliers \(\bm z\) that fold the orbital response into densities</td><td>gradient notes, NEO gradient notes</td></tr>
+    <tr><td class="k">Unrelaxed density</td><td>\(\gamma\) of (3): singles relaxation included, orbital response excluded</td><td>gradient notes, Section 3</td></tr>
+    <tr><td class="k">Relaxed density</td><td>\(\bm D\) of (4): both included</td><td>gradient notes, Section 4</td></tr>
+    <tr><td class="k">Orbital-unrelaxed response theory</td><td>frequency-dependent CC properties with fixed orbitals, the standard choice</td><td>this note, Section 5</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s9"><span class="num">9</span>Further reading</h2>
+<ol class="refs">
+  <li>T. Helgaker and P. Jørgensen, <em>Adv. Quantum Chem.</em> <strong>19</strong>, 183 (1988). Response and relaxation in the Lagrangian framework, and the \(2n+1\) rule for orbital parameters.</li>
+  <li>N. C. Handy and H. F. Schaefer III, <em>J. Chem. Phys.</em> <strong>81</strong>, 5031 (1984). The Z-vector, which is why the response is never formed.</li>
+  <li>J. Gauss, J. F. Stanton and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>95</strong>, 2623 (1991); E. A. Salter, G. W. Trucks and R. J. Bartlett, <em>J. Chem. Phys.</em> <strong>90</strong>, 1752 (1989). Relaxed and unrelaxed CC densities.</li>
+  <li>H. Koch and P. Jørgensen, <em>J. Chem. Phys.</em> <strong>93</strong>, 3333 (1990). Coupled cluster response functions and the case for the orbital-unrelaxed formulation.</li>
+  <li>D. J. Thouless, <em>Nucl. Phys.</em> <strong>21</strong>, 225 (1960). The theorem behind singles relaxation.</li>
+</ol>
+
+<footer>Equations are numbered consecutively through the notes. The statement that relaxed and unrelaxed electronic dipoles differ by a few percent is a typical magnitude for closed-shell molecules near equilibrium, not a bound.</footer>
+</div>

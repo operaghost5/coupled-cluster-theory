@@ -21,14 +21,15 @@ equations and a matching PDF.
 | 3 | CC Energy Coefficients | Where the 1, ¼ and ½ in the CC energy formula come from, other conventions, and a check by hand | [page](docs/html/cc-energy-coefficients.html) · [pdf](docs/pdf/cc-energy-coefficients.pdf) |
 | 4 | Coupled Cluster Gradients | The Lagrangian, the Λ equations, response densities, orbital relaxation through the Z-vector, and the working gradient formula | [page](docs/html/coupled-cluster-gradients.html) · [pdf](docs/pdf/coupled-cluster-gradients.pdf) |
 | 5 | Analytic versus Numerical Gradients | The cost of analytic and finite-difference CCSD gradients in units of one energy, accuracy, memory, and the same comparison for CCSD(T) and Hessians | [page](docs/html/analytic-vs-numerical-gradients.html) · [pdf](docs/pdf/analytic-vs-numerical-gradients.pdf) |
-| 6 | Thouless in Multicomponent CCSD | Singles as orbital rotations, the T1-transformed Hamiltonian, what that means for a product electronic–protonic reference, and why the protonic singles are large | [page](docs/html/thouless-multicomponent-ccsd.html) · [pdf](docs/pdf/thouless-multicomponent-ccsd.pdf) |
-| 7 | NEO-CCSD Energy Coefficients | Which coefficients change when the reference is a product of two determinants, and the one rule that decides | [page](docs/html/neo-ccsd-energy-coefficients.html) · [pdf](docs/pdf/neo-ccsd-energy-coefficients.pdf) |
-| 8 | NEO-CCSD Amplitude Equations | The five projected equations, the counting rule for allowed terms, the leading cross terms, and the mixed doubles equation | [page](docs/html/neo-ccsd-amplitude-equations.html) · [pdf](docs/pdf/neo-ccsd-amplitude-equations.pdf) |
-| 9 | NEO-CCSD Lambda Equations | Five multiplier blocks, the energy derivatives that drive them, the reversal of couplings under transposition, and the mixed response density | [page](docs/html/neo-ccsd-lambda-equations.html) · [pdf](docs/pdf/neo-ccsd-lambda-equations.pdf) |
-| 10 | NEO-CCSD Gradients | The coupled electronic–protonic Z-vector equation and everything else that differs in a multicomponent analytic gradient, including the constrained variant | [page](docs/html/neo-ccsd-gradients.html) · [pdf](docs/pdf/neo-ccsd-gradients.pdf) |
+| 6 | Response versus Relaxation | A terminology note: orbital response as a derivative, the two different relaxations in a CC gradient, relaxed versus unrelaxed densities, and the other meanings of relaxation in the literature | [page](docs/html/orbital-response-vs-relaxation.html) · [pdf](docs/pdf/orbital-response-vs-relaxation.pdf) |
+| 7 | Thouless in Multicomponent CCSD | Singles as orbital rotations, the T1-transformed Hamiltonian, what that means for a product electronic–protonic reference, and why the protonic singles are large | [page](docs/html/thouless-multicomponent-ccsd.html) · [pdf](docs/pdf/thouless-multicomponent-ccsd.pdf) |
+| 8 | NEO-CCSD Energy Coefficients | Which coefficients change when the reference is a product of two determinants, and the one rule that decides | [page](docs/html/neo-ccsd-energy-coefficients.html) · [pdf](docs/pdf/neo-ccsd-energy-coefficients.pdf) |
+| 9 | NEO-CCSD Amplitude Equations | The five projected equations, the counting rule for allowed terms, the leading cross terms, and the mixed doubles equation | [page](docs/html/neo-ccsd-amplitude-equations.html) · [pdf](docs/pdf/neo-ccsd-amplitude-equations.pdf) |
+| 10 | NEO-CCSD Lambda Equations | Five multiplier blocks, the energy derivatives that drive them, the reversal of couplings under transposition, and the mixed response density | [page](docs/html/neo-ccsd-lambda-equations.html) · [pdf](docs/pdf/neo-ccsd-lambda-equations.pdf) |
+| 11 | NEO-CCSD Gradients | The coupled electronic–protonic Z-vector equation and everything else that differs in a multicomponent analytic gradient, including the constrained variant | [page](docs/html/neo-ccsd-gradients.html) · [pdf](docs/pdf/neo-ccsd-gradients.pdf) |
 
-Documents 1 to 5 are single-component theory and can be read on their own.
-Documents 6 to 10 assume the refresher and the gradient notes and extend
+Documents 1 to 6 are single-component theory and can be read on their own.
+Documents 7 to 11 assume the refresher and the gradient notes and extend
 them to NEO-CCSD.
 
 ## Conventions

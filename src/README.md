@@ -25,6 +25,7 @@ node build.js neo-ccsd-energy-coefficients
 node build.js neo-ccsd-amplitude-equations
 node build.js coupled-cluster-gradients
 node build.js analytic-vs-numerical-gradients
+node build.js orbital-response-vs-relaxation
 node build.js neo-ccsd-lambda-equations
 node build.js neo-ccsd-gradients
 node build.js thouless-multicomponent-ccsd
@@ -35,6 +36,7 @@ node pdf.js   neo-ccsd-energy-coefficients
 node pdf.js   neo-ccsd-amplitude-equations
 node pdf.js   coupled-cluster-gradients
 node pdf.js   analytic-vs-numerical-gradients
+node pdf.js   orbital-response-vs-relaxation
 node pdf.js   neo-ccsd-lambda-equations
 node pdf.js   neo-ccsd-gradients
 node pdf.js   thouless-multicomponent-ccsd
@@ -57,6 +59,7 @@ directory, with the same `html/` and `pdf/` subfolders. `vendor/` and
 | `neo-ccsd-amplitude-equations.src.html` | Source of the notes on how the amplitude equations change in NEO-CCSD |
 | `coupled-cluster-gradients.src.html` | Source of the notes on analytic CC gradients |
 | `analytic-vs-numerical-gradients.src.html` | Source of the notes comparing the cost and accuracy of analytic and finite-difference CCSD gradients |
+| `orbital-response-vs-relaxation.src.html` | Source of the terminology note on orbital response, orbital relaxation, and relaxed versus unrelaxed densities |
 | `neo-ccsd-lambda-equations.src.html` | Source of the notes on how the Lambda equations and response densities change in NEO-CCSD |
 | `neo-ccsd-gradients.src.html` | Source of the notes on the coupled Z-vector equation and the gradient approach in NEO-CCSD |
 | `thouless-multicomponent-ccsd.src.html` | Source of the notes on Thouless' theorem and multicomponent (NEO) CCSD |
