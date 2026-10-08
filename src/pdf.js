@@ -3,9 +3,9 @@
 //
 //   node pdf.js <name> [--out <dir>]
 //
-// Reads <out>/<name>.html (written by build.js; default <out> is ../docs) and
-// writes <out>/<name>.pdf, Letter size, light theme, with the page's <title>
-// and page numbers in the footer.
+// Reads <out>/html/<name>.html (written by build.js; default <out> is ../docs)
+// and writes <out>/pdf/<name>.pdf, Letter size, light theme, with the page's
+// <title> and page numbers in the footer.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -17,7 +17,7 @@ if (!name) {
   process.exit(2);
 }
 const outFlag = args.indexOf('--out');
-const outDir = outFlag >= 0 ? path.resolve(args[outFlag + 1]) : path.resolve(__dirname, '..', 'docs');
+const docsDir = outFlag >= 0 ? path.resolve(args[outFlag + 1]) : path.resolve(__dirname, '..', 'docs');
 
 function loadPlaywright() {
   for (const spec of ['playwright', '/opt/node-tools/node_modules/playwright']) {
@@ -29,7 +29,7 @@ function loadPlaywright() {
 const { chromium } = loadPlaywright();
 
 (async () => {
-  const htmlPath = path.join(outDir, name + '.html');
+  const htmlPath = path.join(docsDir, 'html', name + '.html');
   if (!fs.existsSync(htmlPath)) throw new Error(htmlPath + ' not found: run build.js first');
   const title = (/<title>([^<]*)<\/title>/.exec(fs.readFileSync(htmlPath, 'utf8')) || [, name])[1];
 
@@ -42,7 +42,9 @@ const { chromium } = loadPlaywright();
   await page.evaluate(() => document.fonts.ready);
   await page.emulateMedia({ media: 'print', colorScheme: 'light' });
 
-  const pdfPath = path.join(outDir, name + '.pdf');
+  const pdfDir = path.join(docsDir, 'pdf');
+  fs.mkdirSync(pdfDir, { recursive: true });
+  const pdfPath = path.join(pdfDir, name + '.pdf');
   await page.pdf({
     path: pdfPath,
     format: 'Letter',

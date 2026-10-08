@@ -6,7 +6,7 @@
 // Reads <name>.src.html, renders every $$...$$ and \(...\) block with KaTeX,
 // inlines the KaTeX stylesheet and the text fonts as data URIs, and writes
 //
-//   <out>/<name>.html            standalone page (default <out> is ../docs)
+//   <out>/html/<name>.html       standalone page (default <out> is ../docs)
 //   build/<name>.artifact.html   the same page without the document skeleton,
 //                                which is what claude.ai expects when the page
 //                                is published as an artifact
@@ -23,7 +23,8 @@ if (!name) {
   process.exit(2);
 }
 const outFlag = args.indexOf('--out');
-const outDir = outFlag >= 0 ? path.resolve(args[outFlag + 1]) : path.resolve(__dirname, '..', 'docs');
+const docsDir = outFlag >= 0 ? path.resolve(args[outFlag + 1]) : path.resolve(__dirname, '..', 'docs');
+const outDir = path.join(docsDir, 'html');
 
 const vendor = path.join(__dirname, 'vendor');
 if (!fs.existsSync(path.join(vendor, 'katex', 'katex.min.js'))) {
